@@ -575,8 +575,8 @@ class Api{
 				$this->error('No hay elementos');
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
-					if(!(strpos($rs[$i]['descripcion'],"BOLETA DE VENTA")===0 || strpos($rs[$i]['descripcion'],"TICKET")===0 || strpos($rs[$i]['descripcion'],"RECIBO")===0 || strpos($rs[$i]['descripcion'],"NOTA")===0 || strpos($rs[$i]['descripcion'],"COMPROBANTE")===0)){
-						if($rs[$i]['descripcion']!="FACTURA"){
+					if(!(/*strpos($rs[$i]['descripcion'],"BOLETA DE VENTA")===0 || */strpos($rs[$i]['descripcion'],"TICKET")===0 || strpos($rs[$i]['descripcion'],"RECIBO")===0 || strpos($rs[$i]['descripcion'],"NOTA")===0 || strpos($rs[$i]['descripcion'],"COMPROBANTE")===0)){
+						if($rs[$i]['descripcion']!="FACTURA" && $rs[$i]['descripcion']!="BOLETA DE VENTA"){
 							$maestro[$m]['idmaster'] = $rs[$i]['idmaster'];
 							$maestro[$m]['codigo'] = $rs[$i]['codigo'];
 							$maestro[$m]['descripcion'] = $rs[$i]['descripcion'];
