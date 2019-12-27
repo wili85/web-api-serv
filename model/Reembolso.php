@@ -199,7 +199,7 @@ class Reembolso {
 						left join firma_digital t3 on SUBSTR(t3.id_firm_dig,0,11) = TRIM (t2.ccodificacionht)
 						where id_solicitud='".$idsolicitud."'";
 			*/
-			$query = "SELECT  id_resol,TO_CHAR (fech_resol, 'DD/MM/YYYY') fech_resol, ubic_arch_firm 
+			$query3 = "SELECT  id_resol,TO_CHAR (fech_resol, 'DD/MM/YYYY') fech_resol, ubic_arch_firm 
 						FROM reembolso_medico t1 
 						INNER JOIN std.tra_m_tramite t2 ON t1.i_cod_tramite = t2.icodtramite
 						LEFT JOIN firma_digital t3 ON t3.id_firm_dig = t1.id_firm_dig
