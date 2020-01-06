@@ -269,7 +269,7 @@ class Api{
 					$afiliado[$i]['baseimponible'] = $rs[$i]['baseimponible'];
 					$afiliado[$i]['porcentajeigv'] = $rs[$i]['porcentajeigv'];
 					$afiliado[$i]['valorigv'] = $rs[$i]['valorigv'];
-					$afiliado[$i]['rutacomprobante'] = $rs[$i]['rutacomprobante'];
+					$afiliado[$i]['rutacomprobante'] = (isset($rs[$i]['rutacomprobante']))?$rs[$i]['rutacomprobante']:'';
 				}
 				
 				echo json_encode(array('comprobante'=>$afiliado));
@@ -1007,7 +1007,8 @@ class Api{
 						$bancopago=$sigef[0]['BANCO'];
 						$fecharesolucion=$sigef[0]['FECH_RESOL'];
 						$numresolucion=$sigef[0]['ID_RESOL'];
-						$rutaresolucion="https://sigef-res.saludpol.gob.pe:10446/".$sigef[0]['UBIC_ARCH_FIRM'];
+						//$rutaresolucion="https://sigef-res.saludpol.gob.pe:10446/".$sigef[0]['UBIC_ARCH_FIRM'];
+						$rutaresolucion=(isset($sigef[0]['UBIC_ARCH_FIRM']))?"https://sigef-res.saludpol.gob.pe:10446/".$sigef[0]['UBIC_ARCH_FIRM']:'';
 						$fechapago=$sigef[0]['FECH_FINA_PAG'];
 						$montopago=$sigef[0]['MONT_COMP_COP'];
 					}

@@ -230,6 +230,7 @@
 			}elseif($_POST['op'] == 'validarnrocomprobante'){
 				$p = array();
 				$p[] = $_POST['nrocomprobante'];
+				$p[] = $_POST['nroruc'];
 				$api->validarNroComprobante($p);
 			}elseif($_POST['op'] == 'detalle_solicitud'){
 				$p = array();
