@@ -66,7 +66,8 @@
 			}elseif($_POST['op'] == 'stock_establecimiento'){
 				
 				$item = array(
-					'codigo' => $_POST['codigo']
+					'codigo' => $_POST['codigo'],
+					'dni_medico' => $_POST['dni_medico']
 				);
 				
 				$api->getStockProductoEstablecimiento($item);	
@@ -75,7 +76,8 @@
 				
 				$item = array(
 					'id_establecimiento' => $_POST['idestablecimiento'],
-					'codigo' => $_POST['codigo']
+					'codigo' => $_POST['codigo'],
+					'dni_medico' => $_POST['dni_medico']
 				);
 				
 				$api->getStockProductoFarmacia($item);	

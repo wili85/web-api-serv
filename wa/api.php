@@ -790,6 +790,10 @@ class Api{
 	
 	function getStockProductoFarmacia($p){
 		include '../model/Farmacia.php';
+		
+		$dni_medico = $p["dni_medico"];
+		unset($p["dni_medico"]);
+		
 		$a = new Farmacia();
 		$rs = $a->consulta_stock_producto_farmacia($p);
 		$ar = array();
@@ -805,6 +809,18 @@ class Api{
 					$afiliado[$i]['unidad'] = $rs[$i]['unidad'];
 					$afiliado[$i]['stock'] = $rs[$i]['stock'];
 					$afiliado[$i]['msg'] = "Ok";
+					
+					$log = array(
+						'op' => 'c',
+						'dni_medico' => $dni_medico,
+						'codigo_producto' => $rs[$i]['codigo_producto'],
+						'nombre_producto' => $rs[$i]['nombre_producto'],
+						'nombre_establecimiento' => $rs[$i]['establecimiento'],
+						'nombre_farmacia' => $rs[$i]['farmacia'],
+						'stock' => $rs[$i]['stock']
+					);
+					$rs_log = $a->crudLog($log);
+					
 				}
 				
 				echo json_encode(array('farmacia'=>$afiliado));
@@ -816,6 +832,18 @@ class Api{
 			$afiliado[0]['unidad'] = "";
 			$afiliado[0]['stock'] = "";
 			$afiliado[0]['msg'] = "El medicamento no tiene stock en esta farmacia";
+			
+			$log = array(
+					'op' => 'c',
+					'dni_medico' => $dni_medico,
+					'codigo_producto' => $p["codigo"],
+					'nombre_producto' => "",
+					'nombre_establecimiento' => "",
+					'nombre_farmacia' => "",
+					'stock' => "0"
+				);
+			$rs_log = $a->crudLog($log); 
+			
 			echo json_encode(array('farmacia'=>$afiliado));
 		}
 	
@@ -823,13 +851,15 @@ class Api{
 	
 	function getStockProductoEstablecimiento($p){
 		include '../model/Farmacia.php';
-		
 		include("../include/cnn.phtml");
 		include("../include/f_producto.php");
 		include("../include/f_ingreso.php");
 		include("../include/f_ingresonea.php");
 		include("../include/f_pecosa.php");
 		include("../include/f_maealmac.php");
+		
+		$dni_medico = $p["dni_medico"];
+		unset($p["dni_medico"]);
 		
 		$a = new Farmacia();
 		$rs = $a->consulta_stock_producto_establecimiento($p);
@@ -847,7 +877,20 @@ class Api{
 					$afiliado[$i]['unidad'] = $rs[$i]['unidad'];
 					$afiliado[$i]['stock'] = $rs[$i]['stock'];
 					$afiliado[$i]['msg'] = "Ok";
+					
+					$log = array(
+						'op' => 'c',
+						'dni_medico' => $dni_medico,
+						'codigo_producto' => $rs[$i]['codigo_producto'],
+						'nombre_producto' => $rs[$i]['nombre_producto'],
+						'nombre_establecimiento' => $rs[$i]['establecimiento'],
+						'nombre_farmacia' => '',
+						'stock' => $rs[$i]['stock']
+					);
+					$rs_log = $a->crudLog($log);
 				}
+				
+				//if($i > 0)$i++;
 				
 				$prodcodigo = $p["codigo"];
 				$ano = date("Y");
@@ -867,17 +910,73 @@ class Api{
 				$afiliado[$i]['unidad'] = $rs[0]['unidad'];
 				$afiliado[$i]['stock'] = (String)$MAECANTSTK;
 				$afiliado[$i]['msg'] = "Ok";
-		
+				
+				$log = array(
+						'op' => 'c',
+						'dni_medico' => $dni_medico,
+						'codigo_producto' => $prodcodigo,
+						'nombre_producto' => $rs[0]['nombre_producto'],
+						'nombre_establecimiento' => "ALMACEN SAN BORJA",
+						'nombre_farmacia' => '',
+						'stock' => (String)$MAECANTSTK
+					);
+				$rs_log = $a->crudLog($log);
+				
 				echo json_encode(array('establecimiento'=>$afiliado));
 			}
 		} else {
+		
+			$prodcodigo = $p["codigo"];
+			$ano = date("Y");
+			$codproducto = F_MUESTRA_ID_PRODUCTO($prodcodigo);
+			$FECHAHASTA="";
+			$CANTIDADINICIAL = F_MUESTRA_DATO_ALMACEN_2("CANTIDADINICIAL",$ano,$codproducto);
+			$TOTALINGRESO = F_CANTIDAD_INGRESADA_DET_X_PRODUCTO($ano,$codproducto,1,$FECHAHASTA);
+			$TOTALINGRESONEA = F_CANTIDAD_INGRESADA_NEA_DET_X_PRODUCTO($ano,$codproducto,1,$FECHAHASTA);
+			$INGRESOS = $TOTALINGRESO + $TOTALINGRESONEA;
+			$cantidadentregada2 = F_CANTIDAD_ATENDIDA_PECOSAS_X_PRODUCTO($ano,$codproducto,1,2,$FECHAHASTA);
+			$MAECANTSTK = $CANTIDADINICIAL + $INGRESOS - $cantidadentregada2;
+			
 			$afiliado[0]['idestablecimiento'] = "";
-			$afiliado[0]['establecimiento'] = "";
-			$afiliado[0]['codigo_producto'] = "";
-			$afiliado[0]['nombre_producto'] = "";
-			$afiliado[0]['unidad'] = "";
-			$afiliado[0]['stock'] = "";
-			$afiliado[0]['msg'] = "El medicamento no tiene stock en este establecimiento";
+			$afiliado[0]['establecimiento'] = "ALMACEN SAN BORJA";
+			$afiliado[0]['codigo_producto'] = $prodcodigo;
+			$afiliado[0]['nombre_producto'] = $rs[0]['nombre_producto'];
+			$afiliado[0]['unidad'] = $rs[0]['unidad'];
+			$afiliado[0]['stock'] = (String)$MAECANTSTK;
+			$afiliado[0]['msg'] = "Ok";
+			
+			$log = array(
+					'op' => 'c',
+					'dni_medico' => $dni_medico,
+					'codigo_producto' => $prodcodigo,
+					'nombre_producto' => $rs[0]['nombre_producto'],
+					'nombre_establecimiento' => "ALMACEN SAN BORJA",
+					'nombre_farmacia' => '',
+					'stock' => (String)$MAECANTSTK
+				);
+			$rs_log = $a->crudLog($log);
+		
+			if($MAECANTSTK == "0" || $MAECANTSTK == ""){
+				$afiliado[0]['idestablecimiento'] = "";
+				$afiliado[0]['establecimiento'] = "";
+				$afiliado[0]['codigo_producto'] = "";
+				$afiliado[0]['nombre_producto'] = "";
+				$afiliado[0]['unidad'] = "";
+				$afiliado[0]['stock'] = "";
+				$afiliado[0]['msg'] = "El medicamento no tiene stock en este establecimiento";
+				
+				$log = array(
+						'op' => 'c',
+						'dni_medico' => $dni_medico,
+						'codigo_producto' => $p["codigo"],
+						'nombre_producto' => "",
+						'nombre_establecimiento' => "ESTABLECIMIENTO",
+						'nombre_farmacia' => "",
+						'stock' => "0"
+					);
+				$rs_log = $a->crudLog($log);
+			}
+			
 			echo json_encode(array('establecimiento'=>$afiliado));
 		}
 	
