@@ -1287,6 +1287,108 @@ class Api{
 		
 	}
 	
+	function getListaLaboratorio($p){
+		include '../model/Laboratorio.php';
+		$a = new Laboratorio();
+		$rs = $a->lista_laboratorio($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$datos[$i]['Numero'] = $rs[$i]['o_numero'];
+					$datos[$i]['Fecha'] = $rs[$i]['Fecha'];
+					$datos[$i]['Ipress'] = $rs[$i]['Ipress'];
+					$datos[$i]['Tipo'] = $rs[$i]['Tipo'];
+				}
+						
+				echo json_encode(array('lista_laboratorio'=>$datos));				
+			}
+		} else {
+			$msg[0]['msg'] = "No hay elementos";
+			echo json_encode(array('lista_laboratorio'=>$msg));
+		}	
+	}
+	
+	function getListaLaboratorioDetalle($p){
+		include '../model/Laboratorio.php';
+		$a = new Laboratorio();
+		$rs = $a->lista_laboratorio_detalle($p);
+		//print_r($rs);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+				
+					$calificacion = "";
+					$resultado = "";
+					
+					if($rs[$i]['Tipo_resultado'] == "C"){
+						$resultado = utf8_encode($rs[$i]['resultado_apm']);
+					}else{
+						if($rs[$i]['Minr'] > 0 && $rs[$i]['Maxr'] > 0){
+							if($rs[$i]['Resultado'] >= $rs[$i]['Minr'] && $rs[$i]['Resultado'] <= $rs[$i]['Maxr'])$calificacion = "Normal";
+							if($rs[$i]['Resultado'] <= $rs[$i]['Minr'] && $rs[$i]['Resultado'] > 0)$calificacion = "Bajo";
+							if($rs[$i]['Resultado'] >= $rs[$i]['Maxr'] && $rs[$i]['Resultado'] > 0)$calificacion = "Alto";
+						}
+						$resultado = utf8_encode($rs[$i]['Resultado']);
+					}
+					
+					$datos[$i]['Numero'] = $rs[$i]['o_numero'];
+					$datos[$i]['Grupo'] = (isset($rs[$i]['Grupo']))?utf8_encode($rs[$i]['Grupo']):'';
+					$datos[$i]['Estudio'] = (isset($rs[$i]['Estudio']))?utf8_encode($rs[$i]['Estudio']):'';
+					$datos[$i]['TipoMuestra'] = (isset($rs[$i]['TipoMuestra']))?utf8_encode($rs[$i]['TipoMuestra']):'';
+					$datos[$i]['Prueba'] = (isset($rs[$i]['Prueba']))?utf8_encode($rs[$i]['Prueba']):'';
+					$datos[$i]['Resultado'] = $resultado;
+					$datos[$i]['UM'] = (isset($rs[$i]['UM']))?utf8_encode($rs[$i]['UM']):'';
+					$datos[$i]['UMs'] = (isset($rs[$i]['UMs']))?utf8_encode($rs[$i]['UMs']):'';
+					$datos[$i]['Minr'] = $rs[$i]['Minr'];
+					$datos[$i]['Maxr'] = $rs[$i]['Maxr'];
+					$datos[$i]['Tipo_resultado'] = $rs[$i]['Tipo_resultado'];
+					$datos[$i]['calificacion'] = $calificacion;
+				}
+						
+				echo json_encode(array('lista_laboratorio_detalle'=>$datos));				
+			}
+		} else {
+			$msg[0]['msg'] = "No hay elementos";
+			echo json_encode(array('lista_laboratorio_detalle'=>$msg));
+		}	
+	}
+	
+	function nl2br_preg_rnnr($string)
+	{
+	  return preg_replace('/(\r\n|\n|\r)/', '<br/>', $string);
+	}
+
+	function getListaLaboratorioGrupo($p){
+		include '../model/Laboratorio.php';
+		$a = new Laboratorio();
+		$rs = $a->lista_laboratorio_grupo($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$datos[$i]['e_id'] = $rs[$i]['e_id'];
+					$datos[$i]['Grupo'] = $rs[$i]['Grupo'];
+				}
+						
+				echo json_encode(array('lista_laboratorio_grupo'=>$datos));				
+			}
+		} else {
+			$msg[0]['msg'] = "No hay elementos";
+			echo json_encode(array('lista_laboratorio_grupo'=>$msg));
+		}	
+	}
+	
 	
 }
 
