@@ -22,6 +22,7 @@
 				$p = array();
 				$p["numero"] = $_POST['numero'];
 				$p["idgrupo"] = $_POST['idgrupo'];
+				$p["dni"] = $_POST['dni'];
 				$api->getListaLaboratorioDetalle($p);
 			}else if($_POST['op'] == 'laboratorio_grupo'){
 				$p = array();

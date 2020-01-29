@@ -35,6 +35,7 @@ From LabsOrdenHistoPrueba_View
 Where o_numero ='".$p["numero"]."'"; 
 if($p["idgrupo"] != "" && $p["idgrupo"] != 0)$sql .= "And e_id = '".$p["idgrupo"]."'";
 $sql .= "and l_estado >= 2
+And h_numero = '".$p["dni"]."' 
 And COALESCE(l_resultado,'') != '-' 
 order by e_orden_imp,l_orden_imp";
 		//echo $sql;
