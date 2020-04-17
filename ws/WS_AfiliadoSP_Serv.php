@@ -199,6 +199,7 @@ function getAseguradoValidate($tipDoc, $nroDoc, $fecValid) {
                 $afiliado->situacion = $rs[$i]['situacion'];
                 $afiliado->caducidad = $rs[$i]['caducidad'];
                 $afiliado->discapacidad = $rs[$i]['discapacidad'];
+				$afiliado->otroseguro = $rs[$i]['otroseguro'];
 				return $afiliado;
             }
         }

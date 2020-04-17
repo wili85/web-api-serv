@@ -10,7 +10,7 @@ function doAuthenticate() {
     if (isset($_SERVER['PHP_AUTH_USER']) and isset($_SERVER['PHP_AUTH_PW'])) {
         //here I am hardcoding. You can connect to your DB for user authentication.    
 
-        if ($_SERVER['PHP_AUTH_USER'] == "WS-Aseg@SaludPol" and $_SERVER['PHP_AUTH_PW'] == "W5s@1uDp0l-19")
+        if ($_SERVER['PHP_AUTH_USER'] == "WSAseg@SaludPol" and $_SERVER['PHP_AUTH_PW'] == "W5s@1uDp0l19")
             return true;
         else
             return false;
@@ -63,6 +63,7 @@ function get_busafi_activo($nroDoc, $nomPer = '', $apePatPer = '', $apeMatPer = 
                 $ar[$i]['apemattitular'] = $rs[$i]['apemattitular'];
                 $ar[$i]['apecastitular'] = $rs[$i]['apecastitular'];
                 $ar[$i]['nomtitular'] = $rs[$i]['nomtitular'];
+				$ar[$i]['otroseguro'] = $rs[$i]['otroseguro'];
             }
         }
     }

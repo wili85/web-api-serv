@@ -1389,6 +1389,284 @@ class Api{
 		}	
 	}
 	
+	function getCitas($p){
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		
+		if($p["dni_beneficiario"]==""){
+			$msg[0]['msg'] = "Debe ingresar un Dni";
+			echo json_encode(array('cita'=>$msg));
+		}
+		
+		$rs = $a->consulta_cita($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['id_cita'] = $rs[$i]['id'];
+					$afiliado[$i]['nro_doc_ident'] = $rs[$i]['nro_doc_ident'];
+					$afiliado[$i]['asegurado_nombre'] = $rs[$i]['asegurado_nombre'];
+					$afiliado[$i]['asegurado_paterno'] = $rs[$i]['asegurado_paterno'];
+					$afiliado[$i]['asegurado_materno'] = $rs[$i]['asegurado_materno'];
+					$afiliado[$i]['establecimiento'] = $rs[$i]['establecimiento'];
+					$afiliado[$i]['servicio'] = $rs[$i]['servicio'];
+					$afiliado[$i]['consultorio'] = $rs[$i]['consultorio'];
+					$afiliado[$i]['fecha'] = $rs[$i]['dia'];
+					$afiliado[$i]['hora'] = $rs[$i]['hora'];
+					$afiliado[$i]['parentesco'] = $rs[$i]['parentesco'];
+					$afiliado[$i]['estado'] = $rs[$i]['estado_cita'];
+					$afiliado[$i]['medico_nombre'] = $rs[$i]['medico_nombre'];
+					$afiliado[$i]['medico_paterno'] = $rs[$i]['medico_paterno'];
+					$afiliado[$i]['medico_materno'] = $rs[$i]['medico_materno'];
+					$afiliado[$i]['grado'] = $rs[$i]['grado'];
+				}
+				
+				echo json_encode(array('cita'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "El dni no tiene citas";
+			echo json_encode(array('cita'=>$msg));
+		}
+	
+	}
+	
+	function anularCita($p){
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		
+		$rs = $a->anular_cita($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['msg'] = ($rs[$i]['sp_anular_cita']=="Ok")?$rs[$i]['sp_anular_cita']:"La cita no se puedo anular";
+				}		
+				echo json_encode(array('cita'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "La cita no se puedo anular, ocurrio un error";
+			echo json_encode(array('cita'=>$msg));
+		}
+		
+	}
+	
+	function getAdscripcion($p){
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		
+		if($p["dni_beneficiario"]==""){
+			$msg[0]['msg'] = "Debe ingresar un Dni";
+			echo json_encode(array('establecimiento'=>$msg));
+		}
+		
+		$rs = $a->consulta_adscripcion($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['id_establecimiento'] = $rs[$i]['id'];
+					$afiliado[$i]['nombre'] = $rs[$i]['nombre'];
+				}
+				
+				echo json_encode(array('establecimiento'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "El dni no tiene establecimientos";
+			echo json_encode(array('establecimiento'=>$msg));
+		}
+	
+	}
+	
+	function getServicioByDni($p){
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		
+		if($p["dni_beneficiario"]==""){
+			$msg[0]['msg'] = "Debe ingresar un Dni";
+			echo json_encode(array('servicio'=>$msg));
+		}
+		
+		if($p["id_establecimiento"]==""){
+			$msg[0]['msg'] = "Debe ingresar un Establecimiento";
+			echo json_encode(array('servicio'=>$msg));
+		}
+		
+		$rs = $a->consulta_servicio($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['id_servicio'] = $rs[$i]['id'];
+					$afiliado[$i]['nombre'] = $rs[$i]['nombre'];
+				}
+				
+				echo json_encode(array('servicio'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "El dni no tiene establecimientos";
+			echo json_encode(array('servicio'=>$msg));
+		}
+	
+	}
+	
+	function getConsultorio($p){
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		
+		if($p["id_servicio"]==""){
+			$msg[0]['msg'] = "Debe ingresar un Servicio";
+			echo json_encode(array('consultorio'=>$msg));
+		}
+		
+		if($p["fecha"]==""){
+			$msg[0]['msg'] = "Debe ingresar una Fecha";
+			echo json_encode(array('consultorio'=>$msg));
+		}
+		
+		$rs = $a->consulta_consultorio($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['id_consultorio'] = $rs[$i]['id'];
+					$afiliado[$i]['nombre'] = $rs[$i]['nombre'];
+					$afiliado[$i]['tiempo_atencion'] = $rs[$i]['tiempo_atencion'];
+					$afiliado[$i]['hora_ini'] = $rs[$i]['hora_ini'];
+					$afiliado[$i]['hora_fin'] = $rs[$i]['hora_fin'];
+				}
+				
+				echo json_encode(array('consultorio'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No tiene consultorios disponibles";
+			echo json_encode(array('consultorio'=>$msg));
+		}
+	
+	}
+	
+	function getConsultorioHorario($p){
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		
+		if($p["id_consultorio"]==""){
+			$msg[0]['msg'] = "Debe ingresar un Consultorio";
+			echo json_encode(array('horario'=>$msg));
+		}
+		
+		if($p["fecha"]==""){
+			$msg[0]['msg'] = "Debe ingresar una Fecha";
+			echo json_encode(array('horario'=>$msg));
+		}
+		
+		$rs = $a->consulta_consultorio_horario($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				$m=0;
+				for ($i = 0; $i < $nr; $i++) {
+					if($rs[$i]['nro_citas']==0){
+						$afiliado[$m]['fecha_cita_inicio'] = $rs[$i]['fecha_cita'];
+						$afiliado[$m]['hora_ini'] = $rs[$i]['fecha_hora'];
+						$afiliado[$m]['fecha_cita_fin'] = $rs[$i]['end_time'];
+						$afiliado[$m]['hora_fin'] = $rs[$i]['fecha_fin'];
+						$m++;
+					}
+				}
+				
+				echo json_encode(array('horario'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No tiene horarios disponibles";
+			echo json_encode(array('horario'=>$msg));
+		}
+	
+	}
+	
+	function guardarCita($p){
+		include '../model/Farmacia.php';
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$tipDoc = 1;$nroDoc = $p['dni_beneficiario'];$fecValid = "";
+		$rs = $a->getValidateAseguradoSP($tipDoc, $nroDoc, $fecValid, 'WSNS');//ACL
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$par['id_cita']=0;
+					$par['id_establecimiento']=$p['id_establecimiento'];
+					$par['id_consultorio']=$p['id_consultorio'];
+					$par['id_medico']="NULL";
+					$par['id_user']=$p['id_user'];
+					$par['fecha_cita']=$p['fecha_cita'];
+					$par['tipodoc_beneficiario'] = "DNI";
+					$par['nrodocafiliado'] = $p['dni_beneficiario'];
+					$par['nombre_beneficiario'] = $rs[$i]['nomafiliado'];
+					$par['paterno_beneficiario'] = $rs[$i]['apepatafiliado'];
+					$par['materno_beneficiario'] = $rs[$i]['apematafiliado'];
+					$par['tipo_beneficiario'] = $rs[$i]['parentesco'];
+					$par['nro_historia'] = "";
+					$par['grado'] = $rs[$i]['grado'];
+					$par['fecnacafiliado'] = $rs[$i]['fecnacafiliado'];
+					$par['nomsexo'] = $rs[$i]['nomsexoafiliado'];
+					$par['cip_beneficiario'] = $rs[$i]['cip'];
+					$par['tipodoc_titular'] = $rs[$i]['nomtipdoctitular'];
+					$par['nrodoctitular'] = $rs[$i]['nrodoctitular'];
+					$par['nombre_titular'] = $rs[$i]['nomtitular'];
+					$par['paterno_titular'] = $rs[$i]['apepattitular'];
+					$par['materno_titular'] = $rs[$i]['apemattitular'];
+					$par['id_parent_cita'] = "NULL";
+					$par['id_estado_cita'] = 1;
+					$par['id_estado_reg'] = 1;
+					$par['correo'] = "";
+				}
+				$f = new Farmacia();
+				//print_r($par);
+				$rsf = $f->guardar_cita($par);
+				//print_r($rsf);
+				$nrf = count($rsf);
+				if ($nrf > 0) {
+					if (isset($rsf['Error'])) {
+						$this->error('No hay elementos');
+					} else {
+						for ($j = 0; $j < $nrf; $j++) {
+							$afiliado[$j]['id_cita'] = $rsf[$j]['sp_insert_cita'];
+						}		
+						echo json_encode(array('cita'=>$afiliado));
+					}
+				} else {
+					$msg[0]['msg'] = "La cita no se puedo registrar, ocurrio un error";
+					echo json_encode(array('cita'=>$msg));
+				}
+				
+			}
+		} else {
+			//$this->error('No hay elementos');
+		}
+		
+	}
+	
+	
 	
 }
 

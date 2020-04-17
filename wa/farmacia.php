@@ -91,7 +91,80 @@
 					'nombre_producto' => $_POST['nombre_producto']
 				);
 				
-				$api->crudLog($item);	
+				$api->crudLog($item);
+				
+			}elseif($_POST['op'] == 'listar_citas'){
+				
+				$item = array(
+					'id_cita' => 0,
+					'dni_beneficiario' => $_POST['dni_beneficiario']
+				);
+				
+				$api->getCitas($item);
+				
+			}elseif($_POST['op'] == 'anular_cita'){
+				
+				$item = array(
+					'id_cita' => $_POST['id_cita']
+				);
+				
+				$api->anularCita($item);
+				
+			}elseif($_POST['op'] == 'listar_adscripcion'){
+				
+				$item = array(
+					'dni_beneficiario' => $_POST['dni_beneficiario']
+				);
+				
+				$api->getAdscripcion($item);
+				
+			}elseif($_POST['op'] == 'listar_servicio'){
+				
+				$item = array(
+					'dni_beneficiario' => $_POST['dni_beneficiario'],
+					'id_establecimiento' => $_POST['id_establecimiento']
+				);
+				
+				$api->getServicioByDni($item);
+				
+			}elseif($_POST['op'] == 'listar_consultorio'){
+				
+				$item = array(
+					'id_servicio' => $_POST['id_servicio'],
+					'fecha' => $_POST['fecha']
+				);
+				
+				$api->getConsultorio($item);
+				
+			}elseif($_POST['op'] == 'listar_consultorio_horario'){
+				
+				$item = array(
+					'id_consultorio' => $_POST['id_consultorio'],
+					'fecha' => $_POST['fecha']
+				);
+				
+				$api->getConsultorioHorario($item);
+				
+			}elseif($_POST['op'] == 'guardar_cita'){
+				
+				$item = array(
+					'dni_beneficiario' => $_POST['dni_beneficiario'],
+					'id_establecimiento' => $_POST['id_establecimiento'],
+					'id_consultorio' => $_POST['id_consultorio'],
+					'id_user' => $_POST['id_user'],
+					'fecha_cita' => $_POST['fecha_cita']
+				);
+				
+				$api->guardarCita($item);
+				
+			}elseif($_POST['op'] == 'obtener_cita'){
+				
+				$item = array(
+					'id_cita' => $_POST['id_cita'],
+					'dni_beneficiario' => '0'
+				);
+				
+				$api->getCitas($item);
 				
 			}
 		

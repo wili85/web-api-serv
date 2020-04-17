@@ -40,7 +40,8 @@ a.apellidomaterno apematafiliado,a.apellidodecasada apecasafiliado,a.nombres nom
 date_part('year',age( to_date(a.fechanacimiento, 'YYYYMMDD') ))edadafiliado,pa.descripcion parentesco,ea.estadodeafiliado idestado,es.descripcion estado,
 t.paisdelafiliado nompaisdeltitular,dt.val_abr nomtipdoctitular,t.numerodedocumentodelafiliado nrodoctitular,t.apellidopaterno apepattitular,t.apellidomaterno apemattitular,
 t.apellidodecasada apecastitular,t.nombres nomtitular,ea.numerodecarnetdeidentidad cip,a.ubigeodireccionprincipal ubigeo,gb.grado,s.descripcion situacion,ea.fechadefindeafiliacion caducidad,
-Case When a.incapacitado Is Null Then '0' Else a.incapacitado End discapacidad 
+Case When a.incapacitado Is Null Then '0' Else a.incapacitado End discapacidad,
+case when os.id isNull then null else 'FONAFON' end otroseguro 
 From aprobadossusalud2016 a Inner Join aprobadossusaludns2016 ea On a.id = ea.id_beneficiario And a.validacionreniec Not In('e','t') And a.valid_dj='' 
 --And a.check_ss='0'
 Inner Join (Select d.id_beneficiario id,Min(d.parentesco)parentesco From aprobadossusalud2016 a Inner Join aprobadossusaludns2016 d On a.id=d.id_beneficiario Where d.estadodeafiliado='1' ";
@@ -81,6 +82,7 @@ From tbl_historial_grado Where id_beneficiario In(Select id From aprobadossusalu
             }
             $this->sql .= ") Group By id_beneficiario)x On hg.id_beneficiario=x.id_beneficiario 
 Inner Join tablatipo g On hg.id_grado=g.id_tipo And g.id_tabla='96')gb On a.id=gb.id_beneficiario 
+left join tbl_otros_seguros os on a.id=os.id_asegurado And os.estado=1 And id_inst_aseg='1' 
 Where ea.estadodeafiliado='1'";
             if (!empty($nroDoc)) {
                 $this->sql .= " And a.numerodedocumentodelafiliado = '" . $nroDoc . "'";
@@ -95,6 +97,7 @@ Where ea.estadodeafiliado='1'";
                 $this->sql .= " And a.apellidomaterno = '" . $apeMat . "'";
             }
             $this->sql .= " Limit 1";
+			//echo $this->sql;
             $this->rs = $this->db->query($this->sql);
         }
         $this->db->closeConnection();

@@ -8,7 +8,7 @@ class Farmacia {
     private $sql;
 
     public function __construct() {
-        $this->db = new ConectaDb();
+        $this->db = new ConectaDbFarmacia();
         $this->rs = array();
     }
 
@@ -54,15 +54,34 @@ class Farmacia {
 		return $this->readFunctionPostgres('sp_crud_log',$p);
     }
 	
-	/*
-	public function crudComprobante($p) {
-        return $this->readFunctionPostgres('sp_crud_comprobante_new',$p);
+	public function consulta_cita($p){
+		return $this->readFunctionPostgres('sp_consulta_cita',$p);
     }
 	
-	public function crudmastertable($p){
-		return $this->readFunctionPostgres('sp_crud_mastertable',$p);
+	public function anular_cita($p){
+		return $this->readFunctionPostgresMsg('sp_anular_cita',$p);
     }
-	*/
+	
+	public function consulta_adscripcion($p){
+		return $this->readFunctionPostgres('sp_consulta_adscripcion',$p);
+    }
+	
+	public function consulta_servicio($p){
+		return $this->readFunctionPostgres('sp_consulta_servicio',$p);
+    }
+	
+	public function consulta_consultorio($p){
+		return $this->readFunctionPostgres('sp_consulta_consultorio',$p);
+    }
+	
+	public function consulta_consultorio_horario($p){
+		return $this->readFunctionPostgres('sp_consulta_consultorio_horario',$p);
+    }
+	
+	public function guardar_cita($p){
+		return $this->readFunctionPostgresTransaction('sp_insert_cita',$p);
+    }
+	
 	public function readFunctionPostgres($function, $parameters = null){
 	
 	  $conet = $this->db->getConnection();
@@ -73,6 +92,7 @@ class Farmacia {
       }
 	  //BEGIN; 
       $this->sql = "BEGIN; select " . $function . "(" . $_parameters . "'ref_cursor'); FETCH ALL IN ref_cursor;";
+	  //echo $this->sql;
 	  $result = $this->db->query($this->sql);
       $data=array() ;
 
@@ -99,5 +119,83 @@ class Farmacia {
 	  
       return $response;
    }
+	
+	public function readFunctionPostgresMsg($function, $parameters = null){
+	
+	  $conet = $this->db->getConnection();
+      $_parameters = '';
+      if (count($parameters) > 0) {
+          $_parameters = implode("','", $parameters);
+          $_parameters = "'" . $_parameters . "',";
+      }
+	  //BEGIN; 
+      $this->sql = "BEGIN; select " . $function . "(" . $_parameters . "'msg');";
+	  //echo $this->sql;
+	  $result = $this->db->query($this->sql);
+      $data=array() ;
 
+      try {
+
+        $sw=TRUE;
+        
+        if (!$result) {
+            $this->db->query("ROLLBACK");
+            $sw=FALSE;
+            $msg='Ocurrio un error el procceso.';
+        } else {
+            $this->db->query("COMMIT");
+            $sw=TRUE;
+            $msg='La operación  realizado correctamente.';
+	
+        }
+        $response = $result;
+      } catch (Exception $e) {
+
+         $response = array('sw' => FALSE, 'msg'=>$e->getMessage(),'data'=>$data ); 
+        
+      }
+	  
+      return $response;
+   }
+   
+   public function readFunctionPostgresTransaction($function, $parameters = null){
+	
+	  $conet = $this->db->getConnection();
+      $_parameters = '';
+      if (count($parameters) > 0) {
+          $_parameters = implode("','", $parameters);
+          $_parameters = "'" . $_parameters . "'";
+		  $_parameters = str_replace("'NULL'","NULL",$_parameters);
+      }
+	  //BEGIN; 
+      $this->sql = "BEGIN; select " . $function . "(" . $_parameters . ");";
+	  //echo $this->sql;
+	  $result = $this->db->query($this->sql);
+      $data=array() ;
+
+      try {
+
+        $sw=TRUE;
+        
+        if (!$result) {
+            $this->db->query("ROLLBACK");
+            $sw=FALSE;
+            $msg='Ocurrio un error el procceso.';
+        } else {
+            $this->db->query("COMMIT");
+            $sw=TRUE;
+            $msg='La operación  realizado correctamente.';
+	
+        }
+        $response = $result;
+      } catch (Exception $e) {
+
+         $response = array('sw' => FALSE, 'msg'=>$e->getMessage(),'data'=>$data ); 
+        
+      }
+	  
+      return $response;
+   }
+   
+   
 }
