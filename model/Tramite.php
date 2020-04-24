@@ -52,7 +52,7 @@ class Tramite {
 		//error_reporting(E_ALL);
 		//ini_set('display_errors', '1');
 		$conn = $this->db_b->getConnection();
-		$sql = "begin pkg_movstd.regtramite_update(:icodtramite1,:nflgtipodoc1,:icodtrabajadorregistro1,:icodoficinaregistro1,:icodtema1,:ccodtipodoc1,:ffecdocumento1,:cnrodocumento1,:icodremitente1,:casunto1,:cobservaciones1,:nnumfolio1,:nflgenvio1,:ffecregistro1,:nflgestado1,:nflganulado1,:icodtrabajadorsolicitado1,:cnomremite1,:nflgclasedoc1,:ffecfinalizado1,:icantidadcartagarantias1,:cmontocartagarantias1,:icodclasificacion1,:cadena1,:cadena2); end;";
+		$sql = "begin pkg_movstd.regtramite_update(:icodtramite1,:nflgtipodoc1,:icodtrabajadorregistro1,:icodoficinaregistro1,:icodtema1,:ccodtipodoc1,:ffecdocumento1,:cnrodocumento1,:icodremitente1,:casunto1,:cobservaciones1,:nnumfolio1,:nflgenvio1,:ffecregistro1,:nflgestado1,:nflganulado1,:icodtrabajadorsolicitado1,:cnomremite1,:nflgclasedoc1,:ffecfinalizado1,:icantidadcartagarantias1,:cmontocartagarantias1,:icodclasificacion1,:cadena1,:cadena2,:idesqobs); end;";
 		$rs = oci_parse($conn, $sql);
 		$icodtramite1=0;
 		oci_bind_by_name($rs, ":icodtramite1", $icodtramite1,10);
@@ -80,6 +80,7 @@ class Tramite {
 		oci_bind_by_name($rs, ":icodclasificacion1", $data["icodclasificacion1"],10);
 		oci_bind_by_name($rs, ":cadena1", $data["cadena1"],250);
 		oci_bind_by_name($rs, ":cadena2", $data["cadena2"],250);
+		oci_bind_by_name($rs, ":idesqobs", $data["idesqobs"],250);
 		oci_execute($rs);
 		$e = oci_error($rs);
 		print_r($e);

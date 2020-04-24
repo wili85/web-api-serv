@@ -377,6 +377,7 @@ class Api{
 					$dataSolicitud["icodclasificacion1"] = '1';
 					$dataSolicitud["cadena1"] = '';
 					$dataSolicitud["cadena2"] = '';
+					$dataSolicitud["idesqobs"] = '';
 					
 					$icodtramite = $t->registrarHt($dataSolicitud);
 					//print_r($icodtramite);
