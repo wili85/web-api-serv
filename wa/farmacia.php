@@ -35,7 +35,16 @@
 					'nroDoc' 	=> '',
 				);
 				
-				$api->getRecetaValeByNroDoc($item);	
+				$api->getRecetaValeByNroDoc($item);
+				
+			}elseif($_POST['op'] == 'buscar_receta'){
+				
+				$item = array(
+					'nro_receta' 				=> $_POST['nro_receta'],
+					'codigo_establecimiento'	=> $_POST['codigo_establecimiento'],
+				);
+				
+				$api->getRecetaByNroReceta($item);	
 				
 			}elseif($_POST['op'] == 'productoreceta'){
 				

@@ -82,6 +82,21 @@ class Farmacia {
 		return $this->readFunctionPostgresTransaction('sp_insert_cita',$p);
     }
 	
+	public function consulta_receta_by_nro_receta($p){
+		$conet = $this->db->getConnection();
+		//$this->sql = "select id,id_farmacia from receta_vales where nro_receta='P-0000017-2019' and id_farmacia in (select id from farmacias where id_establecimiento=76) order by 1 desc limit 1" ;
+		$this->sql = "select rv.id,rv.id_farmacia 
+		from receta_vales rv
+		inner join farmacias fa on rv.id_farmacia=fa.id
+		inner join establecimientos es on fa.id_establecimiento=es.id
+		where rv.nro_receta='".$p['nro_receta']."' 
+		and es.codigo='".$p['codigo_establecimiento']."' order by 1 desc limit 1" ;
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
 	public function readFunctionPostgres($function, $parameters = null){
 	
 	  $conet = $this->db->getConnection();

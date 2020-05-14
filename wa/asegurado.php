@@ -28,9 +28,28 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 				'tipDoc' => $_POST['tipDoc'],
 				'nroDoc' => $_POST['nroDoc'],
 				'cuentas' => $cuentas
-			);
-			
+			);	
 			$api->saveBancoAsegurado($item);
+			
+		}elseif($_POST['op'] == 'insertar_email_asegurado'){
+			$item = array(
+				'id_beneficiario' => $_POST['id_beneficiario'],
+				'email' => $_POST['email'],
+				'his_descrip' => 'APP MOVIL',
+				'his_usu_accion' => '1|'.date("Y-m-d H:i:s"),
+				'his_accion' => 'C'
+			);	
+			$api->saveEmailAsegurado($item);
+		}elseif($_POST['op'] == 'insertar_telefono_asegurado'){
+			$item = array(
+				'id_tipotelef' => $_POST['id_tipotelef'],
+				'id_beneficiario' => $_POST['id_beneficiario'],
+				'nro_telef' => $_POST['nro_telef'],
+				'his_descrip' => 'APP MOVIL',
+				'his_usu_accion' => '1|'.date("Y-m-d H:i:s"),
+				'his_accion' => 'C'
+			);	
+			$api->saveTelefonoAsegurado($item);
 		}
 	
 	}else{

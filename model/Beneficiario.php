@@ -381,7 +381,7 @@ Left Join ubigeo ub on a.ubigeodireccionprincipal =  ub.id_reniec;";
 	
 	public function get_lista_bancos_actu_titular($p) {
         $conet = $this->db->getConnection();
-        $this->sql = "select t1.id,t1.id_bank,description_bank banco,nro_cta,cci 
+        $this->sql = "select t1.id,t1.id_bank,description_bank banco,nro_cta,cci,t1.id_beneficiario 
 from tbl_bancos_asegurado t1
 inner join (Select * From dblink ('dbname=".DB_DATABASE_DBLINK_MAESTRO." port=5432 host=".DB_HOST_DBLINK_MAESTRO." user=".DB_USERNAME_DBLINK_MAESTRO." password=".DB_PASSWORD_DBLINK_MAESTRO."','Select  id_bank,description_bank from tbl_bank where state_bank=''1''
 Order by 2')ret
@@ -415,6 +415,31 @@ where tipodedocumentodelafiliado='".$p['tipDoc']."' and numerodedocumentodelafil
         return $this->rs;
     }
 	
+	public function valida_email_asegurado($id_beneficiario,$email){
+		$conet = $this->db->getConnection();
+		$this->sql = "Select id_beneficiario From tbl_historial_email Where id_beneficiario=".$id_beneficiario." And email ilike '".$email."'" ;
+        $this->rs = $this->db->query($this->sql);
+        $rowEmail = count($this->rs);
+		return $rowEmail;
+	}
+	
+	public function valida_telefono_asegurado($id_beneficiario,$nro_telef){
+		$conet = $this->db->getConnection();
+		$this->sql = "Select id_beneficiario From tbl_historial_telefono Where id_beneficiario=".$id_beneficiario." And nro_telef='".$nro_telef."'" ;
+        $this->rs = $this->db->query($this->sql);
+        $rowTel = count($this->rs);
+		return $rowTel;
+	}
+		
+	public function insert_email_asegurado($p){
+		
+		return $this->readFunctionPostgresTransaction('sp_crud_tbl_historial_email',$p);
+    }
+	
+	public function insert_telefono_asegurado($p){
+		return $this->readFunctionPostgresTransaction('sp_crud_tbl_historial_telefono',$p);
+    }
+	
 	public function to_pg_array($set) {
 		settype($set, 'array'); // can be called with a scalar or array
 		$result = array();
@@ -431,4 +456,81 @@ where tipodedocumentodelafiliado='".$p['tipDoc']."' and numerodedocumentodelafil
 		return '{' . implode(",", $result) . '}'; // format
 	}
 	
+	public function readFunctionPostgres($function, $parameters = null){
+	
+	  $conet = $this->db->getConnection();
+      $_parameters = '';
+      if (count($parameters) > 0) {
+          $_parameters = implode("','", $parameters);
+          $_parameters = "'" . $_parameters . "',";
+      }
+	  //BEGIN; 
+      $this->sql = "BEGIN; select " . $function . "(" . $_parameters . "'ref_cursor'); FETCH ALL IN ref_cursor;";
+	  //echo $this->sql;
+	  $result = $this->db->query($this->sql);
+      $data=array() ;
+
+      try {
+
+        $sw=TRUE;
+        
+        if (!$result) {
+            $this->db->query("ROLLBACK");
+            $sw=FALSE;
+            $msg='Ocurrio un error el procceso.';
+        } else {
+            $this->db->query("COMMIT");
+            $sw=TRUE;
+            $msg='La operación  realizado correctamente.';
+	
+        }
+        $response = $result;
+      } catch (Exception $e) {
+
+         $response = array('sw' => FALSE, 'msg'=>$e->getMessage(),'data'=>$data ); 
+        
+      }
+	  
+      return $response;
+   }
+	
+	public function readFunctionPostgresTransaction($function, $parameters = null){
+	
+	  $conet = $this->db->getConnection();
+      $_parameters = '';
+      if (count($parameters) > 0) {
+          $_parameters = implode("','", $parameters);
+          $_parameters = "'" . $_parameters . "'";
+		  $_parameters = str_replace("'NULL'","NULL",$_parameters);
+      }
+	  //BEGIN; 
+      $this->sql = "BEGIN; select " . $function . "(" . $_parameters . ");";
+	  //echo $this->sql;
+	  $result = $this->db->query($this->sql);
+      $data=array() ;
+
+      try {
+
+        $sw=TRUE;
+        
+        if (!$result) {
+            $this->db->query("ROLLBACK");
+            $sw=FALSE;
+            $msg='Ocurrio un error el procceso.';
+        } else {
+            $this->db->query("COMMIT");
+            $sw=TRUE;
+            $msg='La operación  realizado correctamente.';
+	
+        }
+        $response = $result;
+      } catch (Exception $e) {
+
+         $response = array('sw' => FALSE, 'msg'=>$e->getMessage(),'data'=>$data ); 
+        
+      }
+	  
+      return $response;
+   }
+   
 }

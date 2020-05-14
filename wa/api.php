@@ -1026,7 +1026,8 @@ class Api{
 					$afiliado[$i]['banco'] = $rs[$i]['banco'];
 					$afiliado[$i]['nro_cta'] = $rs[$i]['nro_cta'];
 					$afiliado[$i]['cci'] = $rs[$i]['cci'];
-				}		
+					$afiliado[$i]['id_beneficiario'] = (isset($rs[$i]['id_beneficiario']))?utf8_encode($rs[$i]['id_beneficiario']):'';
+				}
 				echo json_encode(array('bancoAsegurado'=>$afiliado));
 			}
 		}
@@ -1049,6 +1050,50 @@ class Api{
 				echo json_encode(array('bancoAsegurado'=>$afiliado));
 			}
 		}
+	}
+	
+	function saveEmailAsegurado($p){
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$cant = $a->valida_email_asegurado($p["id_beneficiario"],$p["email"]);
+		if($cant == 0){
+			$rs = $a->insert_email_asegurado($p);
+			$ar = array();
+			$nr = count($rs);
+			if ($nr > 0) {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['msg'] = ($rs[$i]['sp_crud_tbl_historial_email']=="1")?"Se registro Correctamente":"No se puedo registrar, ocurrio un error";
+				}
+			} else {
+				$afiliado[0]['msg'] = "No se puedo registrar, ocurrio un error";
+			}
+		} else {
+			$afiliado[0]['msg'] = "El email ingresado ya existe";
+		}
+		
+		echo json_encode(array('emailAsegurado'=>$afiliado));
+	}
+	
+	function saveTelefonoAsegurado($p){
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$cant = $a->valida_telefono_asegurado($p["id_beneficiario"],$p["nro_telef"]);
+		if($cant == 0){
+			$rs = $a->insert_telefono_asegurado($p);
+			$ar = array();
+			$nr = count($rs);
+			if ($nr > 0) {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['msg'] = ($rs[$i]['sp_crud_tbl_historial_telefono']=="1")?"Se registro Correctamente":"";
+				}
+			} else {
+				$afiliado[0]['msg'] = "No se puedo registrar, ocurrio un error";
+			}
+		} else {
+			$afiliado[0]['msg'] = "El numero de telefono ingresado ya existe";
+		}
+		
+		echo json_encode(array('telefonoAsegurado'=>$afiliado));
 	}
 
 	function getListaIpress($p){
@@ -1665,6 +1710,31 @@ class Api{
 			//$this->error('No hay elementos');
 		}
 		
+	}
+	
+	function getRecetaByNroReceta($p){
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		$rs = $a->consulta_receta_by_nro_receta($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['id'] = $rs[$i]['id'];
+					$afiliado[$i]['id_farmacia'] = $rs[$i]['id_farmacia'];
+					$afiliado[$i]['url'] = "https://app-gsf.saludpol.gob.pe:29692/imprimir_receta_vale/".$rs[$i]['id']."/".$rs[$i]['id_farmacia'];
+				}
+				
+				echo json_encode(array('receta'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite la receta";
+			echo json_encode(array('receta'=>$msg));
+		}
+	
 	}
 	
 	
