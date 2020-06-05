@@ -1737,6 +1737,98 @@ class Api{
 	
 	}
 	
+	function getCovidRegion($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidRegion($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['cantidad'] = $rs[$i]['count(DISTINCT G.documento_asegurado)'];
+					$afiliado[$i]['region'] = utf8_decode($rs[$i]['region']);
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	function getCovidGlobal($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidGlobal($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['tipo'] = utf8_decode($rs[$i]['TIPO']);
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	function getCovidIncrementoMesGlobal($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidIncrementoMesGlobal($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['tipo'] = utf8_decode($rs[$i]['TIPO']);
+					$afiliado[$i]['incremento'] = $rs[$i]['INCREMENTO'];
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	function getCovidIncrementoMesGlobalDesc($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidIncrementoMesGlobalDesc($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['tipo'] = utf8_decode($rs[$i]['TIPO']);
+					$afiliado[$i]['resultado'] = $rs[$i]['RESULTADO'];
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
 	
 	
 }
