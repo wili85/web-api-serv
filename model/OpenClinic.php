@@ -30,7 +30,7 @@ class OpenClinic {
 	
 	public function getCovidIncrementoMesGlobal($p) {
         $conet = $this->db->getConnection();
-        $this->sql = "call SP_INCREMENTO_POR_MES_GLOBAL(".$p[0].",".$p[1].")";
+        $this->sql = "call SP_INCREMENTO_POR_MES_GLOBAL(".$p[0].")";
         $this->rs = $this->db->query($this->sql);
         $this->db->closeConnection();
         return $this->rs;
@@ -44,5 +44,53 @@ class OpenClinic {
         return $this->rs;
     }
 	   
-   
+	public function getCovidGrupoEdadMasculino($p) {
+        $conet = $this->db->getConnection();
+        $this->sql = "Call SP_POR_GRUPO_EDAD_MASCULINO('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getCovidGrupoEdadFemenino($p) {
+        $conet = $this->db->getConnection();
+        $this->sql = "Call SP_POR_GRUPO_EDAD_FEMENINO('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getCovidAcumuladoGlobalLetalidad($p) {
+        $conet = $this->db->getConnection();
+        $this->sql = "Call SP_ACUMULADO_GLOBAL_LETALIDAD()";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getCovidAcumuladoMesGlobalFallecidos($p) {
+        $conet = $this->db->getConnection();
+        $this->sql = "Call SP_ACUMULADO_POR_MES_GLOBAL_FALLECIDOS('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getCovidHospitalizacionCondicion($p) {
+        $conet = $this->db->getConnection();
+        $this->sql = "Call SP_HOSPITALIZADOS_POR_CONDICION()";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getKitsEntregaMedicinas($p) {
+        $conet = $this->db->getConnection();
+        $this->sql = "call SP_KITS_ENTREGA_MEDICINAS('".$p[0]."','".$p[1]."','".$p[2]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	
 }

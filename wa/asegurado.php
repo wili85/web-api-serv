@@ -50,6 +50,14 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 				'his_accion' => 'C'
 			);	
 			$api->saveTelefonoAsegurado($item);
+		}elseif($_POST['op'] == 'buscar_afiliado_siteds'){
+			$item = array(
+				'tipdoc' => $_POST['tipdoc'],
+				'nrodoc' => $_POST['nrodoc'],
+				'nombres' => $_POST['nombres'],
+				'apellidos' => $_POST['apellidos']
+			);
+			$api->getAseguradoSiteds($item);
 		}
 	
 	}else{

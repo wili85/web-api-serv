@@ -27,6 +27,10 @@ class Afiliado {
         return $this->rs;
     }
 
+	public function getAseguradoSiteds($p){
+		return $this->readFunctionPostgres('sp_siteds_consulta_afiliado',$p);
+    }
+	
 ## Web Service para aplicaciones SALUDPOL (ws_AfiliadoSALUDPOL.php)
 
     public function buscaListaAfiliadoActivo($nroDoc, $nomPer, $apePat, $apeMat) {

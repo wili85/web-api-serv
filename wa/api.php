@@ -1749,7 +1749,7 @@ class Api{
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
 					$afiliado[$i]['cantidad'] = $rs[$i]['count(DISTINCT G.documento_asegurado)'];
-					$afiliado[$i]['region'] = utf8_decode($rs[$i]['region']);
+					$afiliado[$i]['region'] = utf8_encode($rs[$i]['region']);
 				}
 				echo json_encode(array('covid'=>$afiliado));
 			}
@@ -1795,7 +1795,7 @@ class Api{
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
 					$afiliado[$i]['tipo'] = utf8_decode($rs[$i]['TIPO']);
-					$afiliado[$i]['incremento'] = $rs[$i]['INCREMENTO'];
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
 				}
 				echo json_encode(array('covid'=>$afiliado));
 			}
@@ -1825,6 +1825,206 @@ class Api{
 		} else {
 			$msg[0]['msg'] = "No exite resultados";
 			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	function getAseguradoSiteds($p){
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->getAseguradoSiteds($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['eaid'] = utf8_decode($rs[$i]['eaid']);
+					$afiliado[$i]['nompaisdelafiliado'] = $rs[$i]['nompaisdelafiliado'];
+					$afiliado[$i]['nomtipdocafiliado'] = $rs[$i]['nomtipdocafiliado'];
+					$afiliado[$i]['nrodocafiliado'] = $rs[$i]['nrodocafiliado'];
+					$afiliado[$i]['apepatafiliado'] = $rs[$i]['apepatafiliado'];
+					$afiliado[$i]['apematafiliado'] = $rs[$i]['apematafiliado'];
+					$afiliado[$i]['apecasafiliado'] = $rs[$i]['apecasafiliado'];
+					$afiliado[$i]['nomafiliado'] = $rs[$i]['nomafiliado'];
+					$afiliado[$i]['fecnacafiliado'] = $rs[$i]['fecnacafiliado'];
+					$afiliado[$i]['edadafiliado'] = $rs[$i]['edadafiliado'];
+					$afiliado[$i]['nomsexo'] = $rs[$i]['nomsexoafiliado'];
+					$afiliado[$i]['estado'] = $rs[$i]['estado'];
+					$afiliado[$i]['parentesco'] = $rs[$i]['parentesco'];
+					$afiliado[$i]['nomtipdoctitular'] = $rs[$i]['nomtipdoctitular'];
+					$afiliado[$i]['nrodoctitular'] = $rs[$i]['nrodoctitular'];
+					$afiliado[$i]['apepattitular'] = $rs[$i]['apepattitular'];
+					$afiliado[$i]['apemattitular'] = $rs[$i]['apemattitular'];
+					$afiliado[$i]['apecastitular'] = $rs[$i]['apecastitular'];
+					$afiliado[$i]['nomtitular'] = $rs[$i]['nomtitular'];
+					$afiliado[$i]['cip'] = $rs[$i]['cip'];
+					$afiliado[$i]['ubigeo'] = $rs[$i]['ubigeo'];
+					$afiliado[$i]['grado'] = (isset($rs[$i]['grado']))?$rs[$i]['grado']:'';
+					$afiliado[$i]['situacion'] = $rs[$i]['situacion'];
+					$afiliado[$i]['caducidad'] = $rs[$i]['caducidad'];
+					$afiliado[$i]['discapacidad'] = $rs[$i]['discapacidad'];
+					$afiliado[$i]['fecharepor'] = $rs[$i]['fecharepor'];
+				}
+				echo json_encode(array('asegurado'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('asegurado'=>$msg));
+		}
+	
+	}
+	
+	function getCovidGrupoEdadMasculino($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidGrupoEdadMasculino($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['cantidad'] = $rs[$i]['count(DISTINCT G.documento_asegurado)'];
+					$afiliado[$i]['grupo_edad'] = utf8_encode($rs[$i]['GRUPO_EDAD']);
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	function getCovidGrupoEdadFemenino($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidGrupoEdadFemenino($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['cantidad'] = $rs[$i]['count(DISTINCT G.documento_asegurado)'];
+					$afiliado[$i]['grupo_edad'] = utf8_encode($rs[$i]['GRUPO_EDAD']);
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	function getCovidAcumuladoGlobalLetalidad($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidAcumuladoGlobalLetalidad($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['tipo'] = utf8_decode($rs[$i]['TIPO']);
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	function getCovidAcumuladoMesGlobalFallecidos($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidAcumuladoMesGlobalFallecidos($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['tipo'] = utf8_decode($rs[$i]['TIPO']);
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	function getCovidHospitalizacionCondicion($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidHospitalizacionCondicion($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['tipo'] = utf8_decode($rs[$i]['TIPO']);
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	
+	function getKitsEntregaMedicinas($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getKitsEntregaMedicinas($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				if($p[0]=="detalle"){
+					for ($i = 0; $i < $nr; $i++) {
+						$afiliado[$i]['OC_UBICACION'] = $rs[$i]['OC_UBICACION'];
+						$afiliado[$i]['OC_FECHA'] = $rs[$i]['OC_FECHA'];
+						$afiliado[$i]['OC_NOMBRE_APELLIDOS'] = $rs[$i]['OC_NOMBRE_APELLIDOS'];
+						$afiliado[$i]['OC_EDAD'] = $rs[$i]['OC_EDAD'];
+						$afiliado[$i]['OC_DNI'] = $rs[$i]['OC_DNI'];
+						$afiliado[$i]['OC_DIRECCION'] = $rs[$i]['OC_DIRECCION'];
+						$afiliado[$i]['OC_DISTRITO'] = $rs[$i]['OC_DISTRITO'];
+						$afiliado[$i]['OC_TELEFONO'] = $rs[$i]['OC_TELEFONO'];
+						$afiliado[$i]['OC_ENTREGADO'] = $rs[$i]['OC_ENTREGADO'];
+					}
+				}else{
+					for ($i = 0; $i < $nr; $i++) {
+						$afiliado[$i]['tipo'] = utf8_encode($rs[$i]['TIPO']);
+						$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+					}
+				}
+				echo json_encode(array('kits'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('kits'=>$msg));
 		}
 	
 	}
