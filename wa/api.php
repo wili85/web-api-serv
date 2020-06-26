@@ -1887,8 +1887,8 @@ class Api{
 				$this->error('No hay elementos');
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
-					$afiliado[$i]['cantidad'] = $rs[$i]['count(DISTINCT G.documento_asegurado)'];
-					$afiliado[$i]['grupo_edad'] = utf8_encode($rs[$i]['GRUPO_EDAD']);
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+					$afiliado[$i]['grupo_edad'] = utf8_encode($rs[$i]['grupoEdad']);
 				}
 				echo json_encode(array('covid'=>$afiliado));
 			}
@@ -1910,8 +1910,8 @@ class Api{
 				$this->error('No hay elementos');
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
-					$afiliado[$i]['cantidad'] = $rs[$i]['count(DISTINCT G.documento_asegurado)'];
-					$afiliado[$i]['grupo_edad'] = utf8_encode($rs[$i]['GRUPO_EDAD']);
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+					$afiliado[$i]['grupo_edad'] = utf8_encode($rs[$i]['grupoEdad']);
 				}
 				echo json_encode(array('covid'=>$afiliado));
 			}
