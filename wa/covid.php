@@ -54,6 +54,18 @@
 				$p[] = $_POST['ubicacion'];
 				$p[] = $_POST['distrito'];
 				$api->getKitsEntregaMedicinas($p);
+			}elseif($_POST['op'] == 'hospitalizado_region'){
+				$p = array();
+				$p[] = $_POST['accion'];
+				$api->getCovidHospitalizadoRegion($p);
+			}elseif($_POST['op'] == 'hospitalizado_region_titular'){
+				$p = array();
+				$p[] = $_POST['accion'];
+				$api->getCovidHospitalizadoRegionTitular($p);
+			}elseif($_POST['op'] == 'hospitalizado_region_derechohabiente'){
+				$p = array();
+				$p[] = $_POST['accion'];
+				$api->getCovidHospitalizadoRegionDerechoHabiente($p);
 			}
 			
 		

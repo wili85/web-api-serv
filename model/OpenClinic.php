@@ -92,5 +92,29 @@ class OpenClinic {
         return $this->rs;
     }
 	
+	public function getCovidHospitalizadoRegion($p) {
+        $conet = $this->db->getConnection();
+        $this->sql = "Call SP_HOSPITALIZADO_POR_REGION_POR_CONDICION('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
 	
+	public function getCovidHospitalizadoRegionTitular($p) {
+        $conet = $this->db->getConnection();
+        $this->sql = "Call SP_IPRESS_POR_REGION_TITULAR('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getCovidHospitalizadoRegionDerechoHabiente($p) {
+        $conet = $this->db->getConnection();
+        $this->sql = "Call SP_IPRESS_POR_REGION_DERECHOHABIENTE('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+		
 }

@@ -2029,7 +2029,74 @@ class Api{
 	
 	}
 	
+	function getCovidHospitalizadoRegion($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidHospitalizadoRegion($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+					$afiliado[$i]['region'] = utf8_encode($rs[$i]['REGION']);
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
 	
+	}
+	
+	function getCovidHospitalizadoRegionTitular($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidHospitalizadoRegionTitular($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['ipress'] = utf8_encode($rs[$i]['IPRESS']);
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
+	
+	function getCovidHospitalizadoRegionDerechoHabiente($p){
+		include '../model/OpenClinic.php';
+		$a = new OpenClinic();
+		$rs = $a->getCovidHospitalizadoRegionDerechoHabiente($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['ipress'] = utf8_encode($rs[$i]['IPRESS']);
+					$afiliado[$i]['cantidad'] = $rs[$i]['CANTIDAD'];
+				}
+				echo json_encode(array('covid'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('covid'=>$msg));
+		}
+	
+	}
 	
 }
 
