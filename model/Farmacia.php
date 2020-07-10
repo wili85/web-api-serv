@@ -90,7 +90,9 @@ class Farmacia {
 		inner join farmacias fa on rv.id_farmacia=fa.id
 		inner join establecimientos es on fa.id_establecimiento=es.id
 		where rv.nro_receta='".$p['nro_receta']."' 
-		and es.codigo='".$p['codigo_establecimiento']."' order by 1 desc limit 1" ;
+		and es.codigo='".$p['codigo_establecimiento']."' 
+		and dni_beneficiario='".$p['numdocpaciente']."' 
+		order by 1 desc limit 1" ;
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
 		if($row > 0)return $this->rs;

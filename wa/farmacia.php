@@ -42,6 +42,7 @@
 				$item = array(
 					'nro_receta' 				=> $_POST['nro_receta'],
 					'codigo_establecimiento'	=> $_POST['codigo_establecimiento'],
+					'numdocpaciente'			=> $_POST['numdocpaciente'],
 				);
 				
 				$api->getRecetaByNroReceta($item);	
