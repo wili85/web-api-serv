@@ -159,7 +159,7 @@ class Reembolso {
 				
 				if($v["sp_consult_notificacion"] == "p_ref3"){
 					$t = 0;
-					if($telefono1 != null || $telefono1 != ""){
+					if($telefono1 != null && $telefono1 != ""){
 						$nro_telef[$t] = $telefono1;$t++;
 						if($telefono2 != null && $telefono2 != "")$nro_telef[$t] = $telefono2;$t++;
 						if($telefono3 != null && $telefono3 != "")$nro_telef[$t] = $telefono3;$t++;
