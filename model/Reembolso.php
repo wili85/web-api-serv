@@ -169,6 +169,7 @@ class Reembolso {
 							if($cursors2[$i]['nro_telef']!= null && $cursors2[$i]['nro_telef']!="")$nro_telef[$t] = $cursors2[$i]['nro_telef'];$t++;
 						}
 					}
+					
 					$afiliado[0]['telefono'] = $nro_telef;
 					/*$nro_telef_prueba[0] = "945561416";
 					$nro_telef_prueba[1] = "994131006";
