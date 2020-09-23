@@ -161,12 +161,12 @@ class Reembolso {
 					$t = 0;
 					if($telefono1 != null && $telefono1 != ""){
 						$nro_telef[$t] = $telefono1;$t++;
-						if($telefono2 != null && $telefono2 != "")$nro_telef[$t] = $telefono2;$t++;
-						if($telefono3 != null && $telefono3 != "")$nro_telef[$t] = $telefono3;$t++;
-						if($telefono4 != null && $telefono4 != "")$nro_telef[$t] = $telefono4;$t++;
+						if($telefono2 != null && $telefono2 != ""){$nro_telef[$t] = $telefono2;$t++;}
+						if($telefono3 != null && $telefono3 != ""){$nro_telef[$t] = $telefono3;$t++;}
+						if($telefono4 != null && $telefono4 != ""){$nro_telef[$t] = $telefono4;$t++;}
 					}else{
 						for ($i = 0; $i < $nr; $i++) {
-							if($cursors2[$i]['nro_telef']!= null && $cursors2[$i]['nro_telef']!="")$nro_telef[$t] = $cursors2[$i]['nro_telef'];$t++;
+							if($cursors2[$i]['nro_telef']!= null && $cursors2[$i]['nro_telef']!=""){$nro_telef[$t] = $cursors2[$i]['nro_telef'];$t++;}
 						}
 					}
 					
