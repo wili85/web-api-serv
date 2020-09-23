@@ -166,7 +166,7 @@ class Reembolso {
 						if($telefono4 != null && $telefono4 != "")$nro_telef[$t] = $telefono4;$t++;
 					}else{
 						for ($i = 0; $i < $nr; $i++) {
-							$nro_telef[$i] = $cursors2[$i]['nro_telef'];
+							if($cursors2[$i]['nro_telef']!= null && $cursors2[$i]['nro_telef']!="")$nro_telef[$t] = $cursors2[$i]['nro_telef'];$t++;
 						}
 					}
 					$afiliado[0]['telefono'] = $nro_telef;
