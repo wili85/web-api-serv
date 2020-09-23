@@ -48,10 +48,10 @@ function get_busafi_activo($nroDoc, $nomPer = '', $apePatPer = '', $apeMatPer = 
                 $ar[$i]['nompaisdelafiliado'] = $rs[$i]['nompaisdelafiliado'];
                 $ar[$i]['nomtipdocafiliado'] = $rs[$i]['nomtipdocafiliado'];
                 $ar[$i]['nrodocafiliado'] = $rs[$i]['nrodocafiliado'];
-                $ar[$i]['apepatafiliado'] = $rs[$i]['apepatafiliado'];
-                $ar[$i]['apematafiliado'] = $rs[$i]['apematafiliado'];
-                $ar[$i]['apecasafiliado'] = $rs[$i]['apecasafiliado'];
-                $ar[$i]['nomafiliado'] = $rs[$i]['nomafiliado'];
+                $ar[$i]['apepatafiliado'] = utf8_decode($rs[$i]['apepatafiliado']);
+                $ar[$i]['apematafiliado'] = utf8_decode($rs[$i]['apematafiliado']);
+                $ar[$i]['apecasafiliado'] = utf8_decode($rs[$i]['apecasafiliado']);
+                $ar[$i]['nomafiliado'] = utf8_decode($rs[$i]['nomafiliado']);
                 $ar[$i]['fecnacafiliado'] = $rs[$i]['fecnacafiliado'];
                 $ar[$i]['edadafiliado'] = $rs[$i]['edadafiliado'];
                 $ar[$i]['nomsexo'] = $rs[$i]['nomsexo'];
@@ -59,10 +59,10 @@ function get_busafi_activo($nroDoc, $nomPer = '', $apePatPer = '', $apeMatPer = 
                 $ar[$i]['parentesco'] = $rs[$i]['parentesco'];
                 $ar[$i]['nomtipdoctitular'] = $rs[$i]['nomtipdoctitular'];
                 $ar[$i]['nrodoctitular'] = $rs[$i]['nrodoctitular'];
-                $ar[$i]['apepattitular'] = $rs[$i]['apepattitular'];
-                $ar[$i]['apemattitular'] = $rs[$i]['apemattitular'];
-                $ar[$i]['apecastitular'] = $rs[$i]['apecastitular'];
-                $ar[$i]['nomtitular'] = $rs[$i]['nomtitular'];
+                $ar[$i]['apepattitular'] = utf8_decode($rs[$i]['apepattitular']);
+                $ar[$i]['apemattitular'] = utf8_decode($rs[$i]['apemattitular']);
+                $ar[$i]['apecastitular'] = utf8_decode($rs[$i]['apecastitular']);
+                $ar[$i]['nomtitular'] = utf8_decode($rs[$i]['nomtitular']);
 				$ar[$i]['otroseguro'] = $rs[$i]['otroseguro'];
             }
         }
@@ -105,10 +105,10 @@ function getAseguradoValidate($tipDoc, $nroDoc, $otroParam) {
                 $ar[$i]['nompaisdelafiliado'] = $rs[$i]['nompaisdelafiliado'];
                 $ar[$i]['nomtipdocafiliado'] = $rs[$i]['nomtipdocafiliado'];
                 $ar[$i]['nrodocafiliado'] = $rs[$i]['nrodocafiliado'];
-                $ar[$i]['apepatafiliado'] = $rs[$i]['apepatafiliado'];
-                $ar[$i]['apematafiliado'] = $rs[$i]['apematafiliado'];
-                $ar[$i]['apecasafiliado'] = $rs[$i]['apecasafiliado'];
-                $ar[$i]['nomafiliado'] = $rs[$i]['nomafiliado'];
+                $ar[$i]['apepatafiliado'] = utf8_decode($rs[$i]['apepatafiliado']);
+                $ar[$i]['apematafiliado'] = utf8_decode($rs[$i]['apematafiliado']);
+                $ar[$i]['apecasafiliado'] = utf8_decode($rs[$i]['apecasafiliado']);
+                $ar[$i]['nomafiliado'] = utf8_decode($rs[$i]['nomafiliado']);
                 $ar[$i]['fecnacafiliado'] = $rs[$i]['fecnacafiliado'];
                 $ar[$i]['edadafiliado'] = $rs[$i]['edadafiliado'];
                 $ar[$i]['nomsexoafiliado'] = $rs[$i]['nomsexoafiliado'];
@@ -116,10 +116,10 @@ function getAseguradoValidate($tipDoc, $nroDoc, $otroParam) {
                 $ar[$i]['parentesco'] = $rs[$i]['parentesco'];
                 $ar[$i]['nomtipdoctitular'] = $rs[$i]['nomtipdoctitular'];
                 $ar[$i]['nrodoctitular'] = $rs[$i]['nrodoctitular'];
-                $ar[$i]['apepattitular'] = $rs[$i]['apepattitular'];
-                $ar[$i]['apemattitular'] = $rs[$i]['apemattitular'];
-                $ar[$i]['apecastitular'] = $rs[$i]['apecastitular'];
-                $ar[$i]['nomtitular'] = $rs[$i]['nomtitular'];
+                $ar[$i]['apepattitular'] = utf8_decode($rs[$i]['apepattitular']);
+                $ar[$i]['apemattitular'] = utf8_decode($rs[$i]['apemattitular']);
+                $ar[$i]['apecastitular'] = utf8_decode($rs[$i]['apecastitular']);
+                $ar[$i]['nomtitular'] = utf8_decode($rs[$i]['nomtitular']);
             }
         }
     }

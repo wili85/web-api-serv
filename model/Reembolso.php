@@ -158,11 +158,12 @@ class Reembolso {
 				}
 				
 				if($v["sp_consult_notificacion"] == "p_ref3"){
+					$t = 0;
 					if($telefono1 != null || $telefono1 != ""){
-						$nro_telef[0] = $telefono1;
-						if($telefono2 != null || $telefono2 != "")$nro_telef[1] = $telefono2;
-						if($telefono3 != null || $telefono3 != "")$nro_telef[2] = $telefono3;
-						if($telefono4 != null || $telefono4 != "")$nro_telef[3] = $telefono4;
+						$nro_telef[$t] = $telefono1;$t++;
+						if($telefono2 != null || $telefono2 != "")$nro_telef[$t] = $telefono2;$t++;
+						if($telefono3 != null || $telefono3 != "")$nro_telef[$t] = $telefono3;$t++;
+						if($telefono4 != null || $telefono4 != "")$nro_telef[$t] = $telefono4;$t++;
 					}else{
 						for ($i = 0; $i < $nr; $i++) {
 							$nro_telef[$i] = $cursors2[$i]['nro_telef'];

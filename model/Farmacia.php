@@ -82,6 +82,146 @@ class Farmacia {
 		return $this->readFunctionPostgresTransaction('sp_insert_cita',$p);
     }
 	
+	public function getFarmacia($p){
+		return $this->readFunctionPostgres('sp_openpol_consulta_farmacia',$p);
+    }
+	
+	public function getStockProducto($p){
+		return $this->readFunctionPostgres('sp_openpol_stock_producto',$p);
+    }
+	
+	public function getProducto($p){
+		return $this->readFunctionPostgres('sp_openpol_consulta_producto',$p);
+    }
+	
+	public function getServicio($p){
+		return $this->readFunctionPostgres('sp_openpol_consulta_servicio',$p);
+    }
+	
+	public function guardar_prestacion($p){
+		return $this->readFunctionPostgresTransaction('sp_insert_prestacion',$p);
+    }
+	
+	public function guardar_receta($p){
+		return $this->readFunctionPostgresTransaction('sp_insert_recetavale',$p);
+    }
+	
+	public function getCitasById($id){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from citas where id=".$id;
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getFarmaciaById($id){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from farmacias where id=".$id;
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getPrestacionById($id){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from prestaciones where id=".$id;
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getRecetaById($id){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from receta_vales where id=".$id;
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getRecetaByIdPrestacion($id){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from receta_vales where id_prestacion=".$id." order by 1 desc limit 1";
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getAseguradoById($id){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from asegurados where id=".$id;
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getAseguradoHistoriaById($id){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from asegurado_historias where id_asegurado=".$id;
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getSubConsultorioById($id){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from sub_consultorios where id=".$id;
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getUsersByDni($dni){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from users where dni='".$dni."' order by 1 desc limit 1";
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function anular_receta($p){
+		$conet = $this->db->getConnection();
+		$this->sql = "update receta_vales set estado='0' Where nro_receta='".$p['numReceta']."'";
+        $this->rs = $this->db->queryCRUD($this->sql);
+		$this->db->closeConnection();
+		//$row = count($this->rs);
+		return $this->rs;
+		
+	}
+	
+	public function getDiagnosticoByIdPrestacion($id){
+		$conet = $this->db->getConnection();
+		$this->sql = "select distinct t1.id_diagnostico,coalesce(t1.id_tipo_diagnostico,0)id_tipo_diagnostico,codigo
+,(case when codigo='Z21.X' or codigo ilike 'B20%' Then '' else nombre end)nombre
+from receta_diagnosticos t1
+inner join diagnosticos t2 on t1.id_diagnostico=t2.id
+where t1.id_prestacion=".$id."
+and t1.estado=1";
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getDiagnosticoByCodigo($codigo){
+		$conet = $this->db->getConnection();
+		$this->sql = "select id,codigo,nombre
+from diagnosticos
+where codigo='".$codigo."'";
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
 	public function consulta_receta_by_nro_receta($p){
 		$conet = $this->db->getConnection();
 		//$this->sql = "select id,id_farmacia from receta_vales where nro_receta='P-0000017-2019' and id_farmacia in (select id from farmacias where id_establecimiento=76) order by 1 desc limit 1" ;

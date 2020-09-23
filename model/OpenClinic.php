@@ -116,5 +116,56 @@ class OpenClinic {
         return $this->rs;
     }
 	
+	public function update_receta_ruta($p){
+		$conet = $this->db->getConnectionopen();
+		$this->sql = "update oc_receta set OC_RECETA_RUTA='".$p['rutaReceta']."' WHERE OC_RECETA_NUMERO='".$p['numReceta']."'";
+        $this->rs = $this->db->queryCRUD($this->sql);
+		$this->db->closeConnection();
+		return $this->rs;
+		
+	}
+	
+	public function update_transaction_ruta($p){
+		$conet = $this->db->getConnectionopen();
+		$this->sql = "update transactions set OC_TRANSACTION_RUTA='".$p['rutaTransaction']."' WHERE transactionId='".$p['idTransaction']."'";
+        $this->rs = $this->db->queryCRUD($this->sql);
+		$this->db->closeConnection();
+		return $this->rs;
+		
+	}
+	
+	public function getTransaccion($p){
+		$conet = $this->db->getConnectionopen();
+		$this->sql = "select transactionType from transactions WHERE transactionId='".$p[0]."'";
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+		return $this->rs;
+		
+	}
+	
+	public function getValoresHc($p) {
+        $conet = $this->db->getConnectionopen();
+        $this->sql = "Call SP_VALORES_HC('".$p[0]."')";
+		//echo $this->sql;
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getValoresPaciente($p) {
+        $conet = $this->db->getConnectionopen();
+        $this->sql = "Call SP_VALORES_PACIENTE('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getValoresAtencion($p) {
+        $conet = $this->db->getConnectionopen();
+        $this->sql = "Call SP_VALORES_ATENCION('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
 		
 }
