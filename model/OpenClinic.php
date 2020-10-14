@@ -167,5 +167,38 @@ class OpenClinic {
         $this->db->closeConnection();
         return $this->rs;
     }
+	
+	public function getValoresImagen($p) {
+        $conet = $this->db->getConnectionopen();
+        $this->sql = "Call SP_VALORES_IMAGEN('".$p[0]."','".$p[1]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getValoresLaboratorio($p) {
+        $conet = $this->db->getConnectionopen();
+        $this->sql = "Call SP_VALORES_LABORATORIO('".$p[0]."','".$p[1]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getValoresDiagIngreso($p) {
+        $conet = $this->db->getConnectionopen();
+        $this->sql = "Call SP_VALORES_DIAG_INGRESO('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	public function getValoresDiagActuales($p) {
+        $conet = $this->db->getConnectionopen();
+        $this->sql = "Call SP_VALORES_DIAG_ACTUALES('".$p[0]."')";
+        $this->rs = $this->db->query($this->sql);
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
 		
 }

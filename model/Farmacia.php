@@ -197,6 +197,15 @@ class Farmacia {
 		
 	}
 	
+	public function getRecetaBynumReceta($p){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from receta_vales where nro_receta='".$p[0]."'";
+        $this->rs = $this->db->query($this->sql);
+        //$row = count($this->rs);
+		//if($row > 0)return $this->rs;
+		return $this->rs;
+	}
+	
 	public function getDiagnosticoByIdPrestacion($id){
 		$conet = $this->db->getConnection();
 		$this->sql = "select distinct t1.id_diagnostico,coalesce(t1.id_tipo_diagnostico,0)id_tipo_diagnostico,codigo

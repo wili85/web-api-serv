@@ -24,11 +24,13 @@ $server->register('getStockProducto', array('id_farmacia' => 'xsd:string','id_pr
 
 $server->register('guardar_cita', array('dni_beneficiario' => 'xsd:string','id_establecimiento' => 'xsd:string','id_consultorio' => 'xsd:string','id_user' => 'xsd:string','fecha_cita' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:wssalud', 'urn:wssalud#guardar_cita', 'rpc', 'encoded', 'WS consulta asegurado vigente.');
 
-$server->register('guardar_prestacion', array('dni_beneficiario' => 'xsd:string','id_farmcia' => 'xsd:string','id_consultorio' => 'xsd:string','dni_medico' => 'xsd:string','fecha_cita' => 'xsd:string','procedimiento' => 'xsd:string','p_producto' => 'xsd:string','p_diagnostico' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:wssalud', 'urn:wssalud#guardar_prestacion', 'rpc', 'encoded', 'WS consulta asegurado vigente.');
+$server->register('guardar_prestacion', array('dni_beneficiario' => 'xsd:string','id_farmcia' => 'xsd:string','id_consultorio' => 'xsd:string','dni_medico' => 'xsd:string','fecha_cita' => 'xsd:string','procedimiento' => 'xsd:string','p_producto' => 'xsd:string','p_diagnostico' => 'xsd:string','id_tipo_atencion' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:wssalud', 'urn:wssalud#guardar_prestacion', 'rpc', 'encoded', 'WS consulta asegurado vigente.');
 
 $server->register('guardar_prestacion_receta', array('id_prestacion' => 'xsd:string','id_farmcia' => 'xsd:string','id_consultorio' => 'xsd:string','dni_medico' => 'xsd:string','fecha_expedicion' => 'xsd:string','p_producto' => 'xsd:string', 'p_diagnostico' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:wssalud', 'urn:wssalud#guardar_prestacion_receta', 'rpc', 'encoded', 'WS consulta asegurado vigente.');
 
 $server->register('anular_receta', array('numReceta' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:wssalud', 'urn:wssalud#anular_receta', 'rpc', 'encoded', 'WS Farmacia anular receta');
+
+$server->register('getReceta', array('numReceta' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:wssalud', 'urn:wssalud#getReceta', 'rpc', 'encoded', 'WS Farmacia consulta receta.');
 
 function anular_receta($numReceta) {
 	
@@ -231,7 +233,8 @@ function guardar_cita($dni_beneficiario,$id_establecimiento,$id_consultorio,$id_
 					$par['paterno_beneficiario'] = $rs[$i]['apepatafiliado'];
 					$par['materno_beneficiario'] = $rs[$i]['apematafiliado'];
 					$par['tipo_beneficiario'] = $rs[$i]['parentesco'];
-					$par['nro_historia'] = "";
+					//$par['nro_historia'] = "";
+					$par['nro_historia'] = $dni_beneficiario;
 					$par['grado'] = $rs[$i]['grado'];
 					$par['fecnacafiliado'] = $rs[$i]['fecnacafiliado'];
 					$par['nomsexo'] = $rs[$i]['nomsexoafiliado'];
@@ -269,7 +272,7 @@ function guardar_cita($dni_beneficiario,$id_establecimiento,$id_consultorio,$id_
     return $ar;
 }
 
-function guardar_prestacion($dni_beneficiario,$id_farmacia,$id_consultorio,$dni_medico,$fecha_cita,$p_procedimiento,$p_producto,$p_diagnostico) {
+function guardar_prestacion($dni_beneficiario,$id_farmacia,$id_consultorio,$dni_medico,$fecha_cita,$p_procedimiento,$p_producto,$p_diagnostico,$id_tipo_atencion) {
 	
     if (!doAuthenticate()) {
         $ar = array();
@@ -313,8 +316,8 @@ function guardar_prestacion($dni_beneficiario,$id_farmacia,$id_consultorio,$dni_
 	$id_farmacia_receta = $id_farmacia;
 	//echo $id_cita;
 	//$f = new Farmacia();
-	
-	$fecha_alta="";$id_motivo_alta=0;$id_estado_reg=1;$observacion="";$id_receta_vale=0;$id_anestesiologo=0;$obs_registro="";$id_receta_vale_bus=0;$id_admision=0;$tipo_via="";$sub_via="";$final_via="";$nro_guia="";$interconsulta="";$interconsulta_dias=0;$nro_receta="";$digitos_adicionales="";$id_tipo_num=0;$id_servicio_derivar=0;$anamnesis="";$examen_fisico="";$estado_receta=2;$condicion=0;$cantidadReceta=1;$id_tipo_atencion=1;
+	//$id_tipo_atencion=1;
+	$fecha_alta="";$id_motivo_alta=0;$id_estado_reg=1;$observacion="OPENPOL";$id_receta_vale=0;$id_anestesiologo=0;$obs_registro="";$id_receta_vale_bus=0;$id_admision=0;$tipo_via="";$sub_via="";$final_via="";$nro_guia="";$interconsulta="";$interconsulta_dias=0;$nro_receta="";$digitos_adicionales="";$id_tipo_num=0;$id_servicio_derivar=0;$anamnesis="";$examen_fisico="";$estado_receta=2;$condicion=0;$cantidadReceta=1;
 	//$fecha_atencion=date("d-m-Y");$fecha_expedicion=date("d-m-Y");
 	$fecha_atencion=$fecha_cita;$fecha_expedicion=$fecha_cita;
 	
@@ -451,7 +454,8 @@ function guardar_prestacion_receta($id_prestacion,$id_farmacia,$id_consultorio,$
 	$paterno_titular = $titular[0]['paterno'];
 	$materno_titular = $titular[0]['materno'];
 	
-	$nro_historia = isset($historia[0]['nro_historia'])?$historia[0]['nro_historia']:"";
+	//$nro_historia = isset($historia[0]['nro_historia'])?$historia[0]['nro_historia']:"";
+	$nro_historia = $dni_beneficiario;
 	$hora = date('H');
 	if($hora > 6 && $hora < 13)$turno = "M"; 
 	elseif($hora >= 13 && $hora < 19)$turno = "T"; 
@@ -529,6 +533,36 @@ function guardar_prestacion_receta($id_prestacion,$id_farmacia,$id_consultorio,$
 	
 }
 
+function getReceta($numReceta) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+    
+    include '../model/Farmacia.php';
+    $a = new Farmacia();
+	$p[] = $numReceta;
+    $rs = $a->getRecetaBynumReceta($p);
+    $ar = array();
+    $nr = count($rs);
+    if ($nr > 0) {
+        if (isset($rs['Error'])) {
+            $ar[0]['Error'] = 'Ingrese el dato requerido';
+        } else {
+            for ($i = 0; $i < $nr; $i++) {
+				$ar[$i]['id'] = $rs[$i]['id'];
+                $ar[$i]['nro_receta'] = $rs[$i]['nro_receta'];
+				$ar[$i]['estado'] = $rs[$i]['estado'];
+            }
+        }
+    } else {
+        $ar[0]['Error'] = 'No se encontro ningún resultado';
+    }
+    
+    return $ar;
+}
 
 
 
