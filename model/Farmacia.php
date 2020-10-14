@@ -187,6 +187,15 @@ class Farmacia {
 		
 	}
 	
+	public function getMedicoByDni($dni){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from medicos where dni='".$dni."' order by 1 desc limit 1";
+        $this->rs = $this->db->query($this->sql);
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
 	public function anular_receta($p){
 		$conet = $this->db->getConnection();
 		$this->sql = "update receta_vales set estado='0' Where nro_receta='".$p['numReceta']."'";

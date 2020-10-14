@@ -300,7 +300,9 @@ function guardar_prestacion($dni_beneficiario,$id_farmacia,$id_consultorio,$dni_
 	$p_diagnostico.="}";
 	
 	$usuario = $f->getUsersByDni($dni_medico);
+	$medico = $f->getMedicoByDni($dni_medico);
 	$id_user = $usuario[0]['id'];
+	$id_medico = $medico[0]['id'];
 	//include '../model/Beneficiario.php';
 	//guardar_cita_($dni_beneficiario,$id_establecimiento,$id_consultorio,$id_user,$fecha_cita);exit();
 	$farmacia = $f->getFarmaciaById($id_farmacia);
@@ -311,7 +313,7 @@ function guardar_prestacion($dni_beneficiario,$id_farmacia,$id_consultorio,$dni_
 	$id_asegurado = $cita[0]['id_asegurado'];
 	$id_establecimiento = $cita[0]['id_establecimiento'];
 	$id_sub_consultorio = $cita[0]['id_sub_consultorio'];
-	$id_medico = $cita[0]['id_medico'];
+	//$id_medico = $cita[0]['id_medico'];
 	$id_user = $cita[0]['created_us'];
 	$id_farmacia_receta = $id_farmacia;
 	//echo $id_cita;
@@ -413,7 +415,9 @@ function guardar_prestacion_receta($id_prestacion,$id_farmacia,$id_consultorio,$
 	//echo $p_diagnostico;exit();
 	
 	$usuario = $f->getUsersByDni($dni_medico);
+	$medico = $f->getMedicoByDni($dni_medico);
 	$id_user = $usuario[0]['id'];
+	$id_medico = $medico[0]['id'];
 	
 	$prestacion = $f->getPrestacionById($id_prestacion);
 	$id_cita = $prestacion[0]['id_cita'];
@@ -437,7 +441,7 @@ function guardar_prestacion_receta($id_prestacion,$id_farmacia,$id_consultorio,$
 	$p_diagnostico.="}";
 	*/
 	
-	$id_medico = $prestacion[0]['id_medico'];
+	//$id_medico = $prestacion[0]['id_medico'];
 	$id_tiporeceta = $prestacion[0]['id_tipo_atencion'];
 	//$id_consultorio = $subconsultorio[0]['id_consultorio'];
 	$grado = $cita[0]['grado'];
