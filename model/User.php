@@ -24,6 +24,7 @@ class User {
             If (strlen($passRequest) > 32)
                 return false;
             $this->sql = "Select sp_requestorws('" . $ipRequest . "','" . $userRequest . "','" . $passRequest . "') validuser;";
+			//$this->sql = "Select sp_requestorws('" . $ipRequest . "','" . utf8_encode($userRequest) . "','" . utf8_encode(($passRequest)) . "') validuser;";
 			//echo $this->sql;
             $this->rs = $this->db->query($this->sql);
             $this->db->closeConnection();
