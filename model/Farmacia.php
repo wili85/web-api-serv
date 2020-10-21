@@ -79,7 +79,8 @@ class Farmacia {
     }
 	
 	public function guardar_cita($p){
-		return $this->readFunctionPostgresTransaction('sp_insert_cita',$p);
+		//return $this->readFunctionPostgresTransaction('sp_insert_cita',$p);
+		return $this->readFunctionPostgresTransactionOpen('sp_insert_cita',$p);
     }
 	
 	public function getFarmacia($p){
@@ -99,11 +100,13 @@ class Farmacia {
     }
 	
 	public function guardar_prestacion($p){
-		return $this->readFunctionPostgresTransaction('sp_insert_prestacion',$p);
+		//return $this->readFunctionPostgresTransaction('sp_insert_prestacion',$p);
+		return $this->readFunctionPostgresTransactionOpen('sp_insert_prestacion',$p);
     }
 	
 	public function guardar_receta($p){
-		return $this->readFunctionPostgresTransaction('sp_insert_recetavale',$p);
+		//return $this->readFunctionPostgresTransaction('sp_insert_recetavale',$p);
+		return $this->readFunctionPostgresTransactionOpen('sp_insert_recetavale',$p);
     }
 	
 	public function getCitasById($id){
@@ -334,6 +337,45 @@ where codigo='".$codigo."'";
    }
    
    public function readFunctionPostgresTransaction($function, $parameters = null){
+	
+	  $conet = $this->db->getConnection();
+      $_parameters = '';
+      if (count($parameters) > 0) {
+          $_parameters = implode("','", $parameters);
+          $_parameters = "'" . $_parameters . "'";
+		  $_parameters = str_replace("'NULL'","NULL",$_parameters);
+      }
+	  //BEGIN; 
+      $this->sql = "BEGIN; select " . $function . "(" . $_parameters . ");";
+	  //echo $this->sql;
+	  $result = $this->db->query($this->sql);
+      $data=array() ;
+
+      try {
+
+        $sw=TRUE;
+        
+        if (!$result) {
+            $this->db->query("ROLLBACK");
+            $sw=FALSE;
+            $msg='Ocurrio un error el procceso.';
+        } else {
+            $this->db->query("COMMIT");
+            $sw=TRUE;
+            $msg='La operación  realizado correctamente.';
+	
+        }
+        $response = $result;
+      } catch (Exception $e) {
+
+         $response = array('sw' => FALSE, 'msg'=>$e->getMessage(),'data'=>$data ); 
+        
+      }
+	  
+      return $response;
+   }
+   
+   public function readFunctionPostgresTransactionOpen($function, $parameters = null){
 	
 	  $conet = $this->db->getConnection();
       $_parameters = '';
