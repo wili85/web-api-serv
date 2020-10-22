@@ -200,7 +200,7 @@ class Farmacia {
 	}
 	
 	public function anular_receta($p){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "update receta_vales set estado='0' Where nro_receta='".$p['numReceta']."'";
         $this->rs = $this->db->queryCRUD($this->sql);
 		$this->db->closeConnection();
@@ -386,7 +386,7 @@ where codigo='".$codigo."'";
       }
 	  //BEGIN; 
       $this->sql = "BEGIN; select " . $function . "(" . $_parameters . ");";
-	  echo $this->sql;
+	  //echo $this->sql;
 	  $result = $this->db->query($this->sql);
       $data=array() ;
 
