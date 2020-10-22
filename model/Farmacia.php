@@ -110,7 +110,7 @@ class Farmacia {
     }
 	
 	public function getCitasById($id){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select * from citas where id=".$id;
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
@@ -119,7 +119,7 @@ class Farmacia {
 	}
 	
 	public function getFarmaciaById($id){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select * from farmacias where id=".$id;
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
@@ -128,7 +128,7 @@ class Farmacia {
 	}
 	
 	public function getPrestacionById($id){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select * from prestaciones where id=".$id;
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
@@ -137,7 +137,7 @@ class Farmacia {
 	}
 	
 	public function getRecetaById($id){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select * from receta_vales where id=".$id;
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
@@ -146,7 +146,7 @@ class Farmacia {
 	}
 	
 	public function getRecetaByIdPrestacion($id){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select * from receta_vales where id_prestacion=".$id." order by 1 desc limit 1";
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
@@ -155,7 +155,7 @@ class Farmacia {
 	}
 	
 	public function getAseguradoById($id){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select * from asegurados where id=".$id;
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
@@ -164,7 +164,7 @@ class Farmacia {
 	}
 	
 	public function getAseguradoHistoriaById($id){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select * from asegurado_historias where id_asegurado=".$id;
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
@@ -182,7 +182,7 @@ class Farmacia {
 	}
 	
 	public function getUsersByDni($dni){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select * from users where dni='".$dni."' order by 1 desc limit 1";
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
@@ -191,7 +191,7 @@ class Farmacia {
 	}
 	
 	public function getMedicoByDni($dni){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select * from medicos where dni='".$dni."' order by 1 desc limit 1";
         $this->rs = $this->db->query($this->sql);
         $row = count($this->rs);
@@ -233,7 +233,7 @@ and t1.estado=1";
 	}
 	
 	public function getDiagnosticoByCodigo($codigo){
-		$conet = $this->db->getConnection();
+		$conet = $this->db->getConnectionOpen();
 		$this->sql = "select id,codigo,nombre
 from diagnosticos
 where codigo='".$codigo."'";
@@ -377,7 +377,7 @@ where codigo='".$codigo."'";
    
    public function readFunctionPostgresTransactionOpen($function, $parameters = null){
 	
-	  $conet = $this->db->getConnection();
+	  $conet = $this->db->getConnectionOpen();
       $_parameters = '';
       if (count($parameters) > 0) {
           $_parameters = implode("','", $parameters);
