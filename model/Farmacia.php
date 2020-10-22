@@ -386,7 +386,7 @@ where codigo='".$codigo."'";
       }
 	  //BEGIN; 
       $this->sql = "BEGIN; select " . $function . "(" . $_parameters . ");";
-	  //echo $this->sql;
+	  echo $this->sql;
 	  $result = $this->db->query($this->sql);
       $data=array() ;
 
