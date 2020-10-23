@@ -117,7 +117,8 @@ function getProducto($id_farmacia,$id_servicio,$q) {
         $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
         return $ar;
     }
-    
+    //echo strlen($q);exit();
+	if(strlen($q)>4){
     include '../model/Farmacia.php';
     $a = new Farmacia();
 	$p[] = "0";
@@ -143,6 +144,7 @@ function getProducto($id_farmacia,$id_servicio,$q) {
     }
     
     return $ar;
+	}
 }
 
 function getStockProducto($id_farmacia,$id_producto) {
