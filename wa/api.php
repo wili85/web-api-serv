@@ -1725,7 +1725,8 @@ class Api{
 				for ($i = 0; $i < $nr; $i++) {
 					$afiliado[$i]['id'] = $rs[$i]['id'];
 					$afiliado[$i]['id_farmacia'] = $rs[$i]['id_farmacia'];
-					$afiliado[$i]['url'] = "https://app-gsf.saludpol.gob.pe:29692/imprimir_receta_vale/".$rs[$i]['id']."/".$rs[$i]['id_farmacia'];
+					//$afiliado[$i]['url'] = "https://app-gsf.saludpol.gob.pe:29692/imprimir_receta_vale/".$rs[$i]['id']."/".$rs[$i]['id_farmacia']; 
+					$afiliado[$i]['url'] = ruta_farmacia."/imprimir_receta_vale/".$rs[$i]['id']."/".$rs[$i]['id_farmacia']; 
 				}
 				
 				echo json_encode(array('receta'=>$afiliado));
