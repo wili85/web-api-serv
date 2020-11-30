@@ -260,6 +260,19 @@ where codigo='".$codigo."'";
 		
 	}
 	
+	public function consulta_trama_cenares($fecha_fin, $tipo) {
+        $conet = $this->db->getConnection();
+        if (empty($fecha_fin) && empty($tipo)) {
+            $this->rs = array('Error' => 'Ingrese Dato');
+        } else {
+            $this->sql = "Select * From sp_show_plot_cenares('" . $fecha_fin . "','" . $tipo . "')";
+            $this->rs = $this->db->query($this->sql);
+        }
+        $this->db->closeConnection();
+        return $this->rs;
+    }
+	
+	
 	public function readFunctionPostgres($function, $parameters = null){
 	
 	  $conet = $this->db->getConnection();

@@ -2099,6 +2099,112 @@ class Api{
 	
 	}
 	
+	function getTramaCenares($p){
+		
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		$rs = $a->consulta_trama_cenares($p,0);
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+
+				for ($i = 0; $i < $nr; $i++) {
+				//for ($i = 0; $i < 635; $i++) {
+					$trama_cenares[$i]['id'] = $i+1;
+					$trama_cenares[$i]['cod_pre'] = $rs[$i]['cod_pre'];
+					$trama_cenares[$i]['tipo_sum'] = 'O';
+					$trama_cenares[$i]['periodo'] = $rs[$i]['periodo'];
+					$trama_cenares[$i]['cod_siga'] = $rs[$i]['cod_siga'];
+					$trama_cenares[$i]['cod_sismed'] = '';
+					$trama_cenares[$i]['cod_med'] = $rs[$i]['cod_med'];
+					$trama_cenares[$i]['saldo'] = $rs[$i]['saldo'];
+					$trama_cenares[$i]['precio'] = $rs[$i]['precio'];
+					$trama_cenares[$i]['ingresos'] = $rs[$i]['ingresos'];
+					$trama_cenares[$i]['fec_ing'] = $rs[$i]['fec_ing'];
+					$trama_cenares[$i]['st_sal1'] = $rs[$i]['st_sal1'];
+					$trama_cenares[$i]['st_sal2'] = $rs[$i]['st_sal2'];
+					$trama_cenares[$i]['st_sal3'] = $rs[$i]['st_sal3'];
+					$trama_cenares[$i]['st_sal4'] = $rs[$i]['st_sal4'];
+					$trama_cenares[$i]['st_sal5'] = $rs[$i]['st_sal5'];
+					$trama_cenares[$i]['st_sal6'] = 0;
+					$trama_cenares[$i]['st_sal7'] = 0;
+					$trama_cenares[$i]['st_sal8'] = 0;
+					$trama_cenares[$i]['t_salidas'] = $rs[$i]['t_salidas'];
+					$trama_cenares[$i]['stock_final'] = $rs[$i]['stock_final'];					
+
+					if(strlen($rs[$i]['fec_exp'])>8):
+						$x=strlen($rs[$i]['fec_exp']);
+						$y=-1*($x-8);
+						$fecha= substr($rs[$i]['fec_exp'],0,$y);						
+					else:
+						$fecha=$rs[$i]['fec_exp'];
+					endif;
+					
+					//$trama_cenares[$i]['fec_exp'] = $rs[$i]['fec_exp'];
+					$trama_cenares[$i]['fec_exp'] = $fecha;
+					$lote= $rs[$i]['lote'];
+					$lotes=	explode(",", $lote);
+					if($lotes[0]==""):
+						$l="SR";
+					 else:
+					 	if($lotes[0]=="S/L"):
+					 		$l="SL";
+						else:
+							if($lotes[0]=="S/LOTE"):
+					 			$l="SL";
+							else:
+								$l=$lotes[0];
+							endif;
+						endif;
+					endif;
+					$trama_cenares[$i]['lote'] = $lotes[0];
+					//$trama_cenares[$i]['lote'] = $l;
+					$trama_cenares[$i]['reg_sanit'] = "SR";
+					$trama_cenares[$i]['resp_farm'] = "SR";
+					$trama_cenares[$i]['telf_resp'] = "SR";
+					$trama_cenares[$i]['mail_resp'] = "SR";				
+				}
+
+				//echo json_encode(array('cenares'=>$trama_cenares));
+				$this->enviar_trama(json_encode($trama_cenares));
+				
+			}
+		} else {
+			$msg[0]['msg'] = "No existe datos subidos";			
+			return json_encode(array('mensaje'=>$msg));
+		} 	
+	}
+	
+	function enviar_trama($json){
+		$curl = curl_init();
+		
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => url_cenares."/repositorio/rest/stock",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",  
+			CURLOPT_POSTFIELDS => $json,
+			CURLOPT_HTTPHEADER => array(
+			"Authorization: Basic SFBPTElDSUFOUDpIcDBsMWMxNE5Q",
+			"Content-Type: application/json"
+			),
+		));
+	
+		$response = curl_exec($curl);
+		curl_close($curl);
+		echo $response;
+	
+	}
+	
+	
 }
 
 ?>
