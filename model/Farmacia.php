@@ -272,6 +272,28 @@ where codigo='".$codigo."'";
         return $this->rs;
     }
 	
+	public function getStockByProductoAndFarmacia($p){
+		$conet = $this->db->getConnection();
+		$this->sql = "select 
+t1.id,t1.codigo,t1.nombre,t3.abreviatura as unidad 
+,(select coalesce(sum(kardex_lotes.cantidad*tipo_movimientos.accion),0)as stock
+from kardexes 
+inner join kardex_lotes on kardexes.id=kardex_lotes.id_kardex 
+inner join tipo_movimientos on kardexes.id_tipo_movimiento=tipo_movimientos.id 
+where kardexes.estado=1 and kardex_lotes.estado=1 
+And kardexes.id_farmacia=".$p[0]." And kardexes.id_producto=t1.id)stock
+from productos t1
+inner join tipo_productos t2 on t1.id_tipo=t2.id
+inner join unidades t3 on t1.id_unidad=t3.id
+where t1.estado='1'
+and t1.codigo='".$p[1]."'";
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs[0];
+		
+	}
+	
 	
 	public function readFunctionPostgres($function, $parameters = null){
 	

@@ -852,12 +852,12 @@ class Api{
 	
 	function getStockProductoEstablecimiento($p){
 		include '../model/Farmacia.php';
-		include("../include/cnn.phtml");
-		include("../include/f_producto.php");
-		include("../include/f_ingreso.php");
-		include("../include/f_ingresonea.php");
-		include("../include/f_pecosa.php");
-		include("../include/f_maealmac.php");
+		//include("../include/cnn.phtml");
+		//include("../include/f_producto.php");
+		//include("../include/f_ingreso.php");
+		//include("../include/f_ingresonea.php");
+		//include("../include/f_pecosa.php");
+		//include("../include/f_maealmac.php");
 		
 		$dni_medico = $p["dni_medico"];
 		unset($p["dni_medico"]);
@@ -893,6 +893,35 @@ class Api{
 				
 				//if($i > 0)$i++;
 				
+				$cantidadAlmacen = 0;
+				$ps[]=113;
+				$ps[]=$p["codigo"];
+				$totalAlmacen = $a->getStockByProductoAndFarmacia($ps);
+				//print_r($totalAlmacen);exit();
+				$cantidadAlmacen = (isset($totalAlmacen["stock"]) && $totalAlmacen["stock"] > 0)?$totalAlmacen["stock"]:0;
+				$prodcodigo = (isset($totalAlmacen["codigo"]) && $totalAlmacen["codigo"]!="")?$totalAlmacen["codigo"]:"";
+				$nombre_producto = (isset($totalAlmacen["nombre"]) && $totalAlmacen["nombre"]!="")?$totalAlmacen["nombre"]:"";
+				$unidad = (isset($totalAlmacen["unidad"]) && $totalAlmacen["unidad"]!="")?$totalAlmacen["unidad"]:"";
+				
+				$afiliado[$i]['idestablecimiento'] = "";
+				$afiliado[$i]['establecimiento'] = "ALMACEN SAN BORJA";
+				$afiliado[$i]['codigo_producto'] = $prodcodigo;
+				$afiliado[$i]['nombre_producto'] = $nombre_producto;
+				$afiliado[$i]['unidad'] = $unidad;
+				$afiliado[$i]['stock'] = $cantidadAlmacen;
+				$afiliado[$i]['msg'] = "Ok";
+				
+				$log = array(
+						'op' => 'c',
+						'dni_medico' => $dni_medico,
+						'codigo_producto' => $prodcodigo,
+						'nombre_producto' => $nombre_producto,
+						'nombre_establecimiento' => "ALMACEN SAN BORJA",
+						'nombre_farmacia' => '',
+						'stock' => $cantidadAlmacen
+					);
+					
+				/*
 				$prodcodigo = $p["codigo"];
 				$ano = date("Y");
 				$codproducto = F_MUESTRA_ID_PRODUCTO($prodcodigo);
@@ -909,7 +938,7 @@ class Api{
 				$afiliado[$i]['codigo_producto'] = $prodcodigo;
 				$afiliado[$i]['nombre_producto'] = $rs[0]['nombre_producto'];
 				$afiliado[$i]['unidad'] = $rs[0]['unidad'];
-				$afiliado[$i]['stock'] = (String)$MAECANTSTK;
+				$afiliado[$i]['stock'] = $cantidadAlmacen;
 				$afiliado[$i]['msg'] = "Ok";
 				
 				$log = array(
@@ -921,12 +950,42 @@ class Api{
 						'nombre_farmacia' => '',
 						'stock' => (String)$MAECANTSTK
 					);
+				*/
+				
 				$rs_log = $a->crudLog($log);
 				
 				echo json_encode(array('establecimiento'=>$afiliado));
 			}
 		} else {
 		
+			$cantidadAlmacen = 0;
+			$ps[]=113;
+			$ps[]=$p["codigo"];
+			$totalAlmacen = $a->getStockByProductoAndFarmacia($ps);
+			//print_r($totalAlmacen);exit();
+			$cantidadAlmacen = (isset($totalAlmacen["stock"]) && $totalAlmacen["stock"] > 0)?$totalAlmacen["stock"]:0;
+			$prodcodigo = (isset($totalAlmacen["codigo"]) && $totalAlmacen["codigo"]!="")?$totalAlmacen["codigo"]:"";
+			$nombre_producto = (isset($totalAlmacen["nombre"]) && $totalAlmacen["nombre"]!="")?$totalAlmacen["nombre"]:"";
+			$unidad = (isset($totalAlmacen["unidad"]) && $totalAlmacen["unidad"]!="")?$totalAlmacen["unidad"]:"";
+			
+			$afiliado[0]['idestablecimiento'] = "";
+			$afiliado[0]['establecimiento'] = "ALMACEN SAN BORJA";
+			$afiliado[0]['codigo_producto'] = $prodcodigo;
+			$afiliado[0]['nombre_producto'] = $nombre_producto;
+			$afiliado[0]['unidad'] = $unidad;
+			$afiliado[0]['stock'] = $cantidadAlmacen;
+			$afiliado[0]['msg'] = "Ok";
+			
+			$log = array(
+					'op' => 'c',
+					'dni_medico' => $dni_medico,
+					'codigo_producto' => $prodcodigo,
+					'nombre_producto' => $nombre_producto,
+					'nombre_establecimiento' => "ALMACEN SAN BORJA",
+					'nombre_farmacia' => '',
+					'stock' => $cantidadAlmacen
+				);
+			/*
 			$prodcodigo = $p["codigo"];
 			$ano = date("Y");
 			$codproducto = F_MUESTRA_ID_PRODUCTO($prodcodigo);
@@ -955,9 +1014,11 @@ class Api{
 					'nombre_farmacia' => '',
 					'stock' => (String)$MAECANTSTK
 				);
+			*/
 			$rs_log = $a->crudLog($log);
 		
-			if($MAECANTSTK == "0" || $MAECANTSTK == ""){
+			//if($MAECANTSTK == "0" || $MAECANTSTK == ""){
+			if($cantidadAlmacen == "0" || $cantidadAlmacen == ""){
 				$afiliado[0]['idestablecimiento'] = "";
 				$afiliado[0]['establecimiento'] = "";
 				$afiliado[0]['codigo_producto'] = "";
@@ -969,7 +1030,8 @@ class Api{
 				$log = array(
 						'op' => 'c',
 						'dni_medico' => $dni_medico,
-						'codigo_producto' => $p["codigo"],
+						//'codigo_producto' => $p["codigo"],
+						'codigo_producto' => $prodcodigo,
 						'nombre_producto' => "",
 						'nombre_establecimiento' => "ESTABLECIMIENTO",
 						'nombre_farmacia' => "",
