@@ -175,32 +175,36 @@ function getAseguradoValidate($tipDoc, $nroDoc, $fecValid) {
             $ar[0]['Error'] = 'Ingrese el dato requerido';
         } else {
             for ($i = 0; $i < $nr; $i++) {
-                $afiliado->nompaisdelafiliado = $rs[$i]['nompaisdelafiliado'];
-                $afiliado->nomtipdocafiliado = $rs[$i]['nomtipdocafiliado'];
-                $afiliado->nrodocafiliado = $rs[$i]['nrodocafiliado'];
-                $afiliado->apepatafiliado = $rs[$i]['apepatafiliado'];
-                $afiliado->apematafiliado = $rs[$i]['apematafiliado'];
-                $afiliado->apecasafiliado = $rs[$i]['apecasafiliado'];
-                $afiliado->nomafiliado = $rs[$i]['nomafiliado'];
-                $afiliado->fecnacafiliado = $rs[$i]['fecnacafiliado'];
-                $afiliado->edadafiliado = $rs[$i]['edadafiliado'];
-                $afiliado->nomsexo = $rs[$i]['nomsexoafiliado'];
-                $afiliado->estado = $rs[$i]['estado'];
-                $afiliado->parentesco = $rs[$i]['parentesco'];
-                $afiliado->nomtipdoctitular = $rs[$i]['nomtipdoctitular'];
-                $afiliado->nrodoctitular = $rs[$i]['nrodoctitular'];
-                $afiliado->apepattitular = $rs[$i]['apepattitular'];
-                $afiliado->apemattitular = $rs[$i]['apemattitular'];
-                $afiliado->apecastitular = $rs[$i]['apecastitular'];
-                $afiliado->nomtitular = $rs[$i]['nomtitular'];
-                $afiliado->cip = $rs[$i]['cip'];
-                $afiliado->ubigeo = $rs[$i]['ubigeo'];
-                $afiliado->grado = $rs[$i]['grado'];
-                $afiliado->situacion = $rs[$i]['situacion'];
-                $afiliado->caducidad = $rs[$i]['caducidad'];
-                $afiliado->discapacidad = $rs[$i]['discapacidad'];
-				$afiliado->otroseguro = $rs[$i]['otroseguro'];
-				return $afiliado;
+				if($rs[$i]['idestado']==1){
+					$afiliado->nompaisdelafiliado = $rs[$i]['nompaisdelafiliado'];
+					$afiliado->nomtipdocafiliado = $rs[$i]['nomtipdocafiliado'];
+					$afiliado->nrodocafiliado = $rs[$i]['nrodocafiliado'];
+					$afiliado->apepatafiliado = $rs[$i]['apepatafiliado'];
+					$afiliado->apematafiliado = $rs[$i]['apematafiliado'];
+					$afiliado->apecasafiliado = $rs[$i]['apecasafiliado'];
+					$afiliado->nomafiliado = $rs[$i]['nomafiliado'];
+					$afiliado->fecnacafiliado = $rs[$i]['fecnacafiliado'];
+					$afiliado->edadafiliado = $rs[$i]['edadafiliado'];
+					$afiliado->nomsexo = $rs[$i]['nomsexoafiliado'];
+					$afiliado->estado = $rs[$i]['estado'];
+					$afiliado->parentesco = $rs[$i]['parentesco'];
+					$afiliado->nomtipdoctitular = $rs[$i]['nomtipdoctitular'];
+					$afiliado->nrodoctitular = $rs[$i]['nrodoctitular'];
+					$afiliado->apepattitular = $rs[$i]['apepattitular'];
+					$afiliado->apemattitular = $rs[$i]['apemattitular'];
+					$afiliado->apecastitular = $rs[$i]['apecastitular'];
+					$afiliado->nomtitular = $rs[$i]['nomtitular'];
+					$afiliado->cip = $rs[$i]['cip'];
+					$afiliado->ubigeo = $rs[$i]['ubigeo'];
+					$afiliado->grado = $rs[$i]['grado'];
+					$afiliado->situacion = $rs[$i]['situacion'];
+					$afiliado->caducidad = $rs[$i]['caducidad'];
+					$afiliado->discapacidad = $rs[$i]['discapacidad'];
+					$afiliado->otroseguro = $rs[$i]['otroseguro'];
+					return $afiliado;
+				}else{
+					$ar[0]['Error'] = 'El asegurado no esta activo';
+				}
             }
         }
     } else {
