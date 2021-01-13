@@ -57,6 +57,10 @@ class Reembolso {
 		return $this->readFunctionPostgres('sp_consult_reembolso_by_id',$p);
     }
 	
+	public function indicador_cantidad_reembolsos_pagados($p){
+		return $this->readFunctionPostgres('indicador_cantidad_reembolsos_pagados',$p);
+    }
+	
 	public function readFunctionPostgres($function, $parameters = null){
 
       //$this->load->database();
@@ -159,6 +163,7 @@ class Reembolso {
 				
 				if($v["sp_consult_notificacion"] == "p_ref3"){
 					$t = 0;
+					
 					if($telefono1 != null && $telefono1 != ""){
 						$nro_telef[$t] = $telefono1;$t++;
 						if($telefono2 != null && $telefono2 != ""){$nro_telef[$t] = $telefono2;$t++;}
@@ -170,7 +175,10 @@ class Reembolso {
 						}
 					}
 					
+					//$nro_telef[$t] = $telefono1;$t++;
+					
 					$afiliado[0]['telefono'] = $nro_telef;
+					$afiliado[0]['celular'] = $telefono1;
 					/*$nro_telef_prueba[0] = "945561416";
 					$nro_telef_prueba[1] = "994131006";
 					$afiliado[0]['telefono'] = $nro_telef_prueba;*/
