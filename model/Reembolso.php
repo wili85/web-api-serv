@@ -193,6 +193,7 @@ class Reembolso {
 						}
 					}
 					$afiliado[0]['correo'] = $email;
+					$afiliado[0]['correo_notificacion'] = $correo_solicitante;
 					/*$email_prueba[0] = "rencisoc@saludpol.gob.pe";
 					$email_prueba[1] = "wyamunaquec@saludpol.gob.pe";
 					$email_prueba[2] = "wyamunaque.expertta@gmail.com";
