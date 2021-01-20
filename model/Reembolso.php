@@ -142,6 +142,7 @@ class Reembolso {
 						$telefono3 = $cursors2[$i]['telefono3'];
 						$telefono4 = $cursors2[$i]['telefono4'];
 						$correo_solicitante = $cursors2[$i]['correo_solicitante'];
+						$flagnotificacion = $cursors2[$i]['flagnotificacion'];
 					}
 				}
 				
@@ -226,6 +227,8 @@ class Reembolso {
 			$afiliado[0]['email'] = (count($email)>0)?"1":"0";
 			$afiliado[0]['call'] = "0";
 			$afiliado[0]['sms'] = (count($nro_telef)>0)?"1":"0";
+			
+			$afiliado[0]['flagnotificacion'] = $flagnotificacion;
 			
 			$response = array('notificacion'=>$afiliado);
 			return $response;

@@ -30,5 +30,14 @@ WHERE id_solicitud = '".$id."' AND t1.is_signed = '1'";
 		*/
     }
 	
-
+	public function consultaContratista($data) {
+	
+		$conSigef = $this->dbSigef->getConnection();
+		$query = "select nro_ruc_con,desc_cont_con from siga01.maestro_de_contratistas where nro_ruc_con='".$data[0]."'";
+		$resSigef = $this->dbSigef->query($query);
+		return $resSigef;
+		
+    }
+	
+	
 }
