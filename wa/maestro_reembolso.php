@@ -197,6 +197,15 @@
 				$p[58] = "";
 				$p[59] = "";
 				$p[60] = "";
+				
+				$p[61] = "";
+				$p[62] = "";
+				$p[63] = "";
+				$p[64] = "";
+				$p[65] = "";
+				$p[66] = "";
+				$p[67] = "";
+				$p[68] = "";
 				//print_r($p);
 				$api->getReembolsoById($p);
 			}elseif($_POST['op'] == 'guardaritemcomprobante'){
