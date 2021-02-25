@@ -870,32 +870,33 @@ class Api{
 			if (isset($rs['Error'])) {
 				$this->error('No hay elementos');
 			} else {
-				for ($i = 0; $i < $nr; $i++) {
-					if($rs[$i]['establecimiento']!="DIRSAPOL"){
+				$i=0;
+				for ($j = 0; $j < $nr; $j++) {
+					if($rs[$j]['establecimiento']!="DIRSAPOL"){
 					
-						$afiliado[$i]['idestablecimiento'] = $rs[$i]['idestablecimiento'];
-						$afiliado[$i]['establecimiento'] = $rs[$i]['establecimiento'];
-						$afiliado[$i]['codigo_producto'] = $rs[$i]['codigo_producto'];
-						$afiliado[$i]['nombre_producto'] = $rs[$i]['nombre_producto'];
-						$afiliado[$i]['unidad'] = $rs[$i]['unidad'];
-						$afiliado[$i]['stock'] = $rs[$i]['stock'];
+						$afiliado[$i]['idestablecimiento'] = $rs[$j]['idestablecimiento'];
+						$afiliado[$i]['establecimiento'] = $rs[$j]['establecimiento'];
+						$afiliado[$i]['codigo_producto'] = $rs[$j]['codigo_producto'];
+						$afiliado[$i]['nombre_producto'] = $rs[$j]['nombre_producto'];
+						$afiliado[$i]['unidad'] = $rs[$j]['unidad'];
+						$afiliado[$i]['stock'] = $rs[$j]['stock'];
 						$afiliado[$i]['msg'] = "Ok";
 						
 						$log = array(
 							'op' => 'c',
 							'dni_medico' => $dni_medico,
-							'codigo_producto' => $rs[$i]['codigo_producto'],
-							'nombre_producto' => $rs[$i]['nombre_producto'],
-							'nombre_establecimiento' => $rs[$i]['establecimiento'],
+							'codigo_producto' => $rs[$j]['codigo_producto'],
+							'nombre_producto' => $rs[$j]['nombre_producto'],
+							'nombre_establecimiento' => $rs[$j]['establecimiento'],
 							'nombre_farmacia' => '',
-							'stock' => $rs[$i]['stock']
+							'stock' => $rs[$j]['stock']
 						);
 						$rs_log = $a->crudLog($log);
-						
+						$i++;
 					}
 				}
 				
-				if($i > 0)$i++;
+				//if($i > 0)$i++;
 				
 				$cantidadAlmacen = 0;
 				$ps[]=113;
