@@ -423,6 +423,7 @@ where tipodedocumentodelafiliado='".$p['tipDoc']."' and numerodedocumentodelafil
 		$conet = $this->db->getConnection();
 		$this->sql = "Select id_beneficiario From tbl_historial_email Where id_beneficiario=".$id_beneficiario." And email ilike '".$email."'" ;
         $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
         $rowEmail = count($this->rs);
 		return $rowEmail;
 	}
@@ -431,18 +432,152 @@ where tipodedocumentodelafiliado='".$p['tipDoc']."' and numerodedocumentodelafil
 		$conet = $this->db->getConnection();
 		$this->sql = "Select id_beneficiario From tbl_historial_telefono Where id_beneficiario=".$id_beneficiario." And nro_telef='".$nro_telef."'" ;
         $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
         $rowTel = count($this->rs);
 		return $rowTel;
 	}
 		
 	public function insert_email_asegurado($p){
 		
-		return $this->readFunctionPostgresTransaction('sp_crud_tbl_historial_email',$p);
+		return $this->readFunctionPostgresTransaction2('sp_crud_tbl_historial_email',$p);
     }
 	
 	public function insert_telefono_asegurado($p){
-		return $this->readFunctionPostgresTransaction('sp_crud_tbl_historial_telefono',$p);
+		return $this->readFunctionPostgresTransaction2('sp_crud_tbl_historial_telefono',$p);
     }
+	
+	public function getValidacionFechaNacimientoAsegurado($par){
+		$conet = $this->db->getConnection();
+		$this->sql = "Select a.id,a.accesscode
+From aprobadossusalud2016 a 
+Inner Join aprobadossusaludns2016 ea On a.id = ea.id_beneficiario And a.validacionreniec Not In('e','t') And a.valid_dj='' 
+Inner Join (
+Select idest_afiliado, id_det, prioridad from (
+Select '1'::Varchar idest_afiliado, d.id id_det,'1'::varchar prioridad From aprobadossusalud2016 a Inner Join 
+aprobadossusaludns2016 d On a.id=d.id_beneficiario 
+Where a.tipodedocumentodelafiliado = '".$par[0]."' And a.numerodedocumentodelafiliado = '".$par[1]."' 
+And  fechadeinicodeafiliacion::date <= current_date
+And Case When fechadefindeafiliacion<>'' Then fechadefindeafiliacion::date >= current_date Else COALESCE(fechadefindeafiliacion,'')='' End  
+Order By Case When fechadefindeafiliacion<>'' Then fechadefindeafiliacion::date End desc limit 1
+)R
+Union all
+Select idest_afiliado, id_det, prioridad from (
+Select estadodeafiliado idest_afiliado, d.id id_det,'2'::varchar prioridad From aprobadossusalud2016 a Inner Join 
+aprobadossusaludns2016 d On a.id=d.id_beneficiario 
+Where a.tipodedocumentodelafiliado = '".$par[0]."' And a.numerodedocumentodelafiliado = '".$par[1]."' 
+And Case When fechadefindeafiliacion<>'' Then fechadefindeafiliacion::date <= current_date Else COALESCE(fechadefindeafiliacion,'')='' End
+Order By Case When fechadefindeafiliacion<>'' Then fechadefindeafiliacion::date End desc limit 1
+)S Order by prioridad Limit 1
+)d On ea.id=d.id_det
+Where a.tipodedocumentodelafiliado = '".$par[0]."' 
+And a.numerodedocumentodelafiliado = '".$par[1]."'
+And a.numerodedocumentodelafiliado<>'00000000'
+And to_char(to_date(a.fechanacimiento,'YYYYMMDD'),'DD/MM/YYYY') = '".$par[2]."'";
+		//echo $this->sql;exit();
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function updateClaveAsegurado($p){
+		$conet = $this->db->getConnection2();
+		$this->sql = "update aprobadossusalud2016 set accesscode=md5('".$p[1]."') Where id='".$p[0]."'";
+        $this->rs = $this->db->queryCRUD($this->sql);
+		$this->db->closeConnection();
+		//$row = count($this->rs);
+		return $this->rs;
+		
+	}
+	
+	public function updateDatosAdicionalesAsegurado($p){
+		$conet = $this->db->getConnection2();
+		$this->sql = "Update aprobadossusalud2016 set direccionprincipal='".$p[1]."', referenciadireccionprincipal='".$p[2]."', ubigeodireccionprincipal='".$p[3]."', us_upd='".$p[4]."' Where id=".$p[0];
+        $this->rs = $this->db->queryCRUD($this->sql);
+		$this->db->closeConnection();
+		//$row = count($this->rs);
+		return $this->rs;
+		
+	}
+	
+	public function getLoginAsegurado($par){
+		$conet = $this->db->getConnection();
+		$this->sql = "Select a.id,a.accesscode
+From aprobadossusalud2016 a 
+Inner Join aprobadossusaludns2016 ea On a.id = ea.id_beneficiario And a.validacionreniec Not In('e','t') And a.valid_dj='' 
+Inner Join (
+Select idest_afiliado, id_det, prioridad from (
+Select '1'::Varchar idest_afiliado, d.id id_det,'1'::varchar prioridad From aprobadossusalud2016 a Inner Join 
+aprobadossusaludns2016 d On a.id=d.id_beneficiario 
+Where a.tipodedocumentodelafiliado = '".$par[0]."' And a.numerodedocumentodelafiliado = '".$par[1]."' 
+And  fechadeinicodeafiliacion::date <= current_date
+And Case When fechadefindeafiliacion<>'' Then fechadefindeafiliacion::date >= current_date Else COALESCE(fechadefindeafiliacion,'')='' End  
+Order By Case When fechadefindeafiliacion<>'' Then fechadefindeafiliacion::date End desc limit 1
+)R
+Union all
+Select idest_afiliado, id_det, prioridad from (
+Select estadodeafiliado idest_afiliado, d.id id_det,'2'::varchar prioridad From aprobadossusalud2016 a Inner Join 
+aprobadossusaludns2016 d On a.id=d.id_beneficiario 
+Where a.tipodedocumentodelafiliado = '".$par[0]."' And a.numerodedocumentodelafiliado = '".$par[1]."' 
+And Case When fechadefindeafiliacion<>'' Then fechadefindeafiliacion::date <= current_date Else COALESCE(fechadefindeafiliacion,'')='' End
+Order By Case When fechadefindeafiliacion<>'' Then fechadefindeafiliacion::date End desc limit 1
+)S Order by prioridad Limit 1
+)d On ea.id=d.id_det
+Where a.tipodedocumentodelafiliado = '".$par[0]."' 
+And a.numerodedocumentodelafiliado = '".$par[1]."'
+And a.numerodedocumentodelafiliado<>'00000000'
+And a.accesscode = md5('".$par[2]."')";
+		//echo $this->sql;exit();
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getInformacionAdicionalAsegurado($par){
+		$conet = $this->db->getConnection();
+		$this->sql = "select id,ubigeodireccionprincipal,direccionprincipal,referenciadireccionprincipal,
+(select email from tbl_historial_email where id_beneficiario=t1.id order by split_part(auditoria_ingreso, '|', 2)::timestamp desc limit 1)email,
+(select nro_telef from tbl_historial_telefono where id_beneficiario=t1.id and id_tipotelef='1' order by split_part(auditoria_ingreso, '|', 2)::timestamp desc  limit 1)telefono,
+(select nro_telef from tbl_historial_telefono where id_beneficiario=t1.id and id_tipotelef='2' order by split_part(auditoria_ingreso, '|', 2)::timestamp desc  limit 1)celular
+from aprobadossusalud2016 t1
+where t1.id=".$par[0];
+		//echo $this->sql;exit();
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getDepartamento(){
+		$conet = $this->db->getConnection();
+		$this->sql = "select distinct substring(id_reniec,1,2) as id_dep, departamento from ubigeo where cast(substring(id_reniec,1,2) as int)<90 order by 2";
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+	}
+	
+	public function getProvincia($par){
+		$conet = $this->db->getConnection();
+		$this->sql = "select distinct substring(id_reniec,1,4) as id_prov, provincia from ubigeo where substring(id_reniec,1,2)='" . $par[0] . "' order by 2";
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+	}
+	
+	public function getDistrito($par){
+		$conet = $this->db->getConnection();
+		$this->sql = "select id_reniec as id_dist, distrito from ubigeo where substring(id_reniec,1,4)='" . $par[0] . "' order by 2";
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+	}
 	
 	public function to_pg_array($set) {
 		settype($set, 'array'); // can be called with a scalar or array
@@ -536,5 +671,45 @@ where tipodedocumentodelafiliado='".$p['tipDoc']."' and numerodedocumentodelafil
 	  
       return $response;
    }
+   
+   public function readFunctionPostgresTransaction2($function, $parameters = null){
+	
+	  $conet = $this->db->getConnection2();
+      $_parameters = '';
+      if (count($parameters) > 0) {
+          $_parameters = implode("','", $parameters);
+          $_parameters = "'" . $_parameters . "'";
+		  $_parameters = str_replace("'NULL'","NULL",$_parameters);
+      }
+	  //BEGIN; 
+      $this->sql = "BEGIN; select " . $function . "(" . $_parameters . ");";
+	  //echo $this->sql;
+	  $result = $this->db->query($this->sql);
+      $data=array() ;
+
+      try {
+
+        $sw=TRUE;
+        
+        if (!$result) {
+            $this->db->query("ROLLBACK");
+            $sw=FALSE;
+            $msg='Ocurrio un error el procceso.';
+        } else {
+            $this->db->query("COMMIT");
+            $sw=TRUE;
+            $msg='La operación  realizado correctamente.';
+	
+        }
+        $response = $result;
+      } catch (Exception $e) {
+
+         $response = array('sw' => FALSE, 'msg'=>$e->getMessage(),'data'=>$data ); 
+        
+      }
+	  
+      return $response;
+   }
+   
    
 }

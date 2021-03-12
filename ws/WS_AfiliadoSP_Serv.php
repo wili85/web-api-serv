@@ -154,6 +154,19 @@ $server->register('getReembolsoValida',
 array('tipDocIdent' => 'xsd:string', 'nroDocIdent' => 'xsd:string'), 
 array('return' => 'tns:ArrayReembolso'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getReembolsoValida', 'rpc', 'encoded', 'WS consulta reembolso vigente.');
 
+/*****************NUEVOS 2**********************/
+$server->register('getValidacionFechaNacimientoAsegurado', array('tipDocIdent' => 'xsd:string', 'nroDocIdent' => 'xsd:string', 'fecNacimiento' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getValidacionFechaNacimientoAsegurado', 'rpc', 'encoded', 'WS consulta asegurado por fecha de nacimiento.');
+$server->register('updateClaveAsegurado', array('idAsegurado' => 'xsd:string', 'clave' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#updateClaveAsegurado', 'rpc', 'encoded', 'WS actualiza asegurado clave.');
+$server->register('getLoginAsegurado', array('tipDocIdent' => 'xsd:string', 'nroDocIdent' => 'xsd:string', 'clave' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getLoginAsegurado', 'rpc', 'encoded', 'WS login asegurado.');
+$server->register('registrarEmailAsegurado', array('idAsegurado' => 'xsd:string', 'email' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#registrarEmailAsegurado', 'rpc', 'encoded', 'WS login asegurado.');
+$server->register('registrarTelefonoAsegurado', array('idAsegurado' => 'xsd:string', 'idtipotelef' => 'xsd:string', 'nrotelef' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#registrarTelefonoAsegurado', 'rpc', 'encoded', 'WS login asegurado.');
+$server->register('getInformacionAdicionalAsegurado', array('idAsegurado' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getInformacionAdicionalAsegurado', 'rpc', 'encoded', 'WS login asegurado.');
+$server->register('updateDatosAdicionalesAsegurado', array('idAsegurado' => 'xsd:string', 'direccionprincipal' => 'xsd:string', 'referenciadireccionprincipal' => 'xsd:string', 'ubigeodireccionprincipal' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#updateDatosAdicionalesAsegurado', 'rpc', 'encoded', 'WS actualiza datos adicionales del asegurado.');
+$server->register('getDepartamento', array(), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getDepartamento', 'rpc', 'encoded', 'WS actualiza datos adicionales del asegurado.');
+$server->register('getProvincia', array('idDepartamento' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getProvincia', 'rpc', 'encoded', 'WS actualiza datos adicionales del asegurado.');
+$server->register('getDistrito', array('idProvincia' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getDistrito', 'rpc', 'encoded', 'WS actualiza datos adicionales del asegurado.');
+
+
 //array('return' => 'tns:asegurado'),... Otra opción de retorno pero ignora el addComplexType
 function getAseguradoValidate($tipDoc, $nroDoc, $fecValid) {
 	//echo $_SERVER['REMOTE_ADDR']."|||".$_SERVER['PHP_AUTH_USER']."|||".$_SERVER['PHP_AUTH_PW'];
@@ -295,6 +308,313 @@ function getReembolsoValida($tipDoc, $nroDoc) {
     return $ar;
 }
 
+/************************************************/
+
+function getValidacionFechaNacimientoAsegurado($tipDocIdent, $nroDocIdent, $fecNacimiento) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $tipDocIdent;
+	$p[] = $nroDocIdent;
+	$p[] = $fecNacimiento;
+    $rs = $a->getValidacionFechaNacimientoAsegurado($p);
+	
+    $ar = array();
+    $nr = count($rs);
+    if ($nr > 0) {
+        if (isset($rs['Error'])) {
+            $ar[0]['Error'] = 'Ingrese el dato requerido';
+        } else {
+            for ($i = 0; $i < $nr; $i++) {
+				$ar[$i]['id'] = $rs[$i]['id'];
+                $ar[$i]['accesscode'] = $rs[$i]['accesscode'];
+            }
+        }
+    } else {
+        $ar[0]['Error'] = 'No se encontro ningún resultado';
+    }
+    
+    return $ar;
+}
+
+function updateClaveAsegurado($idAsegurado, $clave) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+    
+    include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $idAsegurado;
+	$p[] = $clave;
+    $rs = $a->updateClaveAsegurado($p);
+	$ar = array();
+	$ar[0]['msg'] = $rs;
+	return $ar;
+}
+
+function getLoginAsegurado($tipDocIdent, $nroDocIdent, $clave) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $tipDocIdent;
+	$p[] = $nroDocIdent;
+	$p[] = $clave;
+    $rs = $a->getLoginAsegurado($p);
+	
+    $ar = array();
+    $nr = count($rs);
+    if ($nr > 0) {
+        if (isset($rs['Error'])) {
+            $ar[0]['Error'] = 'Ingrese el dato requerido';
+        } else {
+            for ($i = 0; $i < $nr; $i++) {
+				$ar[$i]['id'] = $rs[$i]['id'];
+                $ar[$i]['accesscode'] = $rs[$i]['accesscode'];
+            }
+        }
+    } else {
+        $ar[0]['Error'] = 'No se encontro ningún resultado';
+    }
+    
+    return $ar;
+}
+
+function registrarEmailAsegurado($idAsegurado, $email){
+	
+	if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+	$a = new Afiliado();
+	$p['id_beneficiario'] = $idAsegurado;
+	$p['email'] = $email;
+	$p['his_descrip'] = 'INTRANET ASEGURADO';
+	$p['his_usu_accion'] = '1|'.date("Y-m-d H:i:s");
+	$p['his_accion'] = 'C';
+	
+	$cant = $a->valida_email_asegurado($p["id_beneficiario"],$p["email"]);
+	if($cant == 0){
+		$rs = $a->insert_email_asegurado($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			for ($i = 0; $i < $nr; $i++) {
+				$afiliado[$i]['msg'] = ($rs[$i]['sp_crud_tbl_historial_email']=="1")?"Se registro Correctamente":"No se puedo registrar, ocurrio un error";
+			}
+		} else {
+			$afiliado[0]['msg'] = "No se puedo registrar, ocurrio un error";
+		}
+	} else {
+		$afiliado[0]['msg'] = "El email ingresado ya existe";
+	}
+	
+	//echo json_encode(array('emailAsegurado'=>$afiliado));
+	return $afiliado;
+}
+
+function registrarTelefonoAsegurado($idAsegurado, $idtipotelef, $nrotelef){
+	
+	if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+	$a = new Afiliado();
+	$p['id_tipotelef'] = $idtipotelef;
+	$p['id_beneficiario'] = $idAsegurado;
+	$p['nro_telef'] = $nrotelef;
+	$p['his_descrip'] = 'INTRANET ASEGURADO';
+	$p['his_usu_accion'] = '1|'.date("Y-m-d H:i:s");
+	$p['his_accion'] = 'C';
+	
+	$cant = $a->valida_telefono_asegurado($p["id_beneficiario"],$p["nro_telef"]);
+	if($cant == 0){
+		$rs = $a->insert_telefono_asegurado($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			for ($i = 0; $i < $nr; $i++) {
+				$afiliado[$i]['msg'] = ($rs[$i]['sp_crud_tbl_historial_telefono']=="1")?"Se registro Correctamente":"";
+			}
+		} else {
+			$afiliado[0]['msg'] = "No se puedo registrar, ocurrio un error";
+		}
+	} else {
+		$afiliado[0]['msg'] = "El numero de telefono ingresado ya existe";
+	}
+	
+	//echo json_encode(array('telefonoAsegurado'=>$afiliado));
+	return $afiliado;
+}
+
+function getInformacionAdicionalAsegurado($idAsegurado) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $idAsegurado;
+    $rs = $a->getInformacionAdicionalAsegurado($p);
+	
+    $ar = array();
+    $nr = count($rs);
+    if ($nr > 0) {
+        if (isset($rs['Error'])) {
+            $ar[0]['Error'] = 'Ingrese el dato requerido';
+        } else {
+            for ($i = 0; $i < $nr; $i++) {
+				$ar[$i]['id'] = $rs[$i]['id'];
+                $ar[$i]['ubigeodireccionprincipal'] = $rs[$i]['ubigeodireccionprincipal'];
+				$ar[$i]['direccionprincipal'] = $rs[$i]['direccionprincipal'];
+				$ar[$i]['referenciadireccionprincipal'] = $rs[$i]['referenciadireccionprincipal'];
+				$ar[$i]['email'] = $rs[$i]['email'];
+				$ar[$i]['telefono'] = $rs[$i]['telefono'];
+				$ar[$i]['celular'] = $rs[$i]['celular'];
+            }
+        }
+    } else {
+        $ar[0]['Error'] = 'No se encontro ningún resultado';
+    }
+    
+    return $ar;
+}
+
+function updateDatosAdicionalesAsegurado($idAsegurado, $direccionprincipal, $referenciadireccionprincipal, $ubigeodireccionprincipal) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+    
+    include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $idAsegurado;
+	$p[] = utf8_encode($direccionprincipal);
+	$p[] = utf8_encode($referenciadireccionprincipal);
+	$p[] = $ubigeodireccionprincipal;
+	$p[] = '1|'.date("Y-m-d H:i:s");
+    $rs = $a->updateDatosAdicionalesAsegurado($p);
+	$ar = array();
+	$ar[0]['msg'] = $rs;
+	return $ar;
+}
+
+function getDepartamento() {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+    $a = new Afiliado();
+    $rs = $a->getDepartamento();
+	
+    $ar = array();
+    $nr = count($rs);
+    if ($nr > 0) {
+        if (isset($rs['Error'])) {
+            $ar[0]['Error'] = 'Ingrese el dato requerido';
+        } else {
+            for ($i = 0; $i < $nr; $i++) {
+				$ar[$i]['id'] = $rs[$i]['id_dep'];
+                $ar[$i]['nombre'] = $rs[$i]['departamento'];
+            }
+        }
+    } else {
+        $ar[0]['Error'] = 'No se encontro ningún resultado';
+    }
+    
+    return $ar;
+}
+
+function getProvincia($idDepartamento) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $idDepartamento;
+    $rs = $a->getProvincia($p);
+	
+    $ar = array();
+    $nr = count($rs);
+    if ($nr > 0) {
+        if (isset($rs['Error'])) {
+            $ar[0]['Error'] = 'Ingrese el dato requerido';
+        } else {
+            for ($i = 0; $i < $nr; $i++) {
+				$ar[$i]['id'] = $rs[$i]['id_prov'];
+                $ar[$i]['nombre'] = utf8_decode($rs[$i]['provincia']);
+            }
+        }
+    } else {
+        $ar[0]['Error'] = 'No se encontro ningún resultado';
+    }
+    
+    return $ar;
+}
+
+function getDistrito($idProvincia) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $idProvincia;
+    $rs = $a->getDistrito($p);
+	
+    $ar = array();
+    $nr = count($rs);
+    if ($nr > 0) {
+        if (isset($rs['Error'])) {
+            $ar[0]['Error'] = 'Ingrese el dato requerido';
+        } else {
+            for ($i = 0; $i < $nr; $i++) {
+				$ar[$i]['id'] = $rs[$i]['id_dist'];
+                $ar[$i]['nombre'] = utf8_decode($rs[$i]['distrito']);
+            }
+        }
+    } else {
+        $ar[0]['Error'] = 'No se encontro ningún resultado';
+    }
+    
+    return $ar;
+}
 
 
 $HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : '';
