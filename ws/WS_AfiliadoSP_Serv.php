@@ -166,6 +166,7 @@ $server->register('getDepartamento', array(), array('return' => 'xsd:Array'), 'u
 $server->register('getProvincia', array('idDepartamento' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getProvincia', 'rpc', 'encoded', 'WS actualiza datos adicionales del asegurado.');
 $server->register('getDistrito', array('idProvincia' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getDistrito', 'rpc', 'encoded', 'WS actualiza datos adicionales del asegurado.');
 
+$server->register('registrarAuditoriaCambios', array('tabla' => 'xsd:string', 'idregistro' => 'xsd:string', 'nombrecampo' => 'xsd:string', 'valoranterior' => 'xsd:string', 'valornuevo' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#registrarAuditoriaCambios', 'rpc', 'encoded', 'WS registra auditoria cambios.');
 
 //array('return' => 'tns:asegurado'),... Otra opción de retorno pero ignora el addComplexType
 function getAseguradoValidate($tipDoc, $nroDoc, $fecValid) {
@@ -614,6 +615,41 @@ function getDistrito($idProvincia) {
     }
     
     return $ar;
+}
+
+function registrarAuditoriaCambios($tabla, $idregistro, $nombrecampo, $valoranterior, $valornuevo){
+	
+	if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+	$a = new Afiliado();
+	$p['tabla'] = $tabla;
+	$p['idreg'] = $idregistro;
+	$p['nomcampo'] = $nombrecampo;
+	$p['valorante'] = $valoranterior;
+	$p['valornue'] = $valornuevo;
+	$p['usu_auditoria'] = '1|'.date("Y-m-d H:i:s");
+	
+	if($valoranterior != $valornuevo){
+		$rs = $a->insert_auditoria_cambios($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			for ($i = 0; $i < $nr; $i++) {
+				$afiliado[$i]['msg'] = ($rs[$i]['sp_regauditoria_cambios']=="1")?"Se registro Correctamente":"";
+			}
+		} else {
+			$afiliado[0]['msg'] = "No se puedo registrar, ocurrio un error";
+		}
+	} else {
+		$afiliado[0]['msg'] = "El valor anterior debe ser diferente al valor nuevo";
+	}
+	
+	return $afiliado;
 }
 
 

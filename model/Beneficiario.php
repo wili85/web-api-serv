@@ -446,6 +446,10 @@ where tipodedocumentodelafiliado='".$p['tipDoc']."' and numerodedocumentodelafil
 		return $this->readFunctionPostgresTransaction2('sp_crud_tbl_historial_telefono',$p);
     }
 	
+	public function insert_auditoria_cambios($p){
+		return $this->readFunctionPostgresTransaction2('sp_regauditoria_cambios',$p);
+    }
+	
 	public function getValidacionFechaNacimientoAsegurado($par){
 		$conet = $this->db->getConnection();
 		$this->sql = "Select a.id,a.accesscode
