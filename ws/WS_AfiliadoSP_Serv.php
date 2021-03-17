@@ -167,6 +167,8 @@ $server->register('getProvincia', array('idDepartamento' => 'xsd:string'), array
 $server->register('getDistrito', array('idProvincia' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getDistrito', 'rpc', 'encoded', 'WS actualiza datos adicionales del asegurado.');
 
 $server->register('registrarAuditoriaCambios', array('tabla' => 'xsd:string', 'idregistro' => 'xsd:string', 'nombrecampo' => 'xsd:string', 'valoranterior' => 'xsd:string', 'valornuevo' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#registrarAuditoriaCambios', 'rpc', 'encoded', 'WS registra auditoria cambios.');
+$server->register('resetearClaveAsegurado', array('tipDocIdent' => 'xsd:string', 'nroDocIdent' => 'xsd:string', 'clave' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#resetearClaveAsegurado', 'rpc', 'encoded', 'WS login asegurado.');
+$server->register('getInformacionCorreoAsegurado', array('tipDocIdent' => 'xsd:string', 'nroDocIdent' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getInformacionCorreoAsegurado', 'rpc', 'encoded', 'WS resetear asegurado.');
 
 //array('return' => 'tns:asegurado'),... Otra opción de retorno pero ignora el addComplexType
 function getAseguradoValidate($tipDoc, $nroDoc, $fecValid) {
@@ -650,6 +652,61 @@ function registrarAuditoriaCambios($tabla, $idregistro, $nombrecampo, $valorante
 	}
 	
 	return $afiliado;
+}
+
+function resetearClaveAsegurado($tipDocIdent, $nroDocIdent, $clave) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+    
+    include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $tipDocIdent;
+	$p[] = $nroDocIdent;
+	$p[] = $clave;
+    $rs = $a->resetearClaveAsegurado($p);
+	$ar = array();
+	$ar[0]['msg'] = $rs;
+	return $ar;
+}
+
+function getInformacionCorreoAsegurado($tipDocIdent, $nroDocIdent) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $tipDocIdent;
+	$p[] = $nroDocIdent;
+    $rs = $a->getInformacionCorreoAsegurado($p);
+	
+    $ar = array();
+    $nr = count($rs);
+    if ($nr > 0) {
+        if (isset($rs['Error'])) {
+            $ar[0]['Error'] = 'Ingrese el dato requerido';
+        } else {
+            for ($i = 0; $i < $nr; $i++) {
+				$ar[$i]['id'] = $rs[$i]['id'];
+                $ar[$i]['nombres'] = utf8_decode($rs[$i]['nombres']);
+				$ar[$i]['apellidopaterno'] = utf8_decode($rs[$i]['apellidopaterno']);
+				$ar[$i]['apellidomaterno'] = utf8_decode($rs[$i]['apellidomaterno']);
+				$ar[$i]['apellidodecasada'] = utf8_decode($rs[$i]['apellidodecasada']);
+				$ar[$i]['email'] = $rs[$i]['email'];
+            }
+        }
+    } else {
+        $ar[0]['Error'] = 'No se encontro ningún resultado';
+    }
+    
+    return $ar;
 }
 
 

@@ -46,4 +46,9 @@ if($_GET['op'] == 'valida'){
 	}
 }
 
+if($_GET['op'] == 'retorna'){
+	$token = JWT::decode($_GET['token'], 'secret_server_key');
+	echo $token->url;
+}
+
 ?>

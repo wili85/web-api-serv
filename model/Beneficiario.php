@@ -495,6 +495,16 @@ And to_char(to_date(a.fechanacimiento,'YYYYMMDD'),'DD/MM/YYYY') = '".$par[2]."'"
 		
 	}
 	
+	public function resetearClaveAsegurado($p){
+		$conet = $this->db->getConnection2();
+		$this->sql = "update aprobadossusalud2016 set accesscode=md5('".$p[2]."') Where tipodedocumentodelafiliado='".$p[0]."' And numerodedocumentodelafiliado='".$p[1]."' ";
+        $this->rs = $this->db->queryCRUD($this->sql);
+		$this->db->closeConnection();
+		//$row = count($this->rs);
+		return $this->rs;
+		
+	}
+	
 	public function updateDatosAdicionalesAsegurado($p){
 		$conet = $this->db->getConnection2();
 		$this->sql = "Update aprobadossusalud2016 set direccionprincipal='".$p[1]."', referenciadireccionprincipal='".$p[2]."', ubigeodireccionprincipal='".$p[3]."', us_upd='".$p[4]."' Where id=".$p[0];
@@ -548,6 +558,20 @@ And a.accesscode = md5('".$par[2]."')";
 (select nro_telef from tbl_historial_telefono where id_beneficiario=t1.id and id_tipotelef='2' order by split_part(auditoria_ingreso, '|', 2)::timestamp desc  limit 1)celular
 from aprobadossusalud2016 t1
 where t1.id=".$par[0];
+		//echo $this->sql;exit();
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
+	public function getInformacionCorreoAsegurado($par){
+		$conet = $this->db->getConnection();
+		$this->sql = "select id,nombres,apellidopaterno,apellidomaterno,apellidodecasada,
+(select email from tbl_historial_email where id_beneficiario=t1.id order by split_part(auditoria_ingreso, '|', 2)::timestamp desc limit 1)email
+from aprobadossusalud2016 t1
+Where t1.tipodedocumentodelafiliado='".$par[0]."' And t1.numerodedocumentodelafiliado='".$par[1]."' ";
 		//echo $this->sql;exit();
         $this->rs = $this->db->query($this->sql);
 		$this->db->closeConnection();
