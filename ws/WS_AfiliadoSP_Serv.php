@@ -217,6 +217,7 @@ function getAseguradoValidate($tipDoc, $nroDoc, $fecValid) {
 					$afiliado->caducidad = $rs[$i]['caducidad'];
 					$afiliado->discapacidad = $rs[$i]['discapacidad'];
 					$afiliado->otroseguro = $rs[$i]['otroseguro'];
+					$afiliado->unidad_pnp = $rs[$i]['unidad_pnp'];
 					return $afiliado;
 				}else{
 					$ar[0]['Error'] = 'El asegurado no esta activo';

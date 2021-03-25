@@ -64,6 +64,7 @@ function get_busafi_activo($nroDoc, $nomPer = '', $apePatPer = '', $apeMatPer = 
                 $ar[$i]['apecastitular'] = utf8_decode($rs[$i]['apecastitular']);
                 $ar[$i]['nomtitular'] = utf8_decode($rs[$i]['nomtitular']);
 				$ar[$i]['otroseguro'] = $rs[$i]['otroseguro'];
+				$ar[$i]['unidad_pnp'] = $rs[$i]['unidad_pnp'];
             }
         }
     }
@@ -120,6 +121,7 @@ function getAseguradoValidate($tipDoc, $nroDoc, $otroParam) {
                 $ar[$i]['apemattitular'] = utf8_decode($rs[$i]['apemattitular']);
                 $ar[$i]['apecastitular'] = utf8_decode($rs[$i]['apecastitular']);
                 $ar[$i]['nomtitular'] = utf8_decode($rs[$i]['nomtitular']);
+				$ar[$i]['unidad_pnp'] = $rs[$i]['unidad_pnp'];
             }
         }
     }

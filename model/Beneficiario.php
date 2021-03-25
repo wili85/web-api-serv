@@ -45,7 +45,7 @@ date_part('year',age( to_date(a.fechanacimiento, 'YYYYMMDD') ))edadafiliado,pa.d
 t.paisdelafiliado nompaisdeltitular,dt.val_abr nomtipdoctitular,t.numerodedocumentodelafiliado nrodoctitular,t.apellidopaterno apepattitular,t.apellidomaterno apemattitular,
 t.apellidodecasada apecastitular,t.nombres nomtitular,ea.numerodecarnetdeidentidad cip,a.ubigeodireccionprincipal ubigeo,gb.grado,s.descripcion situacion,ea.fechadefindeafiliacion caducidad,
 Case When a.incapacitado Is Null Then '0' Else a.incapacitado End discapacidad,
-case when os.id isNull then null else 'FONAFUN' end otroseguro 
+case when os.id isNull then null else 'FONAFUN' end otroseguro,coalesce(a.unidad_pnp,'')unidad_pnp 
 From aprobadossusalud2016 a Inner Join aprobadossusaludns2016 ea On a.id = ea.id_beneficiario And a.validacionreniec Not In('e','t') And a.valid_dj='' 
 --And a.check_ss='0'
 Inner Join (Select d.id_beneficiario id,Min(d.parentesco)parentesco From aprobadossusalud2016 a Inner Join aprobadossusaludns2016 d On a.id=d.id_beneficiario Where d.estadodeafiliado='1' ";
