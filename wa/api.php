@@ -632,7 +632,7 @@ class Api{
 					foreach($rsProducto as $rowProducto):
 						$receta = array();
 						$receta[] = $rs[$i]['nro_receta'];
-						$receta[] = $rowProducto['codigo'];
+						$receta[] = $rowProducto['codigo']; 
 						//print_r($receta);
 						$reembolso = new Reembolso();
 						$rsReembolso = $reembolso->validaComprobanteReceta($receta);
@@ -1195,6 +1195,13 @@ class Api{
 		$a = new Reembolso();
 		$rs = $a->notificacion($p);
 		echo json_encode($rs);
+	}
+	
+	function getSubsanacion($p){
+	
+		$rs = file_get_contents('https://app-sre-v1.saludpol.gob.pe:30094/index.php/expedientes/testanular/'.$p[0]);
+		echo json_encode($rs);
+		
 	}
 	
 	function getDetalleSolicitud($p){
