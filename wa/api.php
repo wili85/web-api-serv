@@ -2278,6 +2278,90 @@ class Api{
 	
 	}
 	
+	function getPasajeByNroDocumento($p){
+		include '../model/Pasaje.php';
+		$a = new Pasaje();
+		$rs = $a->getPasajeByNroDocumento($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$estado = "";
+					$fecha_aceptacion="";
+					$url_boletopaciente = "";//Boleto del Paciente
+					$url_boletopaciente_extra1 = "";//Boleto del Paciente Extra 1
+					$url_boletopaciente_extra2 = "";//Boleto del Paciente Extra 2
+					$url_boletopaciente_extra3 = "";//Boleto del Paciente Extra 3
+					$url_boletoacompanante = "";//Boleto del Acompañante
+					$url_boletomedico = "";//Boleto del Profesional de Salud
+					
+					if($rs[$i]['estado'] == 1)$estado = "PENDIENTE";
+					if($rs[$i]['estado'] == 2)$estado = "COMPRADO";
+					if($rs[$i]['estado'] == 0)$estado = "ANULADO";
+					
+					$originalDate3 = $rs[$i]['created_at'];
+					$fecha_registro = date("d-m-Y h:i:s", strtotime($originalDate3));
+					$originalDate2 = $rs[$i]['fecha_solicitud'];
+					$fecha_solicitud = date("d-m-Y", strtotime($originalDate2));
+					$originalDate4 = $rs[$i]['fecha_viaje'];
+					$fecha_viaje = date("d-m-Y", strtotime($originalDate4));
+					
+					if($rs[$i]['fecha_aceptacion']!=""){
+						$originalDate1 = $rs[$i]['fecha_aceptacion'];
+						$fecha_aceptacion = date("d-m-Y", strtotime($originalDate1));
+					}
+					if($rs[$i]['url_boletopaciente']!=""){
+						$url_boletopaciente = ruta_pasaje."/storage/".$rs[$i]['url_boletopaciente'];
+					}
+					if($rs[$i]['url_boletopaciente_extra1']!=""){
+						$url_boletopaciente_extra1 = ruta_pasaje."/storage/".$rs[$i]['url_boletopaciente_extra1'];
+					}
+					if($rs[$i]['url_boletopaciente_extra2']!=""){
+						$url_boletopaciente_extra2 = ruta_pasaje."/storage/".$rs[$i]['url_boletopaciente_extra2'];
+					}
+					if($rs[$i]['url_boletopaciente_extra3']!=""){
+						$url_boletopaciente_extra3 = ruta_pasaje."/storage/".$rs[$i]['url_boletopaciente_extra3'];
+					}
+					if($rs[$i]['url_boletoacompanante']!=""){
+						$url_boletoacompanante = ruta_pasaje."/storage/".$rs[$i]['url_boletoacompanante'];
+					}
+					if($rs[$i]['url_boletomedico']!=""){
+						$url_boletomedico = ruta_pasaje."/storage/".$rs[$i]['url_boletomedico'];
+					}
+					
+					$pasaje[$i]['dni'] = $rs[$i]['dni'];
+					$pasaje[$i]['persona'] = $rs[$i]['nombre']." ".$rs[$i]['paterno']." ".$rs[$i]['materno'];
+					$pasaje[$i]['tipoafiliado'] = $rs[$i]['tipoafiliado'];
+					$pasaje[$i]['nombre_ud'] = $rs[$i]['nombre_ud'];
+					$pasaje[$i]['fecha_registro'] = $fecha_registro;
+					$pasaje[$i]['fecha_solicitud'] = $fecha_solicitud;
+					$pasaje[$i]['lugar_origen'] = $rs[$i]['lugar_origen'];
+					$pasaje[$i]['lugar_destino'] = $rs[$i]['lugar_destino'];
+					$pasaje[$i]['nro_pasaje'] = $rs[$i]['nro_pasaje'];
+					$pasaje[$i]['fecha_viaje'] = $fecha_viaje;
+					$pasaje[$i]['fecha_aceptacion'] = $fecha_aceptacion;
+					$pasaje[$i]['monto_total'] = $rs[$i]['monto_total'];
+					$pasaje[$i]['estado'] = $estado;
+					$pasaje[$i]['url_boletopaciente'] = $url_boletopaciente;
+					$pasaje[$i]['url_boletopaciente_extra1'] = $url_boletopaciente_extra1;
+					$pasaje[$i]['url_boletopaciente_extra2'] = $url_boletopaciente_extra2;
+					$pasaje[$i]['url_boletopaciente_extra3'] = $url_boletopaciente_extra3;
+					$pasaje[$i]['url_boletoacompanante'] = $url_boletoacompanante;
+					$pasaje[$i]['url_boletomedico'] = $url_boletomedico;
+				}
+				
+				echo json_encode(array('pasaje'=>$pasaje));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten pasajes";
+			echo json_encode(array('pasaje'=>$msg));
+		}
+	
+	}
+	
 	
 }
 
