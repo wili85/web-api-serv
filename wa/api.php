@@ -2340,10 +2340,10 @@ class Api{
 					$pasaje[$i]['fecha_solicitud'] = $fecha_solicitud;
 					$pasaje[$i]['lugar_origen'] = $rs[$i]['lugar_origen'];
 					$pasaje[$i]['lugar_destino'] = $rs[$i]['lugar_destino'];
-					$pasaje[$i]['nro_pasaje'] = $rs[$i]['nro_pasaje'];
+					$pasaje[$i]['nro_pasaje'] = ($rs[$i]['nro_pasaje']!=null)?$rs[$i]['nro_pasaje']:"";
 					$pasaje[$i]['fecha_viaje'] = $fecha_viaje;
 					$pasaje[$i]['fecha_aceptacion'] = $fecha_aceptacion;
-					$pasaje[$i]['monto_total'] = $rs[$i]['monto_total'];
+					$pasaje[$i]['monto_total'] = ($rs[$i]['monto_total']!=null)?$rs[$i]['monto_total']:"";
 					$pasaje[$i]['estado'] = $estado;
 					$pasaje[$i]['url_boletopaciente'] = $url_boletopaciente;
 					$pasaje[$i]['url_boletopaciente_extra1'] = $url_boletopaciente_extra1;

@@ -25,7 +25,7 @@ class Pasaje {
  inner join especialidades on pasajes.id_especialidad = especialidades.id 
  inner join establecimientos on pasajes.id_establecimiento = establecimientos.id 
  left join oficinas on pasajes.id_oficina = oficinas.id 
- inner join empresas on pasajes.id_empresa=empresas.id
+ left join empresas on pasajes.id_empresa=empresas.id
  inner join uds on pasajes.id_ud = uds.id";
  		$this->sql .= " WHERE dni = '".$p["nroDoc"]."'";
  		$this->sql .=" order by pasajes.id desc";
