@@ -110,7 +110,16 @@
 				$p[] = $_POST['fecha'];
 				$p[] = $_POST['nroreceta'];
 				$p[] = $_POST['nroruc'];
-				$p[] = $_POST['nrocomprobante'];
+				
+				//$p[] = $_POST['nrocomprobante'];
+				$nrocomprobante = explode("-",$_POST['nrocomprobante']);
+				$seriecomprobante = $nrocomprobante[0];
+				$nrocomprobante = $nrocomprobante[1];
+				$p[] = strtoupper($seriecomprobante);
+				$p[] = strtoupper($nrocomprobante);
+				$p[] = $_POST['importetotal'];
+				$p[] = 1;
+				
 				$p[] = $_POST['tipocomprobante'];
 				$p[] = "1";//flagmedicina
 				$p[] = "0";//flagbiomedico
