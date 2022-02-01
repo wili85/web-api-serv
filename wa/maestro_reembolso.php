@@ -247,7 +247,12 @@
 				$api->crudItemComprobante($p);
 			}elseif($_POST['op'] == 'validarnrocomprobante'){
 				$p = array();
-				$p[] = $_POST['nrocomprobante'];
+				$nrocomprobante = explode("-",$_POST['nrocomprobante']);
+				$serie = $nrocomprobante[0];
+				$numero = $nrocomprobante[1];
+				//$p[] = $_POST['nrocomprobante'];
+				$p[] = strtoupper($serie);
+				$p[] = strtoupper($numero);
 				$p[] = $_POST['nroruc'];
 				$api->validarNroComprobante($p);
 			}elseif($_POST['op'] == 'detalle_solicitud'){

@@ -234,52 +234,95 @@ class Api{
 		$a = new Reembolso();
 		//$tipDoc = $item['tipDoc'];
 		//$nroDoc = $item['nroDoc'];
-		$rs = $a->crudComprobante($p);
-		$ar = array();
-		$nr = count($rs);
-		if ($nr > 0) {
-			if (isset($rs['Error'])) {
-				$this->error('No hay elementos');
-			} else {
-				for ($i = 0; $i < $nr; $i++) {
-					$afiliado[$i]['idcomprobante'] = $rs[$i]['idcomprobante'];
-					$afiliado[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
-					$afiliado[$i]['fecha'] = date("d/m/Y", strtotime($rs[$i]['fecha']));
-					$afiliado[$i]['nroreceta'] = $rs[$i]['nroreceta'];
-					$afiliado[$i]['nroruc'] = $rs[$i]['nroruc'];
-					$afiliado[$i]['nrocomprobante'] = $rs[$i]['nrocomprobante'];
-					$afiliado[$i]['flagregistro'] = $rs[$i]['flagregistro'];
-					$afiliado[$i]['tipocomprobante'] = $rs[$i]['tipocomprobante'];
-					$afiliado[$i]['flagmedicina'] = $rs[$i]['flagmedicina'];
-					$afiliado[$i]['flagbiomedico'] = $rs[$i]['flagbiomedico'];
-					$afiliado[$i]['flagserviciomedico'] = $rs[$i]['flagserviciomedico'];
-					$afiliado[$i]['importetotal'] = $rs[$i]['importetotal'];
-					$afiliado[$i]['importeobs'] = $rs[$i]['importeobs'];
-					$afiliado[$i]['descuento'] = $rs[$i]['descuento'];
-					$afiliado[$i]['obs'] = $rs[$i]['obs'];
-					$afiliado[$i]['importe_reembolsable'] = $rs[$i]['importe_reembolsable'];
-					$afiliado[$i]['tipocomprobantedes'] = $rs[$i]['tipocomprobantedes'];
-					$afiliado[$i]['concepto'] = $rs[$i]['concepto'];
-					$afiliado[$i]['importemedicina'] = $rs[$i]['importemedicina'];
-					$afiliado[$i]['importebiomedico'] = $rs[$i]['importebiomedico'];
-					$afiliado[$i]['importeservicio'] = $rs[$i]['importeservicio'];
-					$afiliado[$i]['importemedicinaobs'] = $rs[$i]['importemedicinaobs'];
-					$afiliado[$i]['importebiomedicoobs'] = $rs[$i]['importebiomedicoobs'];
-					$afiliado[$i]['importeservicioobs'] = $rs[$i]['importeservicioobs'];
-					$afiliado[$i]['baseimponible'] = $rs[$i]['baseimponible'];
-					$afiliado[$i]['porcentajeigv'] = $rs[$i]['porcentajeigv'];
-					$afiliado[$i]['valorigv'] = $rs[$i]['valorigv'];
-					$afiliado[$i]['rutacomprobante'] = (isset($rs[$i]['rutacomprobante']))?$rs[$i]['rutacomprobante']:'';
+		
+		/***************************************/
+		
+		$nroruc	= $p[5];
+		$serie	= $p[6];
+		$numero	= $p[7];
+		$pc[] = strtoupper($serie);
+		$pc[] = strtoupper($numero);
+		$pc[] = $nroruc;
+				
+		$rsc = $a->validarNroComprobante($pc);
+		$nrc = count($rsc);
+		
+		if ($nrc > 0) {
+			$cantidad = $rsc[0]['cantidad'];
+			
+			//$rs_sol = $a->getSolicitudById($p[2]);
+			//$flagregistro = $rs_sol[0]['flagregistro'];
+			
+			if($cantidad == "0"/* && $flagregistro!="0"*/){
+				$comprobante_valida[0]['msg'] = "Ok";
+				
+				/***************************************/
+		
+				$rs = $a->crudComprobante($p);
+				$ar = array();
+				$nr = count($rs);
+				if ($nr > 0) {
+					if (isset($rs['Error'])) {
+						$this->error('No hay elementos');
+					} else {
+						for ($i = 0; $i < $nr; $i++) {
+							$afiliado[$i]['idcomprobante'] = $rs[$i]['idcomprobante'];
+							$afiliado[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
+							$afiliado[$i]['fecha'] = date("d/m/Y", strtotime($rs[$i]['fecha']));
+							$afiliado[$i]['nroreceta'] = $rs[$i]['nroreceta'];
+							$afiliado[$i]['nroruc'] = $rs[$i]['nroruc'];
+							$afiliado[$i]['nrocomprobante'] = $rs[$i]['nrocomprobante'];
+							$afiliado[$i]['flagregistro'] = $rs[$i]['flagregistro'];
+							$afiliado[$i]['tipocomprobante'] = $rs[$i]['tipocomprobante'];
+							$afiliado[$i]['flagmedicina'] = $rs[$i]['flagmedicina'];
+							$afiliado[$i]['flagbiomedico'] = $rs[$i]['flagbiomedico'];
+							$afiliado[$i]['flagserviciomedico'] = $rs[$i]['flagserviciomedico'];
+							$afiliado[$i]['importetotal'] = $rs[$i]['importetotal'];
+							$afiliado[$i]['importeobs'] = $rs[$i]['importeobs'];
+							$afiliado[$i]['descuento'] = $rs[$i]['descuento'];
+							$afiliado[$i]['obs'] = $rs[$i]['obs'];
+							$afiliado[$i]['importe_reembolsable'] = $rs[$i]['importe_reembolsable'];
+							$afiliado[$i]['tipocomprobantedes'] = $rs[$i]['tipocomprobantedes'];
+							$afiliado[$i]['concepto'] = $rs[$i]['concepto'];
+							$afiliado[$i]['importemedicina'] = $rs[$i]['importemedicina'];
+							$afiliado[$i]['importebiomedico'] = $rs[$i]['importebiomedico'];
+							$afiliado[$i]['importeservicio'] = $rs[$i]['importeservicio'];
+							$afiliado[$i]['importemedicinaobs'] = $rs[$i]['importemedicinaobs'];
+							$afiliado[$i]['importebiomedicoobs'] = $rs[$i]['importebiomedicoobs'];
+							$afiliado[$i]['importeservicioobs'] = $rs[$i]['importeservicioobs'];
+							$afiliado[$i]['baseimponible'] = $rs[$i]['baseimponible'];
+							$afiliado[$i]['porcentajeigv'] = $rs[$i]['porcentajeigv'];
+							$afiliado[$i]['valorigv'] = $rs[$i]['valorigv'];
+							$afiliado[$i]['rutacomprobante'] = (isset($rs[$i]['rutacomprobante']))?$rs[$i]['rutacomprobante']:'';
+						}
+						
+						echo json_encode(array('comprobante'=>$afiliado));
+						
+					}
+				} else {
+					//$this->error('No hay elementos');
 				}
 				
-				echo json_encode(array('comprobante'=>$afiliado));
+				/***************************************/
+				
+			}else{
+			
+				$p_anular_reembolso[] = $p[2];
+				$a->anular_reembolso($p_anular_reembolso);
+				
+				$comprobante_valida[0]['msg'] = "El comprobante ya ha sido ingresado en otra solicitud. Ingrese un comprobante distinto";
+				echo json_encode(array('comprobante'=>$comprobante_valida));
+				
 				
 			}
 		} else {
-			//$this->error('No hay elementos');
+			$comprobante_valida[0]['msg'] = "Ocurrio un error en el sistema";
+			echo json_encode(array('comprobante'=>$comprobante_valida));
 		}
-    	//echo json_encode(array('comprobante'=>$afiliado));
 	
+		
+		
+		
 	}
 	
 	function crudItemComprobante($p){
@@ -327,6 +370,7 @@ class Api{
 		
 		$ar = array();
 		$nr = count($rs);
+		
 		if ($nr > 0) {
 			if (isset($rs['Error'])) {
 				$this->error('No hay elementos');
@@ -424,7 +468,8 @@ class Api{
 				}
 			}
 		} else {
-			//$this->error('No hay elementos');
+			//$afiliado[0]['msg'] = "El Comprobante ya fue registrado";
+			//echo json_encode(array('reembolso'=>$afiliado));
 		}
 		
 		

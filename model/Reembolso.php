@@ -237,6 +237,25 @@ class Reembolso {
 		
 	}
 	
- 
+ 	
+	public function anular_reembolso($p){
+		$this->sql = "update solicitud set flagregistro='0' Where idsolicitud='".$p[0]."'";
+        $this->rs = $this->db->queryCRUD($this->sql);
+		$this->sql = "update comprobante set flagregistro='0' Where idsolicitud='".$p[0]."'";
+		$this->rs = $this->db->queryCRUD($this->sql);
+		$this->db->closeConnection();
+		return $this->rs;
+		
+	}
+	
+	public function getSolicitudById($id){
+		$this->sql = "select flagregistro from solicitud where idsolicitud=".$id;
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}	
+	
 
 }
