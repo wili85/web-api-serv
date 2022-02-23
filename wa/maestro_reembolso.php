@@ -104,7 +104,7 @@
 				$p[] = "";
 				$p[] = "";
 				$p[] = "";
-				$p[] = "";
+				$p[] = ""; 
 				$api->getComprobanteById($p);
 			}elseif($_POST['op'] == 'guardarcomprobante'){
 				$p = array();
