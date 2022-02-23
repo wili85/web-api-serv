@@ -101,6 +101,10 @@
 				$p[] = "";
 				$p[] = "";
 				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
 				$api->getComprobanteById($p);
 			}elseif($_POST['op'] == 'guardarcomprobante'){
 				$p = array();
@@ -138,6 +142,7 @@
 				$p[] = "18";//porcentajeigv
 				$p[] = "0";//valorigv
 				$p[] = $_POST['rutacomprobante'];
+				$p[] = "";
 				$api->getComprobanteById($p);
 			}elseif($_POST['op'] == 'verSolicitud'){
 				$p = array();
