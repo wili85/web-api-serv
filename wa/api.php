@@ -246,14 +246,14 @@ class Api{
 				
 		$rsc = $a->validarNroComprobante($pc);
 		$nrc = count($rsc);
-		
-		if ($nrc > 0) {
+
+		if ($nrc > 0 || $numero=="") {
 			$cantidad = $rsc[0]['cantidad'];
 			
 			//$rs_sol = $a->getSolicitudById($p[2]);
 			//$flagregistro = $rs_sol[0]['flagregistro'];
 			
-			if($cantidad == "0"/* && $flagregistro!="0"*/){
+			if($cantidad == "0"/* && $flagregistro!="0"*/ || $numero==""){
 				$comprobante_valida[0]['msg'] = "Ok";
 				
 				/***************************************/
@@ -1582,11 +1582,17 @@ class Api{
 					$afiliado[$i]['fecha'] = $rs[$i]['dia'];
 					$afiliado[$i]['hora'] = $rs[$i]['hora'];
 					$afiliado[$i]['parentesco'] = $rs[$i]['parentesco'];
+					$afiliado[$i]['id_estado_cita'] = $rs[$i]['id_estado_cita'];
 					$afiliado[$i]['estado'] = $rs[$i]['estado_cita'];
 					$afiliado[$i]['medico_nombre'] = $rs[$i]['medico_nombre'];
 					$afiliado[$i]['medico_paterno'] = $rs[$i]['medico_paterno'];
 					$afiliado[$i]['medico_materno'] = $rs[$i]['medico_materno'];
 					$afiliado[$i]['grado'] = $rs[$i]['grado'];
+					$afiliado[$i]['id_atencion'] = $rs[$i]['id_atencion'];
+					$afiliado[$i]['atencion'] = $rs[$i]['atencion'];
+					$afiliado[$i]['url_reunion'] = $rs[$i]['url_reunion'];
+					$afiliado[$i]['id_reunion'] = $rs[$i]['id_reunion'];
+					$afiliado[$i]['observacion'] = $rs[$i]['observacion'];
 				}
 				
 				echo json_encode(array('cita'=>$afiliado));

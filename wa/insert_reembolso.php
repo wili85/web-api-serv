@@ -88,6 +88,17 @@
 			$p[67] = $_POST['flagnotificacion'];
 			$p[68] = "";
 			
+			$p[69] = "";
+			$p[70] = "";
+			$p[71] = "";
+			$p[72] = "";
+			$p[73] = "";
+			$p[74] = "0";
+			$p[75] = "";
+			$p[76] = "";
+			$p[77] = "";
+			$p[78] = "";
+			
 			//$api->getReembolsoById($item);
 			//"BEGIN; select sp_crud_solicitud('c','0','AUTOMATICO','27/04/2019','','298941','DNI','62126178','ABAL SOTOMAYOR, JUAN CARLOS ','25','M','TITULAR','DNI','62126178','ABAL SOTOMAYOR, JUAN CARLOS ','25','M','SUBOFICIAL DE TERCERA','DIRECCION','3340219','3340218','3340217','3340216','CAJA CHICA','','PACIENTES HOSPITALIZADOS','257','257','18','CIRUGIA PEDIATRICA','','','N','N','N','N','1','8','170','86','DNI','62126178','ABAL SOTOMAYOR JUAN CARLOS','','171','WYAMUNAQUE','','27/04/2019','4','M','','','','','','','','','','','1','ref_cursor'); FETCH ALL IN ref_cursor;"
 			//print_r($p);exit();

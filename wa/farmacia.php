@@ -107,7 +107,10 @@
 				
 				$item = array(
 					'id_cita' => 0,
-					'dni_beneficiario' => $_POST['dni_beneficiario']
+					'dni_beneficiario' => $_POST['dni_beneficiario'],
+					'id_estado' => $_POST['id_estado'],
+					'fecha_ini' => $_POST['fecha_ini'],
+					'fecha_fin' => $_POST['fecha_fin']
 				);
 				
 				$api->getCitas($item);
@@ -171,7 +174,10 @@
 				
 				$item = array(
 					'id_cita' => $_POST['id_cita'],
-					'dni_beneficiario' => '0'
+					'dni_beneficiario' => '0',
+					'id_estado' => '0',
+					'fecha_ini' => '',
+					'fecha_fin' => ''
 				);
 				
 				$api->getCitas($item);
