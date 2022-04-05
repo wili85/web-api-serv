@@ -1593,6 +1593,8 @@ class Api{
 					$afiliado[$i]['url_reunion'] = $rs[$i]['url_reunion'];
 					$afiliado[$i]['id_reunion'] = $rs[$i]['id_reunion'];
 					$afiliado[$i]['observacion'] = $rs[$i]['observacion'];
+					$afiliado[$i]['tipo_observacion'] = $rs[$i]['tipo_observacion'];
+					$afiliado[$i]['id_tipo_observacion'] = $rs[$i]['id_tipo_observacion'];
 				}
 				
 				echo json_encode(array('cita'=>$afiliado));
