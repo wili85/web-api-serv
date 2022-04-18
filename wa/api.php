@@ -1557,10 +1557,13 @@ class Api{
 	function getCitas($p){
 		include '../model/Farmacia.php';
 		$a = new Farmacia();
+		$msg = NULL;
+		$afiliado = NULL;
 		
 		if($p["dni_beneficiario"]==""){
-			$msg[0]['msg'] = "Debe ingresar un Dni";
-			echo json_encode(array('cita'=>$msg));
+			//$msg[0]['msg'] = "Debe ingresar un Dni";
+			//echo json_encode(array('cita'=>$msg));
+			$msg= "Debe ingresar un Dni";
 		}
 		
 		$rs = $a->consulta_cita($p);
@@ -1568,7 +1571,7 @@ class Api{
 		$nr = count($rs);
 		if ($nr > 0) {
 			if (isset($rs['Error'])) {
-				$this->error('No hay elementos');
+				//$this->error('No hay elementos');
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
 					$afiliado[$i]['id_cita'] = $rs[$i]['id'];
@@ -1597,12 +1600,17 @@ class Api{
 					$afiliado[$i]['id_tipo_observacion'] = $rs[$i]['id_tipo_observacion'];
 				}
 				
-				echo json_encode(array('cita'=>$afiliado));
+				//echo json_encode(array('cita'=>$afiliado));
 			}
 		} else {
-			$msg[0]['msg'] = "El dni no tiene citas";
-			echo json_encode(array('cita'=>$msg));
+			//$msg[0]['msg'] = "El dni no tiene citas";
+			//echo json_encode(array('cita'=>$msg));
+			$msg = "El dni no tiene citas";
 		}
+		
+		$resultado["msg"]=$msg;
+		$resultado["cita"]=$afiliado;
+		echo json_encode($resultado);
 	
 	}
 	
