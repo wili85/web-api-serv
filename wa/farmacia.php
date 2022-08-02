@@ -29,6 +29,18 @@
 				);
 				
 				$api->getRecetaValeByNroDoc($item);	
+			
+			}elseif($_POST['op'] == 'listar_all'){
+			
+				$tipDoc = "";
+				if($_POST['tipDoc'] == "1")$tipDoc="DNI";
+				$item = array(
+					'idReceta' 	=> 0,
+					'tipDoc' 	=> $tipDoc,
+					'nroDoc' 	=> $_POST['nroDoc'],
+				);
+				
+				$api->getRecetaValeByNroDocAll($item);	
 				
 			}elseif($_POST['op'] == 'receta'){
 				

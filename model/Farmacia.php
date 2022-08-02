@@ -30,6 +30,10 @@ class Farmacia {
 		return $this->readFunctionPostgres('sp_consulta_receta_vale',$p);
     }
 	
+	public function consulta_receta_vale_all($p){
+		return $this->readFunctionPostgres('sp_consulta_receta_vale_all',$p);
+    }
+	
 	public function consulta_producto_receta_vale($p){
 		return $this->readFunctionPostgres('sp_consulta_producto_receta',$p);
     }

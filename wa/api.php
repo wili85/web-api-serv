@@ -722,6 +722,79 @@ class Api{
 	
 	}
 	
+	function getRecetaValeByNroDocAll($p){
+
+		include '../model/Farmacia.php';
+		include '../model/Reembolso.php';
+		$a = new Farmacia();
+		$rs = $a->consulta_receta_vale_all($p);//09917113
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+
+				
+				$r = 0;
+				for ($i = 0; $i < $nr; $i++) {
+					
+					$reembolso = array();
+					$reembolso[] = 0;
+					$reembolso[] = $rs[$i]['nro_receta'];
+					$rsProducto = $a->consulta_producto_receta_vale($reembolso);
+					//print_r($rsProducto);
+					$cantProductoReceta = count($rsProducto);
+					$cantProductoReembolso = 0;
+
+					foreach($rsProducto as $rowProducto):
+						$receta = array();
+						$receta[] = $rs[$i]['nro_receta'];
+						$receta[] = $rowProducto['codigo']; 
+						//print_r($receta);
+						$reembolso = new Reembolso();
+						$rsReembolso = $reembolso->validaComprobanteReceta($receta);
+						if (count($rsReembolso) > 0)$cantProductoReembolso++;
+					endforeach;
+					
+					//echo count($rsReembolso);
+					//echo $cantProductoReceta;
+					if ($cantProductoReceta <> $cantProductoReembolso){
+						$nombre_beneficiario = "";
+						if(isset($rs[$i]['nombre_beneficiario']) && $rs[$i]['nombre_beneficiario']!="")$nombre_beneficiario .= $rs[$i]['nombre_beneficiario']." ";
+						if(isset($rs[$i]['paterno_beneficiario']) && $rs[$i]['paterno_beneficiario']!="")$nombre_beneficiario .= $rs[$i]['paterno_beneficiario']." ";
+						if(isset($rs[$i]['materno_beneficiario']) && $rs[$i]['materno_beneficiario']!="")$nombre_beneficiario .= $rs[$i]['materno_beneficiario']." ";
+						$afiliado[$r]['id'] = $rs[$i]['id'];
+						$afiliado[$r]['nro_receta'] = $rs[$i]['nro_receta'];
+						$afiliado[$r]['fecha_registro'] = date("d/m/Y", strtotime($rs[$i]['fecha_registro']));
+						$afiliado[$r]['dni_beneficiario'] = (isset($rs[$i]['dni_beneficiario']))?$rs[$i]['dni_beneficiario']:'';
+						$afiliado[$r]['nombre_beneficiario'] = $nombre_beneficiario;
+						$afiliado[$r]['tipo_beneficiario'] = (isset($rs[$i]['tipo_beneficiario']))?$rs[$i]['tipo_beneficiario']:'';
+						$afiliado[$r]['nro_historia'] = (isset($rs[$i]['nro_historia']))?$rs[$i]['nro_historia']:'';
+						$afiliado[$r]['consultorio'] = (isset($rs[$i]['consultorio']))?$rs[$i]['consultorio']:'';
+						$afiliado[$r]['farmacia'] = (isset($rs[$i]['farmacia']))?$rs[$i]['farmacia']:'';
+						$afiliado[$r]['establecimiento'] = (isset($rs[$i]['establecimiento']))?$rs[$i]['establecimiento']:'';
+						$afiliado[$r]['tipo_receta'] = (isset($rs[$i]['tipo_receta']))?$rs[$i]['tipo_receta']:'';
+						$afiliado[$r]['id_consultorio'] = (isset($rs[$i]['id_consultorio']))?$rs[$i]['id_consultorio']:'';
+						$afiliado[$r]['id_farmacia'] = (isset($rs[$i]['id_farmacia']))?$rs[$i]['id_farmacia']:'';
+						$afiliado[$r]['id_establecimiento'] = (isset($rs[$i]['id_establecimiento']))?$rs[$i]['id_establecimiento']:'';
+						$r++;
+					}
+					
+				}
+				
+				echo json_encode(array('recetavale'=>$afiliado));
+			}
+		} else {
+			//$this->error('No hay elementos');
+			$afiliado[0]['msg'] = "El dni no tiene recetas";
+			echo json_encode(array('recetavale'=>$afiliado));
+		}
+    	//echo json_encode(array('reembolso'=>$afiliado));
+	
+	
+	}
+	
 	function getProductoRecetaVale($p){
 		include '../model/Farmacia.php';
 		include '../model/Reembolso.php';
