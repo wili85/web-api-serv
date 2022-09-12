@@ -366,6 +366,120 @@ class Api{
 		include '../model/Tramite.php';
 		$a = new Reembolso();
 		$t = new Tramite();
+		$rs = $a->crudSolicitud($p);
+		
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+				
+					$tipodocidentidad = ($p[40]=='DNI')?1:2;
+					$dataRemitente["ICODREMITENTE1"] = '0';
+					$dataRemitente["TIPOPERSONA"] = $tipodocidentidad;
+					$dataRemitente["NOMBRE"] = $p[42];
+					$dataRemitente["NUMDOCUMENTO"] = $p[41];
+					$dataRemitente["DIRECCION"] = '';
+					$dataRemitente["DEPARTAMENTO"] = '';
+					$dataRemitente["PROVINCIA"] = '';
+					$dataRemitente["DISTRITO"] = '';
+					$dataRemitente["APELLIDOPATERNO"] = '';
+					$dataRemitente["APELLIDOMATERNO"] = '';
+					$icodremitente = $t->registrarRemitente($dataRemitente);
+					
+					$Icodmovimiento="0";
+					$Icodoficinaderivar="102";
+					$Icodindicacionderivar="2";
+					$Cprioridadderivar="1";
+					$cadena1 = $Icodmovimiento."]]".$Icodoficinaderivar."]]".$Icodindicacionderivar."]]".$Cprioridadderivar."]]0]]";
+					
+					$dataSolicitud["icodtramite1"] = '0';
+					$dataSolicitud["nflgtipodoc1"] = '1';
+					$dataSolicitud["icodtrabajadorregistro1"] = '511';
+					$dataSolicitud["icodoficinaregistro1"] = '102';
+					$dataSolicitud["icodtema1"] = '1';
+					$dataSolicitud["ccodtipodoc1"] = '10';
+					$dataSolicitud["ffecdocumento1"] = null;
+					$dataSolicitud["cnrodocumento1"] = '1';
+					$dataSolicitud["icodremitente1"] = $icodremitente;//53661;
+					$dataSolicitud["casunto1"] = 'SOLICITUD DE REMBOLSO';
+					$dataSolicitud["cobservaciones1"] = 'SOLICITUD DE REMBOLSO';
+					$dataSolicitud["nnumfolio1"] = $p[48];
+					$dataSolicitud["nflgenvio1"] = '1';
+					$dataSolicitud["ffecregistro1"] = null;
+					$dataSolicitud["nflgestado1"] = '5';
+					$dataSolicitud["nflganulado1"] = null;
+					$dataSolicitud["icodtrabajadorsolicitado1"] = null;
+					$dataSolicitud["cnomremite1"] = null;
+					$dataSolicitud["nflgclasedoc1"] = '2';
+					$dataSolicitud["ffecfinalizado1"] = null;
+					$dataSolicitud["icantidadcartagarantias1"] = null;
+					$dataSolicitud["cmontocartagarantias1"] = null;
+					$dataSolicitud["icodclasificacion1"] = '1';
+					$dataSolicitud["cadena1"] = '';
+					$dataSolicitud["cadena2"] = '';
+					$dataSolicitud["idesqobs"] = '';
+					
+					$icodtramite = $t->registrarHt($dataSolicitud);
+					//print_r($icodtramite);
+					$tramite = $t->consultarHT($icodtramite);
+					$p[0] = 'u';
+					$p[1] = $rs[$i]['idsolicitud'];
+					$p[2] = $tramite[0]["CCODIFICACIONHT"];
+					//print_r($p);
+					$rsa = $a->crudSolicitud($p);
+					
+					
+					
+					$nra = count($rsa);
+					if ($nra > 0) {
+						if (isset($rsa['Error'])) {
+							$this->error('No hay elementos');
+						} else {
+							for ($a = 0; $a < $nra; $a++) {
+								
+								$afiliado[$a]['idsolicitud'] = $rsa[$a]['idsolicitud'];
+								$afiliado[$a]['htnumero'] = $rsa[$a]['htnumero'];
+								$afiliado[$a]['htfecha'] = $rsa[$a]['htfecha'];
+								$afiliado[$a]['nombrepaciente'] = $rsa[$a]['nombrepaciente'];
+								$afiliado[$a]['nombresolicitante'] = $rsa[$a]['nombresolicitante'];
+								$afiliado[$a]['ipressnombre'] = $rsa[$a]['ipressnombre'];
+								$afiliado[$a]['tiporeembolso'] = $rsa[$a]['tiporeembolso'];
+								$afiliado[$a]['usuario'] = $rsa[$a]['usuario'];
+								$afiliado[$a]['numinforme'] = $rsa[$a]['numinforme'];
+								$afiliado[$a]['resolucion'] = (isset($rsa[$a]['resolucion']))?$rsa[$a]['resolucion']:'';
+								$afiliado[$a]['obs_resolucion'] = (isset($rsa[$a]['obs_resolucion']))?$rsa[$a]['obs_resolucion']:'';
+								$afiliado[$a]['sede'] = $rsa[$a]['sede'];
+								$afiliado[$a]['fecpago'] = (isset($rsa[$a]['fecpago']))?$rsa[$a]['fecpago']:'';
+								$afiliado[$a]['numdocsolicitante'] = $rsa[$a]['numdocsolicitante'];
+								$afiliado[$a]['nom_archivo_resolucion'] = (isset($rsa[$a]['nom_archivo_resolucion']))?$rsa[$a]['nom_archivo_resolucion']:'';
+					
+							}
+							
+							echo json_encode(array('reembolso'=>$afiliado));
+						}
+					} else {
+					
+					}
+					
+					
+				}
+			}
+		} else {
+			
+		}
+		
+	
+	}
+	
+	function saveSolicitud_original($p){
+		include '../model/Reembolso.php';
+		include '../model/Tramite.php';
+		$a = new Reembolso();
+		$t = new Tramite();
 		$rs = $a->crud($p);
 		
 		$ar = array();
@@ -461,19 +575,16 @@ class Api{
 							echo json_encode(array('reembolso'=>$afiliado));
 						}
 					} else {
-						//$this->error('No hay elementos');
+					
 					}
 
 					
 				}
 			}
 		} else {
-			//$afiliado[0]['msg'] = "El Comprobante ya fue registrado";
-			//echo json_encode(array('reembolso'=>$afiliado));
+			
 		}
 		
-		
-    	//echo json_encode(array('reembolso'=>$afiliado));
 	
 	}
 	

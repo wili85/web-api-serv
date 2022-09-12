@@ -33,6 +33,10 @@ class Reembolso {
 		return $this->readFunctionPostgres('sp_crud_solicitud_digital',$p);
     }
 	
+	public function crudSolicitud($p){
+		return $this->readFunctionPostgres('sp_crud_solicitud_digital_movil',$p);
+    }
+	
 	public function crudComprobante($p) {
         return $this->readFunctionPostgres('sp_crud_comprobante_new',$p);
     }
