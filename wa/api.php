@@ -976,7 +976,7 @@ class Api{
 			foreach($productoreceta as $rowProducto) {
 			
 				$receta = array();
-				$receta[] = $rs->nro_receta;
+				$receta[] = (isset($rowProducto->nro_receta) && $rowProducto->nro_receta!="")?$rowProducto->nro_receta:0;
 				$receta[] = $rowProducto->codigo;
 				$reembolso = new Reembolso();
 				$rsReembolso = $reembolso->validaComprobanteReceta($receta);
