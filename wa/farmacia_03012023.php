@@ -9,7 +9,7 @@
     $api = new Api();
     $error = '';
 	
-	if(isset($_POST['usuario']) && isset($_POST['clave']) ){
+	if(isset($_POST['usuario']) && isset($_POST['clave']) /*&& isset($_POST['tipDoc']) && isset($_POST['nroDoc'])*/){
 		
 		$datos = array(
 			'usuario' => $_POST['usuario'],

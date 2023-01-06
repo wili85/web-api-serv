@@ -361,7 +361,7 @@ class Api{
 	
 	}
 	
-	function saveSolicitud_v2($p){
+	function saveSolicitud($p){
 		include '../model/Reembolso.php';
 		include '../model/Tramite.php';
 		$a = new Reembolso();
@@ -475,7 +475,7 @@ class Api{
 	
 	}
 	
-	function saveSolicitud($p){
+	function saveSolicitud_original($p){
 		include '../model/Reembolso.php';
 		include '../model/Tramite.php';
 		$a = new Reembolso();
@@ -762,61 +762,73 @@ class Api{
 	
 	function getRecetaValeByNroDoc($p){
 
+		include '../model/Farmacia.php';
 		include '../model/Reembolso.php';
-		
-		if(isset($p["nroDoc"]) && $p["nroDoc"]!="")$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=listar&tipDoc=1&nroDoc=".$p["nroDoc"];
-		if(isset($p["idReceta"]) && $p["idReceta"]!=0)$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=receta&idReceta=".$p["idReceta"];
-		
-		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$resultWebApi = curl_exec($ch);
-		
-		$dataWebApi = json_decode($resultWebApi);
-		$recetavale = $dataWebApi->recetavale;
-		$nr=count($recetavale);
-		
+		$a = new Farmacia();
+		$rs = $a->consulta_receta_vale($p);//09917113
+		$ar = array();
+		$nr = count($rs);
 		if ($nr > 0) {
-			
-			$r = 0;
-			foreach($recetavale as $rs){
-				
-				$idReceta=$rs->id;
-				$data_string_producto = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=productoreceta&idReceta=".$idReceta;
-				$ch_producto = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-				curl_setopt($ch_producto, CURLOPT_POST, TRUE);
-				curl_setopt($ch_producto, CURLOPT_POSTFIELDS, $data_string_producto);
-				curl_setopt($ch_producto, CURLOPT_RETURNTRANSFER, true);
-				$resultWebApiProducto = curl_exec($ch_producto);
-				
-				$dataWebApiProducto = json_decode($resultWebApiProducto);
-				$rsProducto = $dataWebApiProducto->productoreceta;
-				$cantProductoReceta = count($rsProducto);
-				$cantProductoReembolso = 0;
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
 
-				foreach($rsProducto as $rowProducto):
-					$receta = array();
-					$receta[] = $rs->nro_receta;
-					$receta[] = $rowProducto->codigo;
-					$reembolso = new Reembolso();
-					$rsReembolso = $reembolso->validaComprobanteReceta($receta);
-					if (count($rsReembolso) > 0)$cantProductoReembolso++;
-				endforeach;
 				
-				if ($cantProductoReceta <> $cantProductoReembolso){
-					$afiliado[$r] = $rs;
-					$r++;
+				$r = 0;
+				for ($i = 0; $i < $nr; $i++) {
+					
+					$reembolso = array();
+					$reembolso[] = 0;
+					$reembolso[] = $rs[$i]['nro_receta'];
+					$rsProducto = $a->consulta_producto_receta_vale($reembolso);
+					//print_r($rsProducto);
+					$cantProductoReceta = count($rsProducto);
+					$cantProductoReembolso = 0;
+
+					foreach($rsProducto as $rowProducto):
+						$receta = array();
+						$receta[] = $rs[$i]['nro_receta'];
+						$receta[] = $rowProducto['codigo']; 
+						//print_r($receta);
+						$reembolso = new Reembolso();
+						$rsReembolso = $reembolso->validaComprobanteReceta($receta);
+						if (count($rsReembolso) > 0)$cantProductoReembolso++;
+					endforeach;
+					
+					//echo count($rsReembolso);
+					//echo $cantProductoReceta;
+					if ($cantProductoReceta <> $cantProductoReembolso){
+						$nombre_beneficiario = "";
+						if(isset($rs[$i]['nombre_beneficiario']) && $rs[$i]['nombre_beneficiario']!="")$nombre_beneficiario .= $rs[$i]['nombre_beneficiario']." ";
+						if(isset($rs[$i]['paterno_beneficiario']) && $rs[$i]['paterno_beneficiario']!="")$nombre_beneficiario .= $rs[$i]['paterno_beneficiario']." ";
+						if(isset($rs[$i]['materno_beneficiario']) && $rs[$i]['materno_beneficiario']!="")$nombre_beneficiario .= $rs[$i]['materno_beneficiario']." ";
+						$afiliado[$r]['id'] = $rs[$i]['id'];
+						$afiliado[$r]['nro_receta'] = $rs[$i]['nro_receta'];
+						$afiliado[$r]['fecha_registro'] = date("d/m/Y", strtotime($rs[$i]['fecha_registro']));
+						$afiliado[$r]['dni_beneficiario'] = (isset($rs[$i]['dni_beneficiario']))?$rs[$i]['dni_beneficiario']:'';
+						$afiliado[$r]['nombre_beneficiario'] = $nombre_beneficiario;
+						$afiliado[$r]['tipo_beneficiario'] = (isset($rs[$i]['tipo_beneficiario']))?$rs[$i]['tipo_beneficiario']:'';
+						$afiliado[$r]['nro_historia'] = (isset($rs[$i]['nro_historia']))?$rs[$i]['nro_historia']:'';
+						$afiliado[$r]['consultorio'] = (isset($rs[$i]['consultorio']))?$rs[$i]['consultorio']:'';
+						$afiliado[$r]['farmacia'] = (isset($rs[$i]['farmacia']))?$rs[$i]['farmacia']:'';
+						$afiliado[$r]['establecimiento'] = (isset($rs[$i]['establecimiento']))?$rs[$i]['establecimiento']:'';
+						$afiliado[$r]['tipo_receta'] = (isset($rs[$i]['tipo_receta']))?$rs[$i]['tipo_receta']:'';
+						$afiliado[$r]['id_consultorio'] = (isset($rs[$i]['id_consultorio']))?$rs[$i]['id_consultorio']:'';
+						$afiliado[$r]['id_farmacia'] = (isset($rs[$i]['id_farmacia']))?$rs[$i]['id_farmacia']:'';
+						$afiliado[$r]['id_establecimiento'] = (isset($rs[$i]['id_establecimiento']))?$rs[$i]['id_establecimiento']:'';
+						$r++;
+					}
+					
 				}
 				
+				echo json_encode(array('recetavale'=>$afiliado));
 			}
-			
-			echo json_encode(array('recetavale'=>$afiliado));
-			
 		} else {
-			$msg[0]['msg'] = "El dni no tiene recetas";
-			echo json_encode(array('recetavale'=>$msg));
+			//$this->error('No hay elementos');
+			$afiliado[0]['msg'] = "El dni no tiene recetas";
+			echo json_encode(array('recetavale'=>$afiliado));
 		}
+    	//echo json_encode(array('reembolso'=>$afiliado));
 	
 	
 	}
@@ -906,49 +918,63 @@ class Api{
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$resultWebApi = curl_exec($ch);
 		
+		if($errno = curl_errno($ch)) {
+			$error_message = curl_strerror($errno);
+			echo "cURL error ({$errno}):\n {$error_message}";
+		}
+		
 		$dataWebApi = json_decode($resultWebApi);
 		$recetavale = $dataWebApi->recetavale;
 		$nr=count($recetavale);
-		
 		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
 
-			$r = 0;
-			foreach($recetavale as $rs){
-			
-				$idReceta=$rs->id;
-				$data_string_producto = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=productoreceta&idReceta=".$idReceta;
-				$ch_producto = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-				curl_setopt($ch_producto, CURLOPT_POST, TRUE);
-				curl_setopt($ch_producto, CURLOPT_POSTFIELDS, $data_string_producto);
-				curl_setopt($ch_producto, CURLOPT_RETURNTRANSFER, true);
-				$resultWebApiProducto = curl_exec($ch_producto);
+				$r = 0;
+				foreach($recetavale as $rs){
 				
-				$dataWebApiProducto = json_decode($resultWebApiProducto);
-				$rsProducto = $dataWebApiProducto->productoreceta;
-				$cantProductoReceta = count($rsProducto);
-				$cantProductoReembolso = 0;
-				
-				foreach($rsProducto as $rowProducto):
-					$receta = array();
-					$receta[] = $rs->nro_receta;
-					$receta[] = $rowProducto->codigo;
-					$reembolso = new Reembolso();
-					$rsReembolso = $reembolso->validaComprobanteReceta($receta);
-					if (count($rsReembolso) > 0)$cantProductoReembolso++;
-				endforeach;
-				
-				if ($cantProductoReceta <> $cantProductoReembolso){
-					$afiliado[$r] = $rs;
-					$r++;
+					$idReceta=$rs->id;
+					$data_string_producto = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=productoreceta&idReceta=".$idReceta;
+					$ch_producto = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
+					curl_setopt($ch_producto, CURLOPT_POST, TRUE);
+					curl_setopt($ch_producto, CURLOPT_POSTFIELDS, $data_string_producto);
+					curl_setopt($ch_producto, CURLOPT_RETURNTRANSFER, true);
+					$resultWebApiProducto = curl_exec($ch_producto);
+					
+					if($errno_producto = curl_errno($ch_producto)) {
+						$error_message_producto = curl_strerror($errno_producto);
+						echo "cURL error ({$errno_producto}):\n {$error_message_producto}";
+					}
+					
+					$dataWebApiProducto = json_decode($resultWebApiProducto);
+					$rsProducto = $dataWebApiProducto->productoreceta;
+					
+					$cantProductoReceta = count($rsProducto);
+					$cantProductoReembolso = 0;
+					
+					foreach($rsProducto as $rowProducto):
+						$receta = array();
+						$receta[] = $rs->nro_receta;
+						$receta[] = $rowProducto->codigo;
+						$reembolso = new Reembolso();
+						//print_r($receta);
+						$rsReembolso = $reembolso->validaComprobanteReceta($receta);
+						if (count($rsReembolso) > 0)$cantProductoReembolso++;
+					endforeach;
+					
+					if ($cantProductoReceta <> $cantProductoReembolso){
+						$afiliado[$r] = $rs;
+						$r++;
+					}
+					
 				}
 				
+				echo json_encode(array('recetavale'=>$afiliado));
 			}
-			
-			echo json_encode(array('recetavale'=>$afiliado));
-			
 		} else {
-			$msg[0]['msg'] = "El dni no tiene recetas";
-			echo json_encode(array('recetavale'=>$msg));
+			$afiliado[0]['msg'] = "El dni no tiene recetas";
+			echo json_encode(array('recetavale'=>$afiliado));
 		}
 	
 	}
@@ -956,62 +982,85 @@ class Api{
 	
 	
 	function getProductoRecetaVale($p){
-		
+		include '../model/Farmacia.php';
 		include '../model/Reembolso.php';
-		
-		$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=productoreceta&idReceta=".$p["idReceta"];
-		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$resultWebApi = curl_exec($ch);
-		
-		$dataWebApi = json_decode($resultWebApi);
-		$productoreceta = $dataWebApi->productoreceta;
-		$nr=count($productoreceta);
-		
+		$a = new Farmacia();
+		$rs = $a->consulta_producto_receta_vale($p);//09917113
+		$ar = array();
+		$nr = count($rs);
 		if ($nr > 0) {
-			
-			$r = 0;
-			foreach($productoreceta as $rowProducto) {
-			
-				$receta = array();
-				$receta[] = $rs->nro_receta;
-				$receta[] = $rowProducto->codigo;
-				$reembolso = new Reembolso();
-				$rsReembolso = $reembolso->validaComprobanteReceta($receta);
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				$r = 0;
+				for ($i = 0; $i < $nr; $i++) {
 				
-				if (count($rsReembolso)==0){
-					$afiliado[$r] = $rowProducto;
-					$r++;
+					$receta = array();
+					$receta[] = $rs[$i]['nro_receta'];//
+					$receta[] = $rs[$i]['codigo'];
+					$reembolso = new Reembolso();
+					$rsReembolso = $reembolso->validaComprobanteReceta($receta);
+					
+					if (count($rsReembolso)==0){
+						$afiliado[$r]['codigo'] = $rs[$i]['codigo'];
+						$afiliado[$r]['nombre'] = $rs[$i]['nombre'];
+						$afiliado[$r]['cantidad_prescrita'] = $rs[$i]['cantidad_prescrita'];
+						$afiliado[$r]['cantidad_dispensada'] = $rs[$i]['cantidad_dispensada'];
+						$afiliado[$r]['cantidad_reembolsable'] = $rs[$i]['cantidad_reembolsable'];
+						$r++;
+					}
 				}
+				
+				echo json_encode(array('productoreceta'=>$afiliado));
 			}
-			
-			echo json_encode(array('productoreceta'=>$afiliado));
-		
 		} else {
-			$msg[0]['msg'] = "La receta no existe";
-			echo json_encode(array('productoreceta'=>$msg));
+			//$this->error('No hay elementos');
 		}
+    	//echo json_encode(array('reembolso'=>$afiliado));
 	
 	
 	}
 	
 	function getLogueoMedico($p){
-	
-		$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=logueo&usuario_medico=".$p["dni"]."&cmp=".$p["cmp"];
-		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$resultWebApi = curl_exec($ch);
-		
-		$dataWebApi = json_decode($resultWebApi);
-		$medico = $dataWebApi->medico;
-		$nr=count($medico);
-		
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		$cmp = $p["cmp"];
+		unset($p["cmp"]);
+		$rs = $a->consulta_logueo_medico($p);
+		$ar = array();
+		$nr = count($rs);
 		if ($nr > 0) {
-			echo json_encode(array('medico'=>$medico));
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['nombre'] = $rs[$i]['nombre'];
+					$afiliado[$i]['paterno'] = $rs[$i]['paterno'];
+					$afiliado[$i]['materno'] = $rs[$i]['materno'];
+					$afiliado[$i]['colegiatura'] = $rs[$i]['colegiatura'];
+					$afiliado[$i]['rne'] = $rs[$i]['rne'];
+					$afiliado[$i]['especialidad'] = $rs[$i]['especialidad'];
+					//$password = $rs[$i]['password'];
+					$colegiatura = $rs[$i]['colegiatura'];
+					$afiliado[$i]['msg'] = "Ok";
+				}
+				//echo json_encode(array('medico'=>$afiliado));
+				//echo $colegiatura."|".$cmp;
+				if ($colegiatura==$cmp) {
+					echo json_encode(array('medico'=>$afiliado));
+				}else{
+					$msg[0]['msg'] = "La clave del medico es incorrecto";
+					echo json_encode(array('medico'=>$msg));
+				}
+				
+				/*if (password_verify($clavemedico, $password)) {
+					echo json_encode(array('medico'=>$afiliado));
+				}else{
+					$msg[0]['msg'] = "La clave del medico es incorrecto";
+					echo json_encode(array('medico'=>$msg));
+				}*/
+				
+			}
 		} else {
 			$msg[0]['msg'] = "El usuario es incorrecto";
 			echo json_encode(array('medico'=>$msg));
@@ -1020,20 +1069,23 @@ class Api{
 	}
 	
 	function getCatalogoProducto($p){
-		
-		$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=catalogo&usuario_medico=".$p["dni"];
-		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$resultWebApi = curl_exec($ch);
-		
-		$dataWebApi = json_decode($resultWebApi);
-		$producto = $dataWebApi->producto;
-		$nr=count($producto);
-		
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		$rs = $a->consulta_catalogo_producto($p);
+		$ar = array();
+		$nr = count($rs);
 		if ($nr > 0) {
-			echo json_encode(array('producto'=>$producto));
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['codigo'] = $rs[$i]['codigo'];
+					$afiliado[$i]['nombre'] = $rs[$i]['nombre'];
+					$afiliado[$i]['unidad'] = $rs[$i]['unidad'];
+				}
+				
+				echo json_encode(array('producto'=>$afiliado));
+			}
 		} else {
 			$msg[0]['msg'] = "El dni no tiene acceso al catalogo de medicamentos";
 			echo json_encode(array('producto'=>$msg));
@@ -1042,45 +1094,262 @@ class Api{
 	}
 	
 	function getStockProductoFarmacia($p){
+		include '../model/Farmacia.php';
 		
-		$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=stock_farmacia&idestablecimiento=".$p["id_establecimiento"]."&codigo=".$p["codigo"]."&dni_medico=".$p["dni_medico"];
-		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$resultWebApi = curl_exec($ch);
+		$dni_medico = $p["dni_medico"];
+		unset($p["dni_medico"]);
 		
-		$dataWebApi = json_decode($resultWebApi);
-		$farmacia = $dataWebApi->farmacia;
-		$nr=count($farmacia);
-		
+		$a = new Farmacia();
+		$rs = $a->consulta_stock_producto_farmacia($p);
+		$ar = array();
+		$nr = count($rs);
 		if ($nr > 0) {
-			echo json_encode(array('farmacia'=>$farmacia));
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['farmacia'] = $rs[$i]['farmacia'];
+					$afiliado[$i]['codigo_producto'] = $rs[$i]['codigo_producto'];
+					$afiliado[$i]['nombre_producto'] = $rs[$i]['nombre_producto'];
+					$afiliado[$i]['unidad'] = $rs[$i]['unidad'];
+					$afiliado[$i]['stock'] = $rs[$i]['stock'];
+					$afiliado[$i]['msg'] = "Ok";
+					
+					$log = array(
+						'op' => 'c',
+						'dni_medico' => $dni_medico,
+						'codigo_producto' => $rs[$i]['codigo_producto'],
+						'nombre_producto' => $rs[$i]['nombre_producto'],
+						'nombre_establecimiento' => $rs[$i]['establecimiento'],
+						'nombre_farmacia' => $rs[$i]['farmacia'],
+						'stock' => $rs[$i]['stock']
+					);
+					$rs_log = $a->crudLog($log);
+					
+				}
+				
+				echo json_encode(array('farmacia'=>$afiliado));
+			}
 		} else {
-			$msg[0]['msg'] = "La farmacia no tiene medicamentos";
-			echo json_encode(array('farmacia'=>$msg));
+			$afiliado[0]['farmacia'] = "";
+			$afiliado[0]['codigo_producto'] = "";
+			$afiliado[0]['nombre_producto'] = "";
+			$afiliado[0]['unidad'] = "";
+			$afiliado[0]['stock'] = "";
+			$afiliado[0]['msg'] = "El medicamento no tiene stock en esta farmacia";
+			
+			$log = array(
+					'op' => 'c',
+					'dni_medico' => $dni_medico,
+					'codigo_producto' => $p["codigo"],
+					'nombre_producto' => "",
+					'nombre_establecimiento' => "",
+					'nombre_farmacia' => "",
+					'stock' => "0"
+				);
+			$rs_log = $a->crudLog($log); 
+			
+			echo json_encode(array('farmacia'=>$afiliado));
 		}
 	
 	}
 	
 	function getStockProductoEstablecimiento($p){
+		include '../model/Farmacia.php';
+		//include("../include/cnn.phtml");
+		//include("../include/f_producto.php");
+		//include("../include/f_ingreso.php");
+		//include("../include/f_ingresonea.php");
+		//include("../include/f_pecosa.php");
+		//include("../include/f_maealmac.php");
 		
-		$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=stock_establecimiento&codigo=".$p["codigo"]."&dni_medico=".$p["dni_medico"];
-		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$resultWebApi = curl_exec($ch);
+		$dni_medico = $p["dni_medico"];
+		unset($p["dni_medico"]);
 		
-		$dataWebApi = json_decode($resultWebApi);
-		$establecimiento = $dataWebApi->establecimiento;
-		$nr=count($establecimiento);
-		
+		$a = new Farmacia();
+		$rs = $a->consulta_stock_producto_establecimiento($p);
+		$ar = array();
+		$nr = count($rs);
 		if ($nr > 0) {
-			echo json_encode(array('establecimiento'=>$establecimiento));
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				$i=0;
+				for ($j = 0; $j < $nr; $j++) {
+					if($rs[$j]['establecimiento']!="DIRSAPOL"){
+					
+						$afiliado[$i]['idestablecimiento'] = $rs[$j]['idestablecimiento'];
+						$afiliado[$i]['establecimiento'] = $rs[$j]['establecimiento'];
+						$afiliado[$i]['codigo_producto'] = $rs[$j]['codigo_producto'];
+						$afiliado[$i]['nombre_producto'] = $rs[$j]['nombre_producto'];
+						$afiliado[$i]['unidad'] = $rs[$j]['unidad'];
+						$afiliado[$i]['stock'] = $rs[$j]['stock'];
+						$afiliado[$i]['msg'] = "Ok";
+						
+						$log = array(
+							'op' => 'c',
+							'dni_medico' => $dni_medico,
+							'codigo_producto' => $rs[$j]['codigo_producto'],
+							'nombre_producto' => $rs[$j]['nombre_producto'],
+							'nombre_establecimiento' => $rs[$j]['establecimiento'],
+							'nombre_farmacia' => '',
+							'stock' => $rs[$j]['stock']
+						);
+						$rs_log = $a->crudLog($log);
+						$i++;
+					}
+				}
+				
+				//if($i > 0)$i++;
+				
+				$cantidadAlmacen = 0;
+				$ps[]=113;
+				$ps[]=$p["codigo"];
+				$totalAlmacen = $a->getStockByProductoAndFarmacia($ps);
+				//print_r($totalAlmacen);exit();
+				$cantidadAlmacen = (isset($totalAlmacen["stock"]) && $totalAlmacen["stock"] > 0)?$totalAlmacen["stock"]:0;
+				$prodcodigo = (isset($totalAlmacen["codigo"]) && $totalAlmacen["codigo"]!="")?$totalAlmacen["codigo"]:"";
+				$nombre_producto = (isset($totalAlmacen["nombre"]) && $totalAlmacen["nombre"]!="")?$totalAlmacen["nombre"]:"";
+				$unidad = (isset($totalAlmacen["unidad"]) && $totalAlmacen["unidad"]!="")?$totalAlmacen["unidad"]:"";
+				
+				$afiliado[$i]['idestablecimiento'] = "";
+				$afiliado[$i]['establecimiento'] = "ALMACEN SAN BORJA";
+				$afiliado[$i]['codigo_producto'] = $prodcodigo;
+				$afiliado[$i]['nombre_producto'] = $nombre_producto;
+				$afiliado[$i]['unidad'] = $unidad;
+				$afiliado[$i]['stock'] = $cantidadAlmacen;
+				$afiliado[$i]['msg'] = "Ok";
+				
+				$log = array(
+						'op' => 'c',
+						'dni_medico' => $dni_medico,
+						'codigo_producto' => $prodcodigo,
+						'nombre_producto' => $nombre_producto,
+						'nombre_establecimiento' => "ALMACEN SAN BORJA",
+						'nombre_farmacia' => '',
+						'stock' => $cantidadAlmacen
+					);
+					
+				/*
+				$prodcodigo = $p["codigo"];
+				$ano = date("Y");
+				$codproducto = F_MUESTRA_ID_PRODUCTO($prodcodigo);
+				$FECHAHASTA="";
+				$CANTIDADINICIAL = F_MUESTRA_DATO_ALMACEN_2("CANTIDADINICIAL",$ano,$codproducto);
+				$TOTALINGRESO = F_CANTIDAD_INGRESADA_DET_X_PRODUCTO($ano,$codproducto,1,$FECHAHASTA);
+				$TOTALINGRESONEA = F_CANTIDAD_INGRESADA_NEA_DET_X_PRODUCTO($ano,$codproducto,1,$FECHAHASTA);
+				$INGRESOS = $TOTALINGRESO + $TOTALINGRESONEA;
+				$cantidadentregada2 = F_CANTIDAD_ATENDIDA_PECOSAS_X_PRODUCTO($ano,$codproducto,1,2,$FECHAHASTA);
+				$MAECANTSTK = $CANTIDADINICIAL + $INGRESOS - $cantidadentregada2;
+				
+				$afiliado[$i]['idestablecimiento'] = "";
+				$afiliado[$i]['establecimiento'] = "ALMACEN SAN BORJA";
+				$afiliado[$i]['codigo_producto'] = $prodcodigo;
+				$afiliado[$i]['nombre_producto'] = $rs[0]['nombre_producto'];
+				$afiliado[$i]['unidad'] = $rs[0]['unidad'];
+				$afiliado[$i]['stock'] = $cantidadAlmacen;
+				$afiliado[$i]['msg'] = "Ok";
+				
+				$log = array(
+						'op' => 'c',
+						'dni_medico' => $dni_medico,
+						'codigo_producto' => $prodcodigo,
+						'nombre_producto' => $rs[0]['nombre_producto'],
+						'nombre_establecimiento' => "ALMACEN SAN BORJA",
+						'nombre_farmacia' => '',
+						'stock' => (String)$MAECANTSTK
+					);
+				*/
+				
+				$rs_log = $a->crudLog($log);
+				
+				echo json_encode(array('establecimiento'=>$afiliado));
+			}
 		} else {
-			$msg[0]['msg'] = "El establecimiento no tiene medicamentos";
-			echo json_encode(array('medico'=>$msg));
+		
+			$cantidadAlmacen = 0;
+			$ps[]=113;
+			$ps[]=$p["codigo"];
+			$totalAlmacen = $a->getStockByProductoAndFarmacia($ps);
+			//print_r($totalAlmacen);exit();
+			$cantidadAlmacen = (isset($totalAlmacen["stock"]) && $totalAlmacen["stock"] > 0)?$totalAlmacen["stock"]:0;
+			$prodcodigo = (isset($totalAlmacen["codigo"]) && $totalAlmacen["codigo"]!="")?$totalAlmacen["codigo"]:"";
+			$nombre_producto = (isset($totalAlmacen["nombre"]) && $totalAlmacen["nombre"]!="")?$totalAlmacen["nombre"]:"";
+			$unidad = (isset($totalAlmacen["unidad"]) && $totalAlmacen["unidad"]!="")?$totalAlmacen["unidad"]:"";
+			
+			$afiliado[0]['idestablecimiento'] = "";
+			$afiliado[0]['establecimiento'] = "ALMACEN SAN BORJA";
+			$afiliado[0]['codigo_producto'] = $prodcodigo;
+			$afiliado[0]['nombre_producto'] = $nombre_producto;
+			$afiliado[0]['unidad'] = $unidad;
+			$afiliado[0]['stock'] = $cantidadAlmacen;
+			$afiliado[0]['msg'] = "Ok";
+			
+			$log = array(
+					'op' => 'c',
+					'dni_medico' => $dni_medico,
+					'codigo_producto' => $prodcodigo,
+					'nombre_producto' => $nombre_producto,
+					'nombre_establecimiento' => "ALMACEN SAN BORJA",
+					'nombre_farmacia' => '',
+					'stock' => $cantidadAlmacen
+				);
+			/*
+			$prodcodigo = $p["codigo"];
+			$ano = date("Y");
+			$codproducto = F_MUESTRA_ID_PRODUCTO($prodcodigo);
+			$FECHAHASTA="";
+			$CANTIDADINICIAL = F_MUESTRA_DATO_ALMACEN_2("CANTIDADINICIAL",$ano,$codproducto);
+			$TOTALINGRESO = F_CANTIDAD_INGRESADA_DET_X_PRODUCTO($ano,$codproducto,1,$FECHAHASTA);
+			$TOTALINGRESONEA = F_CANTIDAD_INGRESADA_NEA_DET_X_PRODUCTO($ano,$codproducto,1,$FECHAHASTA);
+			$INGRESOS = $TOTALINGRESO + $TOTALINGRESONEA;
+			$cantidadentregada2 = F_CANTIDAD_ATENDIDA_PECOSAS_X_PRODUCTO($ano,$codproducto,1,2,$FECHAHASTA);
+			$MAECANTSTK = $CANTIDADINICIAL + $INGRESOS - $cantidadentregada2;
+			
+			$afiliado[0]['idestablecimiento'] = "";
+			$afiliado[0]['establecimiento'] = "ALMACEN SAN BORJA";
+			$afiliado[0]['codigo_producto'] = $prodcodigo;
+			$afiliado[0]['nombre_producto'] = $rs[0]['nombre_producto'];
+			$afiliado[0]['unidad'] = $rs[0]['unidad'];
+			$afiliado[0]['stock'] = (String)$MAECANTSTK;
+			$afiliado[0]['msg'] = "Ok";
+			
+			$log = array(
+					'op' => 'c',
+					'dni_medico' => $dni_medico,
+					'codigo_producto' => $prodcodigo,
+					'nombre_producto' => $rs[0]['nombre_producto'],
+					'nombre_establecimiento' => "ALMACEN SAN BORJA",
+					'nombre_farmacia' => '',
+					'stock' => (String)$MAECANTSTK
+				);
+			*/
+			$rs_log = $a->crudLog($log);
+		
+			//if($MAECANTSTK == "0" || $MAECANTSTK == ""){
+			if($cantidadAlmacen == "0" || $cantidadAlmacen == ""){
+				$afiliado[0]['idestablecimiento'] = "";
+				$afiliado[0]['establecimiento'] = "";
+				$afiliado[0]['codigo_producto'] = "";
+				$afiliado[0]['nombre_producto'] = "";
+				$afiliado[0]['unidad'] = "";
+				$afiliado[0]['stock'] = "";
+				$afiliado[0]['msg'] = "El medicamento no tiene stock en este establecimiento";
+				
+				$log = array(
+						'op' => 'c',
+						'dni_medico' => $dni_medico,
+						//'codigo_producto' => $p["codigo"],
+						'codigo_producto' => $prodcodigo,
+						'nombre_producto' => "",
+						'nombre_establecimiento' => "ESTABLECIMIENTO",
+						'nombre_farmacia' => "",
+						'stock' => "0"
+					);
+				$rs_log = $a->crudLog($log);
+			}
+			
+			echo json_encode(array('establecimiento'=>$afiliado));
 		}
 	
 	}
@@ -1324,24 +1593,26 @@ class Api{
 	}
 	
 	function crudLog($p){
-		
-		$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=log&dni_medico=".$p["dni_medico"]."&codigo_producto=".$p["codigo_producto"]."&nombre_producto=".$p["nombre_producto"];
-		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$resultWebApi = curl_exec($ch);
-		
-		$dataWebApi = json_decode($resultWebApi);
-		$log = $dataWebApi->log;
-		$nr=count($log);
-		
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		$rs = $a->crudLog($p);
+		$ar = array();
+		$nr = count($rs);
 		if ($nr > 0) {
-			echo json_encode(array('log'=>$log));
-		} else {
-			$msg[0]['msg'] = "El log es incorrecto";
-			echo json_encode(array('log'=>$msg));
-		}		
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$log[$i]['id'] = $rs[$i]['id'];
+					$log[$i]['dni_medico'] = $rs[$i]['dni_medico'];
+					$log[$i]['codigo_producto'] = $rs[$i]['codigo_producto'];
+					$log[$i]['nombre_producto'] = $rs[$i]['nombre_producto'];
+					$log[$i]['created_at'] = $rs[$i]['created_at'];
+				}		
+				echo json_encode(array('log'=>$log));
+			}
+		}
+		
 	
 	}
 	
@@ -1543,27 +1814,63 @@ class Api{
 	}
 	
 	function getCitas($p){
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		$msg = NULL;
+		$afiliado = NULL;
 		
-		$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=listar_citas&dni_beneficiario=".$p["dni_beneficiario"]."&id_estado=".$p["id_estado"]."&fecha_ini=".$p["fecha_ini"]."&fecha_fin=".$p["fecha_fin"];
-		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$resultWebApi = curl_exec($ch);
-		
-		$dataWebApi = json_decode($resultWebApi);
-		
-		$cita = $dataWebApi->cita;
-		$msg = $dataWebApi->msg;
-		$nr=count($cita);
-		
-		if ($nr > 0) {
-			echo json_encode(array('msg'=>$msg,'cita'=>$cita));
-		} else {
-			$msg[0]['msg'] = "El usuario es incorrecto";
-			echo json_encode(array('msg'=>$msg,'cita'=>NULL));
+		if($p["dni_beneficiario"]==""){
+			//$msg[0]['msg'] = "Debe ingresar un Dni";
+			//echo json_encode(array('cita'=>$msg));
+			$msg= "Debe ingresar un Dni";
 		}
 		
+		$rs = $a->consulta_cita($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				//$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['id_cita'] = $rs[$i]['id'];
+					$afiliado[$i]['nro_doc_ident'] = $rs[$i]['nro_doc_ident'];
+					$afiliado[$i]['asegurado_nombre'] = $rs[$i]['asegurado_nombre'];
+					$afiliado[$i]['asegurado_paterno'] = $rs[$i]['asegurado_paterno'];
+					$afiliado[$i]['asegurado_materno'] = $rs[$i]['asegurado_materno'];
+					$afiliado[$i]['establecimiento'] = $rs[$i]['establecimiento'];
+					$afiliado[$i]['servicio'] = $rs[$i]['servicio'];
+					$afiliado[$i]['consultorio'] = $rs[$i]['consultorio'];
+					$afiliado[$i]['fecha'] = $rs[$i]['dia'];
+					$afiliado[$i]['hora'] = $rs[$i]['hora'];
+					$afiliado[$i]['parentesco'] = $rs[$i]['parentesco'];
+					$afiliado[$i]['id_estado_cita'] = $rs[$i]['id_estado_cita'];
+					$afiliado[$i]['estado'] = $rs[$i]['estado_cita'];
+					$afiliado[$i]['medico_nombre'] = $rs[$i]['medico_nombre'];
+					$afiliado[$i]['medico_paterno'] = $rs[$i]['medico_paterno'];
+					$afiliado[$i]['medico_materno'] = $rs[$i]['medico_materno'];
+					$afiliado[$i]['grado'] = $rs[$i]['grado'];
+					$afiliado[$i]['id_atencion'] = $rs[$i]['id_atencion'];
+					$afiliado[$i]['atencion'] = $rs[$i]['atencion'];
+					$afiliado[$i]['url_reunion'] = $rs[$i]['url_reunion'];
+					$afiliado[$i]['id_reunion'] = $rs[$i]['id_reunion'];
+					$afiliado[$i]['observacion'] = $rs[$i]['observacion'];
+					$afiliado[$i]['tipo_observacion'] = $rs[$i]['tipo_observacion'];
+					$afiliado[$i]['id_tipo_observacion'] = $rs[$i]['id_tipo_observacion'];
+				}
+				
+				//echo json_encode(array('cita'=>$afiliado));
+			}
+		} else {
+			//$msg[0]['msg'] = "El dni no tiene citas";
+			//echo json_encode(array('cita'=>$msg));
+			$msg = "El dni no tiene citas";
+		}
+		
+		$resultado["msg"]=$msg;
+		$resultado["cita"]=$afiliado;
+		echo json_encode($resultado);
+	
 	}
 	
 	function anularCita($p){
@@ -1800,20 +2107,24 @@ class Api{
 	}
 	
 	function getRecetaByNroReceta($p){
-		
-		$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=buscar_receta&nro_receta=".$p["nro_receta"]."&codigo_establecimiento=".$p["codigo_establecimiento"]."&numdocpaciente=".$p["numdocpaciente"];
-		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$resultWebApi = curl_exec($ch);
-		
-		$dataWebApi = json_decode($resultWebApi);
-		$receta = $dataWebApi->receta;
-		$nr=count($receta);
-		
+		include '../model/Farmacia.php';
+		$a = new Farmacia();
+		$rs = $a->consulta_receta_by_nro_receta($p);
+		$ar = array();
+		$nr = count($rs);
 		if ($nr > 0) {
-			echo json_encode(array('receta'=>$receta));
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['id'] = $rs[$i]['id'];
+					$afiliado[$i]['id_farmacia'] = $rs[$i]['id_farmacia'];
+					//$afiliado[$i]['url'] = "https://app-gsf.saludpol.gob.pe:29692/imprimir_receta_vale/".$rs[$i]['id']."/".$rs[$i]['id_farmacia']; 
+					$afiliado[$i]['url'] = ruta_farmacia."/imprimir_receta_vale/".$rs[$i]['id']."/".$rs[$i]['id_farmacia']; 
+				}
+				
+				echo json_encode(array('receta'=>$afiliado));
+			}
 		} else {
 			$msg[0]['msg'] = "No exite la receta";
 			echo json_encode(array('receta'=>$msg));
