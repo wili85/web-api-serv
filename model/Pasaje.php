@@ -29,7 +29,7 @@ class Pasaje {
  inner join uds on pasajes.id_ud = uds.id";
  		$this->sql .= " WHERE dni = '".$p["nroDoc"]."'";
  		$this->sql .=" order by pasajes.id desc";
-	
+
         $this->rs = $this->db->query($this->sql);
         return $this->rs;
 	}

@@ -119,6 +119,7 @@ class OpenClinic {
 	public function update_receta_ruta($p){
 		$conet = $this->db->getConnectionopen();
 		$this->sql = "update oc_receta set OC_RECETA_RUTA='".$p['rutaReceta']."' WHERE OC_RECETA_NUMERO='".$p['numReceta']."'";
+		//echo $this->sql;
         $this->rs = $this->db->queryCRUD($this->sql);
 		$this->db->closeConnection();
 		return $this->rs;
