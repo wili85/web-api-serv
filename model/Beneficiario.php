@@ -31,6 +31,18 @@ class Afiliado {
 		return $this->readFunctionPostgres('sp_siteds_consulta_afiliado',$p);
     }
 	
+	public function getIndicdorAsegurado($p){
+		return $this->readFunctionPostgres('sp_indicador_asegurado',$p);
+    }
+	
+	public function getIndicdorAllAsegurado(){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from tbl_indicador_all_asegurado order by fecha_actualizacion desc limit 1" ;
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+		return $this->rs;
+	}
+	
 ## Web Service para aplicaciones SALUDPOL (ws_AfiliadoSALUDPOL.php)
 
     public function buscaListaAfiliadoActivo($nroDoc, $nomPer, $apePat, $apeMat) {

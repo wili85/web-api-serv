@@ -10,7 +10,8 @@ function doAuthenticate() {
     if (isset($_SERVER['PHP_AUTH_USER']) and isset($_SERVER['PHP_AUTH_PW'])) {
         //here I am hardcoding. You can connect to your DB for user authentication.    
 
-        if ($_SERVER['PHP_AUTH_USER'] == "userafis@ludpol" and $_SERVER['PHP_AUTH_PW'] == "WS@ludPol@fi")
+        //if ($_SERVER['PHP_AUTH_USER'] == "userafis@ludpol" and $_SERVER['PHP_AUTH_PW'] == "WS@ludPol@fi")
+		if ($_SERVER['PHP_AUTH_USER'] == "WSAseg@SaludPol" and $_SERVER['PHP_AUTH_PW'] == "W5s@1uDp0l19")
             return true;
         else
             return false;

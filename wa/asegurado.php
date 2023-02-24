@@ -58,6 +58,15 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 				'apellidos' => $_POST['apellidos']
 			);
 			$api->getAseguradoSiteds($item);
+		}elseif($_POST['op'] == 'indicador_asegurado'){
+			$item = array(
+				'ano' => $_POST['ano'],
+				'id_departamento' => $_POST['id_departamento'],
+				'opc' => $_POST['opc'],
+			);
+			$api->getIndicadorAsegurado($item);
+		}elseif($_POST['op'] == 'indicador_asegurado_detalle'){
+			$api->getIndicdorAllAsegurado();
 		}
 	
 	}else{

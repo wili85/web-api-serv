@@ -776,7 +776,7 @@ class Api{
 		$dataWebApi = json_decode($resultWebApi);
 		$recetavale = $dataWebApi->recetavale;
 		$nr=count($recetavale);
-		
+		$nr=0;
 		if ($nr > 0) {
 			
 			$r = 0;
@@ -1959,6 +1959,65 @@ class Api{
 		}
 	
 	}
+	
+	
+	function getIndicadorAsegurado($p){
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->getIndicdorAsegurado($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['nmes'] = $rs[$i]['nmes'];
+					$afiliado[$i]['afil_titular'] = $rs[$i]['afil_titular'];
+					$afiliado[$i]['afil_dhabiente'] = $rs[$i]['afil_dhabiente'];
+					$afiliado[$i]['des_titular'] = $rs[$i]['des_titular'];
+					$afiliado[$i]['des_dhabiente'] = $rs[$i]['des_dhabiente'];
+				}
+				echo json_encode(array('indicador'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('indicador'=>$msg));
+		}
+	
+	}
+	
+	function getIndicdorAllAsegurado($p){
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->getIndicdorAllAsegurado($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i]['total_asegurado'] = $rs[$i]['total_asegurado'];
+					$afiliado[$i]['total_titular'] = $rs[$i]['total_titular'];
+					$afiliado[$i]['total_derechohab'] = $rs[$i]['total_derechohab'];
+					$afiliado[$i]['total_hombre'] = $rs[$i]['total_hombre'];
+					$afiliado[$i]['total_mujer'] = $rs[$i]['total_mujer'];
+					$afiliado[$i]['total_edad_0_11'] = $rs[$i]['total_edad_0_11'];
+					$afiliado[$i]['total_edad_12_17'] = $rs[$i]['total_edad_12_17'];
+					$afiliado[$i]['total_edad_18_59'] = $rs[$i]['total_edad_18_59'];
+					$afiliado[$i]['total_edad_60_mas'] = $rs[$i]['total_edad_60_mas'];
+					$afiliado[$i]['fecha_actualizacion'] = $rs[$i]['fecha_actualizacion'];
+				}
+				echo json_encode(array('indicador'=>$afiliado));
+			}
+		} else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('indicador'=>$msg));
+		}
+	
+	}
+	
 	
 	function getCovidGrupoEdadMasculino($p){
 		include '../model/OpenClinic.php';
