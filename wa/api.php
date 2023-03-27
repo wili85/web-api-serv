@@ -133,7 +133,14 @@ class Api{
 				for ($i = 0; $i < $nr; $i++) {
 					
 					$resolucion = "PENDIENTE";
-					if(isset($rs[$i]['resolucion'])){
+					
+					/**********INICIO CONSULTAR FIRMA RESOLUCION SIGEF******************/
+					
+					$firmado = $a->buscar_firma_reembolso($rs[$i]['htnumero']);
+					
+					/**********FIN CONSULTAR FIRMA RESOLUCION SIGEF******************/
+					
+					if(isset($rs[$i]['resolucion']) && isset($firmado) && $firmado=="F"){
 						$resolucion = $rs[$i]['resolucion'];
 						if($resolucion == "AUTORIZAR")$resolucion = "PROCEDENTE";
 						if($resolucion == "AUTORIZAR EN PARTE")$resolucion = "PROCEDENTE EN PARTE";

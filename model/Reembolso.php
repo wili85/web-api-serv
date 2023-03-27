@@ -115,6 +115,23 @@ class Reembolso {
       return $response;
    }
    
+   public function buscar_firma_reembolso($ccodificacionht){
+   		
+		$conSigef = $this->dbSigef->getConnection();
+		$sql = "begin SIGA01.PKG_REPORT.REEMBOLSOFIRMA_SEARCH(:ht,:firmado); end;";
+		$rs = oci_parse($conSigef, $sql);
+		$firmado="";
+		oci_bind_by_name($rs, ":ht", $ccodificacionht,20);
+		oci_bind_by_name($rs, ":firmado", $firmado,1);
+		
+		oci_execute($rs);
+		$e = oci_error($rs);
+		//print_r($e);
+		
+		return $firmado;
+		
+   }
+   
    
    public function notificacion($p) {
    
