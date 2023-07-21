@@ -278,5 +278,34 @@ class Reembolso {
 		
 	}	
 	
+	public function QrysearchhtexternoDNI($p) {
+
+		$conet = $this->db->getConnection();
+		
+		 $this->sql = "Select idsolicitud,htnumero,date(htfecha)htfecha,nombrepaciente,nombresolicitante,ipressnombre,tr.descripcion tiporeembolso,usuario,es.codigo,
+    date(fecharegistro)fecregistro,numinforme,es.descripcion resolucion,obs_resolucion,ns.descripcion sede,date(fechapago)fecpago,numdocsolicitante
+	,nom_archivo_resolucion,rutainformeliquidacion,
+	(select Sum(c.importetotal-c.importeobs)As importe_reembolsable from comprobante c where idsolicitud=s.idsolicitud And c.flagregistro='1')As importe_reembolsable   
+    From solicitud s Left Join mastertable es On s.respuestaresolucion=es.codigo And es.idparent='156'
+    Left Join mastertable ns On s.idsede=Cast(ns.idmaster As varchar(3)) And ns.idparent='109'
+    Left Join mastertable tr On s.idtiporeembolso=Cast(tr.idmaster As varchar(3)) And tr.idparent='4'
+	Where 1=1 ";
+	if($p["numero_documento"]!=""){
+		$this->sql .= " And numdocsolicitante ='".$p["numero_documento"]."'";
+	}
+	
+	if($p["htnumero"]!=""){
+		$this->sql .= " And htnumero='".$p["htnumero"]."'";
+	}
+	
+	$this->sql .= " and substring(htnumero,1,4)>='2021' 
+	and s.flagregistro='1'
+	order by s.idsolicitud desc";
+		//echo $this->sql;
+		$this->rs = $this->db->query($this->sql);
+        return $this->rs;
+
+    }
+	
 
 }

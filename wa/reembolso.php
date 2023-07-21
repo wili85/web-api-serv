@@ -27,7 +27,35 @@
 		}
 		
     }else{
-        $api->error('Error al llamar a la API');
+	
+		if(isset($_POST['usuario']) && isset($_POST['clave']) ){
+		
+			$datos = array(
+				'usuario' => $_POST['usuario'],
+				'clave' => $_POST['clave']
+			);
+			
+			if ($api->doAuthenticate($datos)) {
+				
+				if($_POST['op'] == 'listar_reembolso'){
+				
+					$item = array(
+						'numero_documento' 	=> $_POST['numero_documento'],
+						'htnumero' 	=> $_POST['htnumero']
+					);
+					
+					$api->getReembolsoByNroDocumento($item);	
+					
+				}
+			
+			}else{
+				$api->error('Error al Autentificar');
+			}
+			
+		}else{
+			$api->error('Error al llamar a la API');
+		}
+	
     }
 	
 	/*

@@ -2437,6 +2437,240 @@ class Api{
 	
 	}
 	
+	function getPrestacionByNroDocumento($p){
+		include '../model/Stips.php';
+		$a = new Stips();
+		$rs = $a->getPrestacionStipsByNroDocumento($p);
+		//print_r($rs);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$pasaje[$i]['bd'] = $rs[$i]['bd'];
+					$pasaje[$i]['prestacion_id'] = $rs[$i]['prestacion_id'];
+					$pasaje[$i]['paciente_tipo_documento'] = $rs[$i]['paciente_tipo_documento'];
+					$pasaje[$i]['paciente_numero_documento'] = $rs[$i]['paciente_numero_documento'];
+					$pasaje[$i]['ipress_codigo'] = $rs[$i]['ipress_codigo'];
+					$pasaje[$i]['ipress_nombre'] = $rs[$i]['ipress_nombre'];
+					$pasaje[$i]['v_id_grupo_upss'] = $rs[$i]['v_id_grupo_upss'];
+					$pasaje[$i]['tipo_atencion'] = $rs[$i]['tipo_atencion'];
+					$pasaje[$i]['upss'] = $rs[$i]['upss'];
+					$pasaje[$i]['ini_atencion'] = $rs[$i]['ini_atencion'];
+					$pasaje[$i]['fin_atencion'] = $rs[$i]['fin_atencion'];
+					$pasaje[$i]['fecha'] = $rs[$i]['fecha'];
+					$pasaje[$i]['registros'] = $rs[$i]['registros'];
+					//$pasaje[$i]['Servicio'] = $rs[$i]['Servicio'];
+					//$pasaje[$i]['responsable_atencion'] = $rs[$i]['responsable_atencion'];
+				}
+				
+				echo json_encode(array('prestacion'=>$pasaje));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten prestaciones";
+			echo json_encode(array('prestacion'=>$msg));
+		}
+	
+	}
+	
+	function getPrestacionProcedimientoById($p){
+		include '../model/Stips.php';
+		$a = new Stips();
+		$rs = $a->getPrestacionProcedimientoStipsById($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$pasaje[$i]['prestacion_id'] = $rs[$i]['prestacion_id'];
+					$pasaje[$i]['paciente_tipo_documento'] = $rs[$i]['paciente_tipo_documento'];
+					$pasaje[$i]['paciente_numero_documento'] = $rs[$i]['paciente_numero_documento'];
+					$pasaje[$i]['nro'] = $rs[$i]['nro'];
+					$pasaje[$i]['procedimiento_descripcion'] = $rs[$i]['procedimiento_descripcion'];
+					$pasaje[$i]['cantidad_ejecutada'] = $rs[$i]['cantidad_ejecutada'];
+				}
+				
+				echo json_encode(array('prestacion_procedimiento'=>$pasaje));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten procedimientos";
+			echo json_encode(array('prestacion_procedimiento'=>$msg));
+		}
+	
+	}
+	
+	function getPrestacionInsumoById($p){
+		include '../model/Stips.php';
+		$a = new Stips();
+		$rs = $a->getPrestacionInsumoStipsById($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$pasaje[$i]['prestacion_id'] = $rs[$i]['prestacion_id'];
+					$pasaje[$i]['paciente_tipo_documento'] = $rs[$i]['paciente_tipo_documento'];
+					$pasaje[$i]['paciente_numero_documento'] = $rs[$i]['paciente_numero_documento'];
+					$pasaje[$i]['nro'] = $rs[$i]['nro'];
+					$pasaje[$i]['producto_descripcion'] = $rs[$i]['producto_descripcion'];
+					$pasaje[$i]['cantidad_entregada'] = $rs[$i]['cantidad_entregada'];
+				}
+				
+				echo json_encode(array('prestacion_insumo'=>$pasaje));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten insumos";
+			echo json_encode(array('prestacion_insumo'=>$msg));
+		}
+	
+	}
+	
+	function getPrestacionProductoById($p){
+		include '../model/Stips.php';
+		$a = new Stips();
+		$rs = $a->getPrestacionProductoStipsById($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$pasaje[$i]['prestacion_id'] = $rs[$i]['prestacion_id'];
+					$pasaje[$i]['paciente_tipo_documento'] = $rs[$i]['paciente_tipo_documento'];
+					$pasaje[$i]['paciente_numero_documento'] = $rs[$i]['paciente_numero_documento'];
+					$pasaje[$i]['nro'] = $rs[$i]['nro'];
+					$pasaje[$i]['producto_descripcion'] = $rs[$i]['producto_descripcion'];
+					$pasaje[$i]['cantidad_entregada'] = $rs[$i]['cantidad_entregada'];
+				}
+				
+				echo json_encode(array('prestacion_producto'=>$pasaje));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten productos";
+			echo json_encode(array('prestacion_producto'=>$msg));
+		}
+	
+	}
+	
+	function getReembolsoByNroDocumento($p){
+		
+		include '../model/Reembolso.php';
+		include '../model/Tramite.php';
+		include '../model/Sigef.php';
+		
+		$a = new Reembolso();
+		$t = new Tramite();
+		$s = new Sigef();
+		
+		$hts = array();
+	  
+		$porcentaje["01"]="8";
+		$porcentaje["02"]="15";
+		$porcentaje["03"]="23";
+		$porcentaje["04"]="31";
+		$porcentaje["05"]="38";
+		$porcentaje["06"]="46";
+		$porcentaje["07"]="54";
+		$porcentaje["08"]="62";
+		$porcentaje["09"]="69";
+		$porcentaje["10"]="77";
+		$porcentaje["11"]="85";
+		$porcentaje["12"]="92";
+		$porcentaje["13"]="100";
+		$porcentaje["14"]="100";
+		
+		$color["01"]="#ED5342";
+		$color["02"]="#ED5342";
+		$color["03"]="#FAD269";
+		$color["04"]="#FAD269";
+		$color["05"]="#FAD269";
+		$color["06"]="#FAD269";
+		$color["07"]="#FAD269";
+		$color["08"]="#9FCA87";
+		$color["09"]="#9FCA87";
+		$color["10"]="#9FCA87";
+		$color["11"]="#9FCA87";
+		$color["12"]="#00936E";
+		$color["13"]="#216636";
+		$color["14"]="#818180";
+		
+		$estado_publico["01"]="Iniciado";
+		$estado_publico["02"]="Iniciado";
+		$estado_publico["03"]="En auditoria m&eacute;dica";
+		$estado_publico["04"]="En auditoria m&eacute;dica";
+		$estado_publico["05"]="En auditoria m&eacute;dica";
+		$estado_publico["06"]="En auditoria m&eacute;dica";
+		$estado_publico["07"]="En auditoria m&eacute;dica";
+		$estado_publico["08"]="En evaluaci&oacute;n administrativa";
+		$estado_publico["09"]="En evaluaci&oacute;n administrativa";
+		$estado_publico["10"]="En evaluaci&oacute;n administrativa";
+		$estado_publico["11"]="En evaluaci&oacute;n administrativa";
+		$estado_publico["12"]="En proceso de pago";
+		$estado_publico["13"]="Pagado";
+		$estado_publico["14"]="Improcedente";
+		
+		$rs = $a->QrysearchhtexternoDNI($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+				
+					$ultimo_estado = "";
+					$resultado = $t->consultarEstadoByID($rs[$i]['htnumero']);
+					
+					//$data = $s->consultaDetalleSolicitudSigef($rs[$i]['idsolicitud']);
+					$data = $s->consultaDetalleSolicitudSigefByHt($rs[$i]['htnumero']);
+					$file_resolucion = $data[0]["UBIC_ARCH_FIRM"];
+					
+					foreach($resultado as $row){
+						$ultimo_estado = $row["ESTADO"];
+					}
+					
+					$importe_reembolsable = 0;
+					if($ultimo_estado!=14)$importe_reembolsable = $rs[$i]['importe_reembolsable'];
+			
+					$rutainformeliquidacion = "";
+					if($rs[$i]['rutainformeliquidacion']!=""){
+						$rutainformeliquidacion .='https://sgr-liq.saludpol.gob.pe:10445/'.$rs[$i]['rutainformeliquidacion'];
+					}
+					
+					$resolucion = "";
+					if($file_resolucion!=""){
+						$resolucion .='https://sigef-res.saludpol.gob.pe:10446'.$file_resolucion;
+					}
+					
+					
+					$pasaje[$i]['htnumero'] = $rs[$i]['htnumero'];
+					$pasaje[$i]['htfecha'] = $rs[$i]['htfecha'];
+					$pasaje[$i]['tiporeembolso'] = $rs[$i]['tiporeembolso'];
+					$pasaje[$i]['estado_publico'] = html_entity_decode($estado_publico[$ultimo_estado]);
+					$pasaje[$i]['porcentaje'] = $porcentaje[$ultimo_estado];
+					$pasaje[$i]['color'] = $color[$ultimo_estado];
+					$pasaje[$i]['importe_reembolsable'] = $importe_reembolsable;
+					$pasaje[$i]['sede'] = $rs[$i]['sede'];
+					$pasaje[$i]['rutainformeliquidacion'] = $rutainformeliquidacion;
+					$pasaje[$i]['resolucion'] = $resolucion;
+				}
+				
+				echo json_encode(array('reembolso'=>$pasaje));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten reembolsos";
+			echo json_encode(array('reembolso'=>$msg));
+		}
+	
+	}
+	
 	
 }
 

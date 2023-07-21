@@ -124,5 +124,27 @@ class Tramite {
         return $l;
     }
 	
+	public function consultarEstadoByID($id) {
+		
+		$conStd = $this->db_b->getConnection();
+		
+		 $query = "SELECT estado FROM 
+					(
+						SELECT   tme.flag_esta_ht estado
+						FROM std.tra_m_estados tme 
+						INNER JOIN std.tra_m_tramite tmt ON tmt.icodtramite = tme.icodtramite
+						WHERE tmt.ccodificacionht = '".$id."'
+						ORDER BY tme.fech_movi_est DESC
+					) t
+					WHERE ROWNUM = 1";
+		 
+		//echo $query;
+		$resStd = $this->db_b->query($query);
+		return $resStd;
+
+
+
+    }
+	
 
 }
