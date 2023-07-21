@@ -26,7 +26,7 @@ where a.deleted_at is null
 and a.paciente_numero_documento='".$p["paciente_numero_documento"]."'
 union
 Select 2 bd,id prestacion_id,paciente_tipo_documento,paciente_numero_documento,Fecha,Servicio,ipress_nombre,responsable_atencion
-From dblink ('dbname=".$this->db->dblink_db." port=".$this->db->dblink_port." host=".$this->db->srv." user=".$this->db->user." password=".$this->db->pwd."',
+From dblink ('".dblink_pe_sp_cup_prod."',
 'select a.id,a.paciente_tipo_documento,a.paciente_numero_documento,
 case  
 	when  A.tipo_atencion IN (''1'')		then  to_char(a.fecha_atencion,''dd-mm-yyyy'')
@@ -80,7 +80,7 @@ case
 end
 union
 Select 2 bd,prestacion_id,paciente_tipo_documento,paciente_numero_documento,ipress_codigo,v_nombre,v_id_grupo_upss,tipo_atencion,UPSS,INI_ATENCION,FIN_ATENCION,Fecha,REGISTROS
-From dblink ('dbname=".$this->db->dblink_db." port=".$this->db->dblink_port." host=".$this->db->srv." user=".$this->db->user." password=".$this->db->pwd."',
+From dblink ('".dblink_pe_sp_cup_prod."',
 'select string_agg(p.id::varchar, '','') prestacion_id,p.paciente_tipo_documento ,p.paciente_numero_documento ,p.ipress_codigo ,d.v_nombre ,c.v_id_grupo_upss , 
 /*p.tipo_atencion,*/
 case 
@@ -139,7 +139,7 @@ and a.prestacion_id in(".$p["prestacion_id"].")
 group by a.prestacion_id,a.paciente_tipo_documento,a.paciente_numero_documento,procedimiento_descripcion";
 		}elseif($p["bd"]==2){
 			$this->sql = "Select prestacion_id,paciente_tipo_documento,paciente_numero_documento,nro,procedimiento_descripcion,cantidad_ejecutada
-From dblink ('dbname=".$this->db->dblink_db." port=".$this->db->dblink_port." host=".$this->db->srv." user=".$this->db->user." password=".$this->db->pwd."',
+From dblink ('".dblink_pe_sp_cup_prod."',
 'select a.prestacion_id,a.paciente_tipo_documento,a.paciente_numero_documento
 ,ROW_NUMBER() OVER(PARTITION BY a.prestacion_id  ORDER BY  a.procedimiento_descripcion) Nro
 ,procedimiento_descripcion,SUM(a.cantidad) cantidad_ejecutada
@@ -171,7 +171,7 @@ and a.prestacion_id=".$p["prestacion_id"]."
 group by a.prestacion_id,a.paciente_tipo_documento,a.paciente_numero_documento,descripcion";
 		}elseif($p["bd"]==2){
 			$this->sql = "Select prestacion_id,paciente_tipo_documento,paciente_numero_documento,nro,producto_descripcion,cantidad_entregada
-From dblink ('dbname=".$this->db->dblink_db." port=".$this->db->dblink_port." host=".$this->db->srv." user=".$this->db->user." password=".$this->db->pwd."',
+From dblink ('".dblink_pe_sp_cup_prod."',
 'select a.prestacion_id,a.paciente_tipo_documento,a.paciente_numero_documento
 ,ROW_NUMBER() OVER(PARTITION BY a.prestacion_id  ORDER BY  a.descripcion) nro
 ,descripcion producto_descripcion,SUM(a.cantidad) cantidad_entregada 
@@ -201,7 +201,7 @@ and a.prestacion_id=".$p["prestacion_id"]."
 group by a.prestacion_id,a.paciente_tipo_documento,a.paciente_numero_documento,descripcion";
 		}elseif($p["bd"]==2){
 			$this->sql = "Select prestacion_id,paciente_tipo_documento,paciente_numero_documento,nro,producto_descripcion,cantidad_entregada
-From dblink ('dbname=".$this->db->dblink_db." port=".$this->db->dblink_port." host=".$this->db->srv." user=".$this->db->user." password=".$this->db->pwd."',
+From dblink ('".dblink_pe_sp_cup_prod."',
 'select a.prestacion_id,a.paciente_tipo_documento,a.paciente_numero_documento
 ,ROW_NUMBER() OVER(PARTITION BY a.prestacion_id  ORDER BY  a.descripcion) nro
 ,descripcion producto_descripcion,SUM(a.cantidad) cantidad_entregada
