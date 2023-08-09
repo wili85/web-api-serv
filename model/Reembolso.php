@@ -307,5 +307,15 @@ class Reembolso {
 
     }
 	
-
+	public function getCantidadReembolso($p){
+		$conet = $this->db->getConnection();
+		$this->sql = "select idorden,tipo,dni,cantidad from sp_consulta_cantidad_reembolsos_por_dni('".$p["nrodoc"]."')";
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}	
+	
+	
 }

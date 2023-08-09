@@ -2671,6 +2671,58 @@ class Api{
 	
 	}
 	
+	function getIndicadorServicioAsegurado($p){
+	
+		include '../model/Reembolso.php';
+		include '../model/CartaGarantia.php';
+		
+		$a = new Reembolso();
+		$rs = $a->getCantidadReembolso($p);
+		
+		$c = new CartaGarantia();
+		$rsc = $c->getCantidadConvenioContratoCarta($p);
+		
+		$arc = array();
+		$nrc = count($rsc);
+		$indice = 0;
+		if ($nrc > 0) {
+			if (isset($rsc['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nrc; $i++) {
+					$afiliado[$i]['idorden'] = $rsc[$i]['idorden'];
+					$afiliado[$i]['tipo'] = $rsc[$i]['tipo'];
+					$afiliado[$i]['dni'] = $rsc[$i]['dni'];
+					$afiliado[$i]['cantidad'] = $rsc[$i]['cantidad'];
+					$indice++;
+				}
+			}
+		}
+		
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$afiliado[$i+$indice]['idorden'] = $rs[$i]['idorden'];
+					$afiliado[$i+$indice]['tipo'] = $rs[$i]['tipo'];
+					$afiliado[$i+$indice]['dni'] = $rs[$i]['dni'];
+					$afiliado[$i+$indice]['cantidad'] = $rs[$i]['cantidad'];
+				}
+			}
+		}
+		
+		if(isset($afiliado)){
+			echo json_encode(array('indicador_servicio'=>$afiliado));
+		}else {
+			$msg[0]['msg'] = "No exite resultados";
+			echo json_encode(array('indicador_servicio'=>$msg));
+		}
+	
+	}
+	
 	
 }
 

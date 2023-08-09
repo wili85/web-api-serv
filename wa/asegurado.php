@@ -67,6 +67,11 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 			$api->getIndicadorAsegurado($item);
 		}elseif($_POST['op'] == 'indicador_asegurado_detalle'){
 			$api->getIndicdorAllAsegurado();
+		}elseif($_POST['op'] == 'indicador_servicio_asegurado'){
+			$item = array(
+				'nrodoc' => $_POST['nrodoc'],
+			);
+			$api->getIndicadorServicioAsegurado($item);
 		}
 	
 	}else{
