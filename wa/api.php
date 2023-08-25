@@ -783,7 +783,7 @@ class Api{
 		$dataWebApi = json_decode($resultWebApi);
 		$recetavale = $dataWebApi->recetavale;
 		$nr=count($recetavale);
-		$nr=0;
+		//$nr=0;
 		if ($nr > 0) {
 			
 			$r = 0;
@@ -2675,12 +2675,16 @@ class Api{
 	
 		include '../model/Reembolso.php';
 		include '../model/CartaGarantia.php';
+		include '../model/Stips.php';
 		
 		$a = new Reembolso();
 		$rs = $a->getCantidadReembolso($p);
 		
 		$c = new CartaGarantia();
 		$rsc = $c->getCantidadConvenioContratoCarta($p);
+		
+		$s = new Stips();
+		$rss = $s->getCantidadPrestacionStipsByNroDocumento($p);
 		
 		$arc = array();
 		$nrc = count($rsc);
@@ -2714,6 +2718,13 @@ class Api{
 			}
 		}
 		
+		//$i++;
+		$registros = $rss[0]['registros'];
+		$afiliado[$i+$indice]['idorden'] = "5";
+		$afiliado[$i+$indice]['tipo'] = "prestaciones";
+		$afiliado[$i+$indice]['dni'] = $p["nrodoc"];
+		$afiliado[$i+$indice]['cantidad'] = $registros;
+		
 		if(isset($afiliado)){
 			echo json_encode(array('indicador_servicio'=>$afiliado));
 		}else {
@@ -2723,6 +2734,28 @@ class Api{
 	
 	}
 	
+	function getCantidadPrestacionByNroDocumento($p){
+		include '../model/Stips.php';
+		$a = new Stips();
+		$rs = $a->getCantidadPrestacionStipsByNroDocumento($p);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$pasaje[$i]['registros'] = $rs[$i]['registros'];
+				}
+				
+				echo json_encode(array('prestacion'=>$pasaje));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten prestaciones";
+			echo json_encode(array('prestacion'=>$msg));
+		}
+	
+	}
 	
 }
 

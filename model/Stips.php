@@ -218,6 +218,85 @@ group by a.prestacion_id,a.paciente_tipo_documento,a.paciente_numero_documento,d
         return $this->rs;
 	}
 	
+	public function getCantidadPrestacionStipsByNroDocumento($p){
+		$conet = $this->db->getConnection();
+		$this->sql = "
+select count(*) registros from (
+select p.paciente_tipo_documento ,p.paciente_numero_documento ,p.ipress_codigo ,d.v_nombre ipress_nombre,c.v_id_grupo_upss , 
+case 
+	when p.tipo_atencion = '1' then 'AMBULATORIA'
+	when p.tipo_atencion = '2' then 'EMERGENCIA'
+	when p.tipo_atencion = '3' then 'HOSPITALIZACION'
+end tipo_atencion,
+case when p.tipo_atencion = '1' then a.v_de_nombre else c.v_descripcion end upss,
+MIN(p.fecha_atencion) ini_atencion,
+case when p.tipo_atencion = '1' then p.fecha_atencion else p.fecha_alta end fin_atencion,
+case  
+	when  p.tipo_atencion in ('1')		then to_char(p.fecha_atencion,'dd/mm/yyyy')
+	when  p.tipo_atencion in ('2','3')	then concat(to_char(p.fecha_atencion,'dd/mm/yyyy'), '  -  ',to_char(p.fecha_alta ,'dd/mm/yyyy'))
+	else 'Sin Tipo'
+end fecha
+from public.prestaciones p 
+join mv_tbl_ups_susalud a on p.upss_codigo=a.v_co_codups 
+join mv_tbl_upss_principal_mca b on a.v_upss_codi_superior=b.v_upss_codi_superior and p.tipo_atencion=b.v_tipo_atencion 
+join public.mv_tbl_grupo_upss c on c.v_id_grupo_upss=substring(b.v_upss_codi_superior,1,2) 
+join public.mv_tbl_renipress_detail d on d.v_cod_ipress=p.ipress_codigo 
+where p.paciente_tipo_documento = '1' 
+and p.deleted_at is null 
+and p.paciente_numero_documento='".$p["nrodoc"]."'
+and b.v_flag_visualizacion=1 
+group by p.paciente_tipo_documento ,p.paciente_numero_documento ,p.ipress_codigo,d.v_nombre,c.v_id_grupo_upss,p.tipo_atencion
+,case when p.tipo_atencion = '1' then a.v_de_nombre else c.v_descripcion end,
+case when p.tipo_atencion = '1' then p.fecha_atencion else p.fecha_alta end,
+case  
+	when  p.tipo_atencion in ('1')		then to_char(p.fecha_atencion,'dd/mm/yyyy')
+	when  p.tipo_atencion in ('2','3')	then concat(to_char(p.fecha_atencion,'dd/mm/yyyy'), '  -  ',to_char(p.fecha_alta ,'dd/mm/yyyy'))
+	else 'Sin Tipo'
+end
+union
+Select paciente_tipo_documento,paciente_numero_documento,ipress_codigo,v_nombre,v_id_grupo_upss,tipo_atencion,UPSS,INI_ATENCION,FIN_ATENCION,Fecha
+From dblink ('".dblink_pe_sp_cup_prod."',
+'select p.paciente_tipo_documento ,p.paciente_numero_documento ,p.ipress_codigo ,d.v_nombre ,c.v_id_grupo_upss , 
+case 
+	when p.tipo_atencion = ''1'' then ''AMBULATORIA''
+	when p.tipo_atencion = ''2'' then ''EMERGENCIA''
+	when p.tipo_atencion = ''3'' then ''HOSPITALIZACION''
+end tipo_atencion,
+case when p.tipo_atencion = ''1'' then a.v_de_nombre else c.v_descripcion end UPSS,
+MIN(p.fecha_atencion) INI_ATENCION,
+case when p.tipo_atencion = ''1'' then p.fecha_atencion else p.fecha_alta end FIN_ATENCION,
+case  
+	when  p.tipo_atencion in (''1'')		then to_char(p.fecha_atencion,''dd/mm/yyyy'')
+	when  p.tipo_atencion in (''2'',''3'')	then concat(to_char(p.fecha_atencion,''dd/mm/yyyy''), ''  -  '',to_char(p.fecha_alta ,''dd/mm/yyyy''))
+	else ''Sin Tipo''
+end Fecha
+from public.prestaciones p 
+join mv_tbl_ups_susalud a on p.upss_codigo=a.v_co_codups 
+join mv_tbl_upss_principal_mca b on a.v_upss_codi_superior=b.v_upss_codi_superior and p.tipo_atencion=b.v_tipo_atencion 
+join public.mv_tbl_grupo_upss c on c.v_id_grupo_upss=substring(b.v_upss_codi_superior,1,2) 
+join public.mv_tbl_renipress_detail d on d.v_cod_ipress=p.ipress_codigo 
+where p.paciente_tipo_documento = ''1'' 
+and p.deleted_at is null 
+and p.paciente_numero_documento=''".$p["nrodoc"]."''
+and b.v_flag_visualizacion=1 
+group by p.paciente_tipo_documento ,p.paciente_numero_documento ,p.ipress_codigo,d.v_nombre,c.v_id_grupo_upss,p.tipo_atencion
+,case when p.tipo_atencion = ''1'' then a.v_de_nombre else c.v_descripcion end,
+case when p.tipo_atencion = ''1'' then p.fecha_atencion else p.fecha_alta end,
+case  
+	when  p.tipo_atencion in (''1'')		then to_char(p.fecha_atencion,''dd/mm/yyyy'')
+	when  p.tipo_atencion in (''2'',''3'')	then concat(to_char(p.fecha_atencion,''dd/mm/yyyy''), ''  -  '',to_char(p.fecha_alta ,''dd/mm/yyyy''))
+	else ''Sin Tipo''
+end')ret 
+(paciente_tipo_documento varchar,paciente_numero_documento varchar,ipress_codigo varchar,v_nombre varchar,v_id_grupo_upss varchar,tipo_atencion varchar,UPSS varchar,
+INI_ATENCION timestamp,FIN_ATENCION timestamp,Fecha varchar)
+)R
+";
+		//echo $this->sql;
+		
+        $this->rs = $this->db->query($this->sql);
+        return $this->rs;
+	}
+	
 	public function readFunctionPostgres($function, $parameters = null){
 	
 	  $conet = $this->db->getConnection();

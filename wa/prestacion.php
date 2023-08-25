@@ -50,6 +50,14 @@
 				
 				$api->getPrestacionProductoById($item);	
 				
+			}elseif($_POST['op'] == 'listar_cantidad_prestacion'){
+			
+				$item = array(
+					'paciente_numero_documento' 	=> $_POST['paciente_numero_documento']
+				);
+				
+				$api->getCantidadPrestacionByNroDocumento($item);	
+				
 			}
 		
 		}else{
