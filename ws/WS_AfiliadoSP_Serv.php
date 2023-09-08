@@ -170,6 +170,9 @@ $server->register('registrarAuditoriaCambios', array('tabla' => 'xsd:string', 'i
 $server->register('resetearClaveAsegurado', array('tipDocIdent' => 'xsd:string', 'nroDocIdent' => 'xsd:string', 'clave' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#resetearClaveAsegurado', 'rpc', 'encoded', 'WS login asegurado.');
 $server->register('getInformacionCorreoAsegurado', array('tipDocIdent' => 'xsd:string', 'nroDocIdent' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getInformacionCorreoAsegurado', 'rpc', 'encoded', 'WS resetear asegurado.');
 
+$server->register('registrarTokenUser', array('dni' => 'xsd:string', 'descripcion_token' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#registrarTokenUser', 'rpc', 'encoded', 'WS registrar token.');
+$server->register('getInformacionTokenUser', array('descripcion_token' => 'xsd:string'), array('return' => 'xsd:Array'), 'urn:WS-SaludPol', 'urn:WS-SaludPol#getInformacionTokenUser', 'rpc', 'encoded', 'WS obtiene información del Token.');
+
 //array('return' => 'tns:asegurado'),... Otra opción de retorno pero ignora el addComplexType
 function getAseguradoValidate($tipDoc, $nroDoc, $fecValid) {
 	//echo $_SERVER['REMOTE_ADDR']."|||".$_SERVER['PHP_AUTH_USER']."|||".$_SERVER['PHP_AUTH_PW'];
@@ -701,6 +704,56 @@ function getInformacionCorreoAsegurado($tipDocIdent, $nroDocIdent) {
 				$ar[$i]['apellidomaterno'] = utf8_decode($rs[$i]['apellidomaterno']);
 				$ar[$i]['apellidodecasada'] = utf8_decode($rs[$i]['apellidodecasada']);
 				$ar[$i]['email'] = $rs[$i]['email'];
+            }
+        }
+    } else {
+        $ar[0]['Error'] = 'No se encontro ningún resultado';
+    }
+    
+    return $ar;
+}
+
+function registrarTokenUser($dni, $descripcion_token) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+    include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $dni;
+	$p[] = $descripcion_token;
+    $rs = $a->registrarTokenUser($p);
+	$ar = array();
+	$ar[0]['msg'] = $rs;
+	return $ar;
+}
+
+function getInformacionTokenUser($descripcion_token) {
+	
+    if (!doAuthenticate()) {
+        $ar = array();
+        $ar[0] = array('Error' => 'X', 'Error_msg' => 'Error de autenticacion');
+        return $ar;
+    }
+	
+	include '../model/Beneficiario.php';
+    $a = new Afiliado();
+	$p[] = $descripcion_token;
+    $rs = $a->getInformacionTokenUser($p);
+	
+    $ar = array();
+    $nr = count($rs);
+    if ($nr > 0) {
+        if (isset($rs['Error'])) {
+            $ar[0]['Error'] = 'Ingrese el dato requerido';
+        } else {
+            for ($i = 0; $i < $nr; $i++) {
+				$ar[$i]['dni'] = $rs[$i]['dni'];
+                $ar[$i]['descripcion_token'] = $rs[$i]['descripcion_token'];
+				$ar[$i]['fecha_creacion'] = $rs[$i]['fecha_creacion'];
             }
         }
     } else {

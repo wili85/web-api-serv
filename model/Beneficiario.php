@@ -619,6 +619,28 @@ Where t1.tipodedocumentodelafiliado='".$par[0]."' And t1.numerodedocumentodelafi
 		if($row > 0)return $this->rs;
 	}
 	
+	public function registrarTokenUser($p){
+		$this->db->getConnection();
+		$this->sql = "insert into tbl_token_user(dni, descripcion_token, fecha_creacion)
+                    values ('" . $p[0] . "','" . $p[1] . "',now())";
+		//echo $this->sql;
+		$rs = $this->db->queryCRUD($this->sql);
+		$this->db->closeConnection();
+    }
+	
+	public function getInformacionTokenUser($par){
+		$conet = $this->db->getConnection();
+		$this->sql = "select dni, descripcion_token, fecha_creacion
+from tbl_token_user t1
+Where t1.descripcion_token='".$par[0]."'";
+		//echo $this->sql;exit();
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        $row = count($this->rs);
+		if($row > 0)return $this->rs;
+		
+	}
+	
 	public function to_pg_array($set) {
 		settype($set, 'array'); // can be called with a scalar or array
 		$result = array();
