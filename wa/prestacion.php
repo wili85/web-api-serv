@@ -18,10 +18,11 @@
 			if($_POST['op'] == 'listar_prestacion'){
 			
 				$item = array(
-					'paciente_numero_documento' 	=> $_POST['paciente_numero_documento']
+					'paciente_numero_documento' 	=> $_POST['paciente_numero_documento'],
+					'tipo_atencion' 				=> $_POST['tipo_atencion']
 				);
 				
-				$api->getPrestacionByNroDocumento($item);	
+				$api->getPrestacionByNroDocumento($item);
 				
 			}elseif($_POST['op'] == 'listar_prestacion_procedimiento'){
 			

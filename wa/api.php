@@ -1229,6 +1229,56 @@ class Api{
 				echo json_encode(array('ipress'=>$ipress));
 			}
 		}
+	}
+	
+	function getListaIpressConvenio($p){
+		include '../model/Maestro.php';
+		$a = new Maestro();
+		$rs = $a->consulta_ipress_convenio($p);
+		//print_r($rs);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$ipress[$i]['codigo_ipress'] = $rs[$i]['codigo_ipress'];
+					$ipress[$i]['nom_comercial_estab'] = $rs[$i]['nom_comercial_estab'];
+					$ipress[$i]['razon_social_estab'] = $rs[$i]['razon_social_estab'];
+					$ipress[$i]['num_ruc'] = $rs[$i]['num_ruc'];
+					$ipress[$i]['gpo_inst'] = $rs[$i]['gpo_inst'];
+					$ipress[$i]['sub_gpo_inst'] = $rs[$i]['sub_gpo_inst'];
+					$ipress[$i]['institucion'] = $rs[$i]['institucion'];
+					$ipress[$i]['tipo_estab'] = $rs[$i]['tipo_estab'];
+					$ipress[$i]['nivel'] = $rs[$i]['nivel'];
+					$ipress[$i]['categoria'] = $rs[$i]['categoria'];
+					$ipress[$i]['fec_ini_act_estab'] = $rs[$i]['fec_ini_act_estab'];
+					//$ipress[$i]['ubigeo'] = $rs[$i]['ubigeo'];
+					$ipress[$i]['ubigeo'] = $rs[$i]['ubigeo_reniec'];
+					$ipress[$i]['departamento'] = $rs[$i]['departamento'];
+					$ipress[$i]['provincia'] = $rs[$i]['provincia'];
+					$ipress[$i]['distrito'] = $rs[$i]['distrito'];
+					$ipress[$i]['direccion_estab'] = $rs[$i]['direccion_estab'];
+					$ipress[$i]['estado'] = $rs[$i]['estado'];
+					$ipress[$i]['este'] = $rs[$i]['este'];
+					$ipress[$i]['norte'] = $rs[$i]['norte'];
+					$ipress[$i]['un_co'] = $rs[$i]['un_co'];
+					$ipress[$i]['telef_estab'] = $rs[$i]['telef_estab'];
+					$ipress[$i]['telef_emerg_estab'] = $rs[$i]['telef_emerg_estab'];
+					$ipress[$i]['fax_estab'] = $rs[$i]['fax_estab'];
+					$ipress[$i]['email_estab'] = $rs[$i]['email_estab'];
+					
+					//$ipress[$i]['sub_gpo_sp'] = $rs[$i]['sub_gpo_sp'];
+					//$ipress[$i]['color_sub_gpo_sp'] = $rs[$i]['color_sub_gpo_sp'];
+					$ipress[$i]['abrevitura'] = $rs[$i]['gpo_categoria_sp'];
+					$ipress[$i]['institucion'] = $rs[$i]['gpo_institucion_sp'];
+					$ipress[$i]['color'] = $rs[$i]['col_gpo_institucion_sp'];
+					$ipress[$i]['url_mapa'] = $rs[$i]['url_mapa'];
+				}		
+				echo json_encode(array('ipress'=>$ipress));
+			}
+		}
 	}	
 	
 	
@@ -2756,6 +2806,57 @@ class Api{
 		}
 	
 	}
+	
+	function getSolicitudProcedimientos($p){
+		include '../model/CartaGarantia.php';
+		$a = new CartaGarantia();
+		$rs = $a->getSolicitudProcedimientos($p);
+		//print_r($rs);
+		$ar = array();
+		$nr = count($rs);
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$pasaje[$i]['fecha_registro'] = date("d-m-Y", strtotime($rs[$i]['Fecha de registro']));
+					$pasaje[$i]['fecha_recepcion'] = date("d-m-Y", strtotime($rs[$i][1]));
+					$pasaje[$i]['fecha_ultimo_movimiento'] = date("d-m-Y", strtotime($rs[$i]['Fecha de ultimo movimiento']));
+					$pasaje[$i]['estado_desarrollo'] = $rs[$i]['Estado desarrollo'];
+					$pasaje[$i]['estados_bi'] = $rs[$i]['Estados BI'];
+					$pasaje[$i]['oficina_ultimo_movimiento'] = $rs[$i]['Oficina de ultimo movimiento'];
+					$pasaje[$i]['documento'] = $rs[$i]['Documento'];
+					$pasaje[$i]['tipo_solicitud'] = $rs[$i]['Tipo de solicitud'];
+					$pasaje[$i]['nombre_responsable'] = $rs[$i]['Nombre del responsable'];
+					$pasaje[$i]['rol_responsable'] = $rs[$i]['Rol del responsable'];
+					$pasaje[$i]['codigo_solicitud'] = $rs[$i][10];
+					$pasaje[$i]['monto_solicitud'] = $rs[$i]['Monto de solicitud'];
+					$pasaje[$i]['dni_paciente'] = $rs[$i]['DNI del paciente'];
+					$pasaje[$i]['nombre_paciente'] = $rs[$i]['Nombre del paciente'];
+					$pasaje[$i]['codigo_renipress_ipress_pnp'] = $rs[$i][14];
+					$pasaje[$i]['nombre_ipress_pnp'] = $rs[$i]['Nombre de IPRESS PNP'];
+					$pasaje[$i]['codigo_renipress_ipress_no_pnp'] = $rs[$i][16];
+					$pasaje[$i]['nombre_ipress_no_pnp'] = $rs[$i]['Nombre de IPRESS NO PNP'];
+					$pasaje[$i]['tipo_ipress_no_pnp'] = $rs[$i]['Tipo de IPRESS no PNP'];
+					$pasaje[$i]['especialidad_solicitud'] = $rs[$i]['Especialidad de la solicitud'];
+					$pasaje[$i]['region'] = $rs[$i][20];
+					$pasaje[$i]['gpo_estados_bi'] = $rs[$i]['Gpo Estados BI'];
+					$pasaje[$i]['porcentaje_avance'] = $rs[$i]['% Avance'];
+					$pasaje[$i]['doc_abrev'] = $rs[$i]['Doc. Abrev.'];
+					$pasaje[$i]['color'] = $rs[$i]['Color'];
+					$pasaje[$i]['doc_firmado'] = $rs[$i]['Doc. firmado'];
+				}
+				
+				echo json_encode(array('solicitud_prestacion'=>$pasaje));
+			}
+		} else {
+			$msg[0]['msg'] = utf8_encode("No exiten solicitud de prestación de salud");
+			echo json_encode(array('solicitud_prestacion'=>$msg));
+		}
+	
+	}
+	
+	
 	
 }
 

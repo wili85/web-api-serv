@@ -42,6 +42,7 @@ and a.paciente_numero_documento=''".$p["paciente_numero_documento"]."''')ret
 	}
 	
 	public function getPrestacionStipsByNroDocumento($p){
+		
 		$conet = $this->db->getConnection();
 		$this->sql = "
 select * from (
@@ -68,8 +69,13 @@ join public.mv_tbl_grupo_upss c on c.v_id_grupo_upss=substring(b.v_upss_codi_sup
 join public.mv_tbl_renipress_detail d on d.v_cod_ipress=p.ipress_codigo 
 where p.paciente_tipo_documento = '1' 
 and p.deleted_at is null 
-and p.paciente_numero_documento='".$p["paciente_numero_documento"]."'
-and b.v_flag_visualizacion=1 
+and p.paciente_numero_documento='".$p["paciente_numero_documento"]."'";
+
+if($p["tipo_atencion"]!=""){
+	$this->sql .= " and p.tipo_atencion = '".$p["tipo_atencion"]."'";
+}
+
+$this->sql .= " and b.v_flag_visualizacion=1 
 group by p.paciente_tipo_documento ,p.paciente_numero_documento ,p.ipress_codigo,d.v_nombre,c.v_id_grupo_upss,p.tipo_atencion
 ,case when p.tipo_atencion = '1' then a.v_de_nombre else c.v_descripcion end,
 case when p.tipo_atencion = '1' then p.fecha_atencion else p.fecha_alta end,
@@ -104,8 +110,13 @@ join public.mv_tbl_grupo_upss c on c.v_id_grupo_upss=substring(b.v_upss_codi_sup
 join public.mv_tbl_renipress_detail d on d.v_cod_ipress=p.ipress_codigo 
 where p.paciente_tipo_documento = ''1'' 
 and p.deleted_at is null 
-and p.paciente_numero_documento=''".$p["paciente_numero_documento"]."''
-and b.v_flag_visualizacion=1 
+and p.paciente_numero_documento=''".$p["paciente_numero_documento"]."''";
+
+if($p["tipo_atencion"]!=""){
+	$this->sql .= " and p.tipo_atencion = ''".$p["tipo_atencion"]."''";
+}
+
+$this->sql .= " and b.v_flag_visualizacion=1 
 group by p.paciente_tipo_documento ,p.paciente_numero_documento ,p.ipress_codigo,d.v_nombre,c.v_id_grupo_upss,p.tipo_atencion
 ,case when p.tipo_atencion = ''1'' then a.v_de_nombre else c.v_descripcion end,
 case when p.tipo_atencion = ''1'' then p.fecha_atencion else p.fecha_alta end,

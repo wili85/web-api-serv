@@ -56,6 +56,17 @@ class CartaGarantia {
         $row = count($this->rs);
 		if($row > 0)return $this->rs;
 		
+	}
+	
+	public function getSolicitudProcedimientos($p){
+		$conet = $this->db->getConnection();
+		$this->sql = "select * from sp_dashboard_return_sps('01-01-23','31-12-23','".$p["nrodoc"]."')";
+        $this->rs = $this->db->query($this->sql);
+		$this->db->closeConnection();
+        //$row = count($this->rs);
+		//if($row > 0)
+		return $this->rs;
+		
 	}	
 	
 	

@@ -25,6 +25,15 @@ if(isset($_POST['usuario']) && isset($_POST['clave']) /*&& isset($_POST['tipDoc'
 			);
 			$api->getListaIpress($item);	
 		}
+		if($_POST['op'] == 'listar_ipress'){
+			
+			$item = array(
+				'ubigeo' => $_POST['ubigeo'],
+				'direccion' => $_POST['direccion']
+			);
+			
+			$api->getListaIpressConvenio($item);	
+		}
 
 	}else{
 		$api->error('Error al Autentificar');

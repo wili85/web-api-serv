@@ -18,6 +18,51 @@ class Maestro {
 	public function consulta_ipress($p){
 		return $this->readFunctionPostgres('sp_consulta_ipress',$p);
     }
+	
+	public function consulta_ipress_convenio($p){
+		$conet = $this->db->getConnection();
+		/*
+		$this->sql = "With ipress_vig As(
+Select * From dblink('dbname=pe_sp_sgp_dev host=localhost user=apoyo_oti46 password=PhPdEv.7102-',
+'Select Distinct x.codigo_ipress 
+ From (
+ Select codigo_ipress From proveedor_convenio_individuales Where deleted_at Is Null And fin>=now() 
+ Union All 
+ Select codigo_renaes From ipresses)x')r 
+(codigo_ipress varchar))
+Select to_char(cod_ipress::int,'00000000')::varchar codigo_ipress,nom_comercial_estab,razon_social_estab,num_ruc,gpo_inst,sub_gpo_inst,
+institucion,tipo_estab,nivel,categoria,fec_ini_act_estab,ubigeo,ti.departamento,ti.provincia,ti.distrito,trim(replace(replace(replace(replace(replace(
+replace(direccion_estab,ti.distrito,''),ti.provincia,''),ti.departamento,''),'DISTRITO',''),'PROVINCIA',''),
+'DEPARTAMENTO',''))direccion_estab,estado,este,norte,un_co,telef_estab,telef_emerg_estab,fax_estab,email_estab,''::varchar sub_gpo_sp,''::varchar color_sub_gpo_sp,
+('https: //www.google.com/maps/search/?api=1&query='||ti.departamento||' '||ti.provincia||' '||ti.distrito||' '||nom_comercial_estab)url_mapa,id_reniec ubigeo 
+From tbl_ss_institution ti 
+Inner Join ipress_vig iv On ti.cod_ipress::int=iv.codigo_ipress::int
+left join (Select id_reniec,departamento,provincia,distrito
+from dblink('dbname=pe_sp_bdb_dev host=localhost user=apoyo_oti46 password=PhPdEv.7102-',
+'select id_reniec,departamento,provincia,distrito from ubigeo u')s  
+(id_reniec varchar,departamento varchar,provincia varchar,distrito varchar))t on ti.departamento=t.departamento and ti.provincia=t.provincia and ti.distrito=t.distrito
+where t.id_reniec ilike '".$p["ubigeo"]."%'";
+
+		if($p["direccion"]!=""){
+			$this->sql .= " and ti.nom_comercial_estab||ti.departamento||ti.provincia||ti.distrito||direccion_estab ilike '%".$p["direccion"]."%'";
+		}
+		*/
+		
+		$this->sql = "select * from vw_mdb_ipress_convenio ti where 1=1 ";
+		
+		if($p["ubigeo"]!=""){
+			$this->sql .= " and ti.ubigeo_reniec ilike '%".$p["ubigeo"]."%'";
+		}
+		
+		if($p["direccion"]!=""){
+			$this->sql .= " and ti.nom_comercial_estab||ti.departamento||ti.provincia||ti.distrito||direccion_estab ilike '%".$p["direccion"]."%'";
+		}
+		
+		//echo $this->sql;
+		
+        $this->rs = $this->db->query($this->sql);
+        return $this->rs;
+    }
 
 	/*
 	public function consulta_receta_vale($p){

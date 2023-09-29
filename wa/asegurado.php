@@ -72,6 +72,11 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 				'nrodoc' => $_POST['nrodoc'],
 			);
 			$api->getIndicadorServicioAsegurado($item);
+		}elseif($_POST['op'] == 'solicitud_procedimiento'){
+			$item = array(
+				'nrodoc' => $_POST['nrodoc'],
+			);
+			$api->getSolicitudProcedimientos($item);
 		}
 	
 	}else{
