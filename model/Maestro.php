@@ -55,10 +55,10 @@ where t.id_reniec ilike '".$p["ubigeo"]."%'";
 		}
 		
 		if($p["direccion"]!=""){
-			$this->sql .= " and ti.nom_comercial_estab||ti.departamento||ti.provincia||ti.distrito||direccion_estab ilike '%".$p["direccion"]."%'";
+			$this->sql .= " and ti.sub_gpo_inst||ti.gpo_inst||ti.gpo_categoria_sp||ti.categoria||ti.nom_comercial_estab||ti.departamento||ti.provincia||ti.distrito||ti.direccion_estab ilike '%".$p["direccion"]."%'";
 		}
 		
-		//echo $this->sql;
+		echo $this->sql;
 		
         $this->rs = $this->db->query($this->sql);
         return $this->rs;
