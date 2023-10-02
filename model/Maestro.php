@@ -51,7 +51,7 @@ where t.id_reniec ilike '".$p["ubigeo"]."%'";
 		$this->sql = "select * from vw_mdb_ipress_convenio ti where 1=1 ";
 		
 		if($p["ubigeo"]!=""){
-			$this->sql .= " and ti.ubigeo_reniec ilike '%".$p["ubigeo"]."%'";
+			$this->sql .= " and ti.ubigeo_reniec ilike '".$p["ubigeo"]."%'";
 		}
 		
 		if($p["direccion"]!=""){
