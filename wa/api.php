@@ -2836,7 +2836,7 @@ class Api{
 					$pasaje[$i]['codigo_renipress_ipress_pnp'] = $rs[$i][14];
 					$pasaje[$i]['nombre_ipress_pnp'] = $rs[$i]['Nombre de IPRESS PNP'];
 					$pasaje[$i]['codigo_renipress_ipress_no_pnp'] = $rs[$i][16];
-					$pasaje[$i]['nombre_ipress_no_pnp'] = $rs[$i]['Nombre de IPRESS NO PNP'];
+					$pasaje[$i]['nombre_ipress_no_pnp'] = $rs[$i][17];
 					$pasaje[$i]['tipo_ipress_no_pnp'] = $rs[$i]['Tipo de IPRESS no PNP'];
 					$pasaje[$i]['especialidad_solicitud'] = $rs[$i]['Especialidad de la solicitud'];
 					$pasaje[$i]['region'] = $rs[$i][20];
