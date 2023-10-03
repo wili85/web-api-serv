@@ -164,6 +164,10 @@ class Reembolso {
 						$telefono4 = $cursors2[$i]['telefono4'];
 						$correo_solicitante = $cursors2[$i]['correo_solicitante'];
 						$flagnotificacion = $cursors2[$i]['flagnotificacion'];
+						
+						$nombre_rs = $cursors2[$i]['nombre_rs'];
+						$primer_ape = $cursors2[$i]['primer_ape'];
+						$segundo_ape = $cursors2[$i]['segundo_ape'];
 					}
 				}
 				
@@ -177,9 +181,13 @@ class Reembolso {
 						}
 					}else{
 						$afiliado[0]['numerodedocumento'] = $numdocsolicitante;
-						$afiliado[0]['nombres'] = $nombresolicitante;
-						$afiliado[0]['apellidopaterno'] = "";
-						$afiliado[0]['apellidomaterno'] = "";
+						//$afiliado[0]['nombres'] = $nombresolicitante;
+						//$afiliado[0]['apellidopaterno'] = "";
+						//$afiliado[0]['apellidomaterno'] = "";
+						$afiliado[0]['nombres'] = $nombre_rs;
+						$afiliado[0]['apellidopaterno'] = $primer_ape;
+						$afiliado[0]['apellidomaterno'] = $segundo_ape;
+						
 					}
 				}
 				
