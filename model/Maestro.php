@@ -55,7 +55,7 @@ where t.id_reniec ilike '".$p["ubigeo"]."%'";
 		}
 		
 		if($p["direccion"]!=""){
-			$this->sql .= " and coalesce(ti.sub_gpo_inst,'')||coalesce(ti.gpo_inst,'')||coalesce(ti.gpo_categoria_sp,'')||coalesce(ti.categoria,'')||coalesce(ti.nom_comercial_estab,'')||coalesce(ti.departamento,'')||coalesce(ti.provincia,'')||coalesce(ti.distrito,'')||coalesce(ti.direccion_estab,'') ilike '%".$p["direccion"]."%'";
+			$this->sql .= " and coalesce(ti.sub_gpo_inst,'')||' '||coalesce(ti.gpo_inst,'')||' '||coalesce(ti.gpo_categoria_sp,'')||' '||coalesce(ti.categoria,'')||' '||coalesce(ti.nom_comercial_estab,'')||' '||coalesce(ti.departamento,'')||' '||coalesce(ti.provincia,'')||' '||coalesce(ti.distrito,'')||' '||coalesce(ti.direccion_estab,'') ilike '%".$p["direccion"]."%'";
 		}
 		
 		//echo $this->sql;
