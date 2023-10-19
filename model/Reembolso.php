@@ -37,6 +37,10 @@ class Reembolso {
 		return $this->readFunctionPostgres('sp_crud_solicitud_digital_movil',$p);
     }
 	
+	public function crudSolicitudTemporal($p){
+		return $this->readFunctionPostgres('sp_crud_solicitud_tmp',$p);
+    }
+	
 	public function crudComprobante($p) {
         return $this->readFunctionPostgres('sp_crud_comprobante_new',$p);
     }
@@ -291,7 +295,7 @@ class Reembolso {
 		$conet = $this->db->getConnection();
 		
 		 $this->sql = "Select idsolicitud,htnumero,date(htfecha)htfecha,nombrepaciente,nombresolicitante,ipressnombre,tr.descripcion tiporeembolso,usuario,es.codigo,
-    date(fecharegistro)fecregistro,numinforme,es.descripcion resolucion,obs_resolucion,ns.descripcion sede,date(fechapago)fecpago,numdocsolicitante
+    date(fecharegistro)fecregistro,numinforme,es.descripcion resolucion,obs_resolucion,ns.descripcion sede,date(fechapago)fecpago,numdocsolicitante,numdocpaciente
 	,nom_archivo_resolucion,rutainformeliquidacion,
 	(select Sum(c.importetotal-c.importeobs)As importe_reembolsable from comprobante c where idsolicitud=s.idsolicitud And c.flagregistro='1')As importe_reembolsable   
     From solicitud s Left Join mastertable es On s.respuestaresolucion=es.codigo And es.idparent='156'

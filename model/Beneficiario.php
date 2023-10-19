@@ -26,6 +26,18 @@ class Afiliado {
         $this->db->closeConnection();
         return $this->rs;
     }
+	
+	public function getValidateAseguradosAllSP($tipDoc, $nroDoc) {
+        $conet = $this->db->getConnection();
+        if (empty($tipDoc) && empty($nroDoc)) {
+            $this->rs = array('Error' => 'Ingrese Dato');
+        } else {
+            $this->sql = "Select * From sp_lista_asegurados_afines('" . $tipDoc . "','" . $nroDoc . "','ref_cursor'); Fetch All In ref_cursor;";
+            $this->rs = $this->db->query($this->sql);
+        }
+        $this->db->closeConnection();
+        return $this->rs;
+    }
 
 	public function getAseguradoSiteds($p){
 		return $this->readFunctionPostgres('sp_siteds_consulta_afiliado',$p);
