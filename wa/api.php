@@ -1330,7 +1330,7 @@ class Api{
 					$detalle[$i]['fechapago'] = $fechapago;
 					$detalle[$i]['montopago'] = $montopago;
 				}else{
-					$detalle[0]['msg'] = utf8_encode("La solicitud aun no tiene informe de liquidación firmado");
+					$detalle[0]['msg'] = utf8_encode("La solicitud aun no tiene informe de liquidaciï¿½n firmado");
 				}
 				
 			}
@@ -2420,7 +2420,7 @@ class Api{
 					$url_boletopaciente_extra1 = "";//Boleto del Paciente Extra 1
 					$url_boletopaciente_extra2 = "";//Boleto del Paciente Extra 2
 					$url_boletopaciente_extra3 = "";//Boleto del Paciente Extra 3
-					$url_boletoacompanante = "";//Boleto del Acompañante
+					$url_boletoacompanante = "";//Boleto del Acompaï¿½ante
 					$url_boletomedico = "";//Boleto del Profesional de Salud
 					
 					if($rs[$i]['estado'] == 1)$estado = "PENDIENTE";
@@ -2854,7 +2854,7 @@ class Api{
 				echo json_encode(array('solicitud_prestacion'=>$pasaje));
 			}
 		} else {
-			$msg[0]['msg'] = utf8_encode("No exiten solicitud de prestación de salud");
+			$msg[0]['msg'] = utf8_encode("No exiten solicitud de prestaciï¿½n de salud");
 			echo json_encode(array('solicitud_prestacion'=>$msg));
 		}
 	
@@ -3037,7 +3037,6 @@ class Api{
 	
 	}
 	
-	
 	function registrar_prestacion_sugps($p){
 		
 		include '../model/PrestacionSugps.php';
@@ -3064,12 +3063,52 @@ class Api{
 		} else {
 			
 		}
-		
-	
 	}
 	
-	
+	function listar_reembolso_temporal($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->listarSolicitudTemporal($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
+					$reembolso[$i]['htnumero'] = $rs[$i]['htnumero'];
+					$reembolso[$i]['htfecha'] = $rs[$i]['htfecha'];
+					$reembolso[$i]['nombrepaciente'] = $rs[$i]['nombrepaciente'];
+					$reembolso[$i]['nombresolicitante'] = $rs[$i]['nombresolicitante'];
+					$reembolso[$i]['ipressnombre'] = $rs[$i]['ipressnombre'];
+					$reembolso[$i]['tiporeembolso'] = $rs[$i]['tiporeembolso'];
+					$reembolso[$i]['usuario'] = $rs[$i]['usuario'];
+					$reembolso[$i]['codigo'] = $rs[$i]['codigo'];
+					$reembolso[$i]['fecregistro'] = $rs[$i]['fecregistro'];
+					$reembolso[$i]['numinforme'] = $rs[$i]['numinforme'];
+					$reembolso[$i]['resolucion'] = $rs[$i]['resolucion'];
+					$reembolso[$i]['obs_resolucion'] = $rs[$i]['obs_resolucion'];
+					$reembolso[$i]['sede'] = $rs[$i]['sede'];
+					$reembolso[$i]['fecpago'] = $rs[$i]['fecpago'];
+					$reembolso[$i]['numdocsolicitante'] = $rs[$i]['numdocsolicitante'];
+					$reembolso[$i]['numdocpaciente'] = $rs[$i]['numdocpaciente'];
+					$reembolso[$i]['nom_archivo_resolucion'] = $rs[$i]['nom_archivo_resolucion'];
+					$reembolso[$i]['rutainformeliquidacion'] = $rs[$i]['rutainformeliquidacion'];
+					$reembolso[$i]['importe_reembolsable'] = $rs[$i]['importe_reembolsable'];
+				}
 				
+				echo json_encode(array('afiliado'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten productos";
+			echo json_encode(array('reembolsos'=>$msg));
+		}
+	
+	}
 				
 	
 }

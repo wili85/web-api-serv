@@ -152,6 +152,16 @@
 					
 					$api->registrar_solicitud_temporal($item);
 					
+				}elseif($_POST['op'] == 'listar_reembolsos_tmp'){
+					
+					$item = array(
+						'tipo_documento' 	=> $_POST['tipo_documento'],
+						'numero_documento' 	=> $_POST['numero_documento'],
+						'htnumero' 	=> $_POST['htnumero']
+					);
+
+					$api->listar_reembolso_temporal($item);
+					
 				}
 				
 			
