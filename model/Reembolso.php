@@ -41,6 +41,10 @@ class Reembolso {
 		return $this->readFunctionPostgres('sp_crud_solicitud_tmp',$p);
     }
 	
+	public function listarSolicitudTemporal($p){
+		return $this->readFunctionPostgres('sp_consult_reembolso_xdni_xht',$p);
+		}
+
 	public function crudComprobante($p) {
         return $this->readFunctionPostgres('sp_crud_comprobante_new',$p);
     }
@@ -100,7 +104,7 @@ class Reembolso {
         } else {
             $this->db->query("COMMIT");
             $sw=TRUE;
-            $msg='La operación  realizado correctamente.';
+            $msg='La operaciï¿½n  realizado correctamente.';
              //$data = $result->result_array();
 	
         }
