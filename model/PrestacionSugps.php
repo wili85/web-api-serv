@@ -98,8 +98,10 @@ class PrestacionSugps {
             $msg='La operación  realizado correctamente.';
 	
         }
-       
-        $response = $result;
+       	//print_r($result);
+		$function_ = str_replace("sch_gestion_prestacional.","",$function);
+		//echo $function_;
+        $response = $result[0][$function_];
 		
       } catch (Exception $e) {
 

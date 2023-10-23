@@ -3051,17 +3051,12 @@ class Api{
 			if (isset($rs['Error'])) {
 				$this->error('No hay elementos');
 			} else {
-				for ($i = 0; $i < $nr; $i++) {
-					//$reembolso[$i]['fechahojareferencia'] = $rs[$i]['fechahojareferencia'];
-					//$reembolso[$i]['numinformeauditoria'] = $rs[$i]['numinformeauditoria'];
-					//$reembolso[$i]['fechainformeauditoria'] = $rs[$i]['fechainformeauditoria'];
-				}
-				
-				//echo json_encode(array('afiliado'=>$reembolso));
-				
+				$msg[0]['msg'] = "Prestación registada correctamente (id_prestacion:".$rs.")";
+				echo json_encode(array('prestacion'=>$msg));
 			}
 		} else {
-			
+			$msg[0]['msg'] = "No exiten prestaciones";
+			echo json_encode(array('prestacion'=>$msg));
 		}
 	}
 	
