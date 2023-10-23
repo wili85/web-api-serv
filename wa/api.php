@@ -3109,8 +3109,81 @@ class Api{
 		}
 	
 	}
-				
 	
+	function registrar_recetavale_temporal($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->registrarRecetaValeTemporal($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idrecetavale'] = isset($rs[$i]['idrecetavale'])?$_POST['idrecetavale']:"";
+					$reembolso[$i]['idsolicitud'] = isset($rs[$i]['idsolicitud'])?$_POST['idsolicitud']:"";
+					$reembolso[$i]['nroreceta'] = isset($rs[$i]['nroreceta'])?$_POST['nroreceta']:"";
+					$reembolso[$i]['fecatencion'] = isset($rs[$i]['fecatencion'])?$_POST['fecatencion']:"";
+					$reembolso[$i]['fecexpiracion'] = isset($rs[$i]['fecexpiracion'])?$_POST['fecexpiracion']:"";
+					$reembolso[$i]['idipress'] = isset($rs[$i]['idipress'])?$_POST['idipress']:"";
+					$reembolso[$i]['nomipress'] = isset($rs[$i]['nomipress'])?$_POST['nomipress']:"";
+					$reembolso[$i]['idmedico'] = isset($rs[$i]['idmedico'])?$_POST['idmedico']:"";
+					$reembolso[$i]['idtipo_docme'] = isset($rs[$i]['idtipo_docme'])?$_POST['idtipo_docme']:"";
+					$reembolso[$i]['tipo_docme'] = isset($rs[$i]['tipo_docme'])?$_POST['tipo_docme']:"";
+					$reembolso[$i]['nro_documentome'] = isset($rs[$i]['nro_documentome'])?$_POST['nro_documentome']:"";
+					$reembolso[$i]['primer_apeme'] = isset($rs[$i]['primer_apeme'])?$_POST['primer_apeme']:"";
+					$reembolso[$i]['segundo_apeme'] = isset($rs[$i]['segundo_apeme'])?$_POST['segundo_apeme']:"";
+					$reembolso[$i]['nombre_rsme'] = isset($rs[$i]['nombre_rsme'])?$_POST['nombre_rsme']:"";
+					$reembolso[$i]['nommedico'] = isset($rs[$i]['nommedico'])?$_POST['nommedico']:"";
+					$reembolso[$i]['idtecnico'] = isset($rs[$i]['idtecnico'])?$_POST['idtecnico']:"";
+					$reembolso[$i]['idtipo_docte'] = isset($rs[$i]['idtipo_docte'])?$_POST['idtipo_docte']:"";
+					$reembolso[$i]['tipo_docte'] = isset($rs[$i]['tipo_docte'])?$_POST['tipo_docte']:"";
+					$reembolso[$i]['nro_documentote'] = isset($rs[$i]['nro_documentote'])?$_POST['nro_documentote']:"";
+					$reembolso[$i]['primer_apete'] = isset($rs[$i]['primer_apete'])?$_POST['primer_apete']:"";
+					$reembolso[$i]['segundo_apete'] = isset($rs[$i]['segundo_apete'])?$_POST['segundo_apete']:"";
+					$reembolso[$i]['nombre_rste'] = isset($rs[$i]['nombre_rste'])?$_POST['nombre_rste']:"";
+					$reembolso[$i]['nomtecnico'] = isset($rs[$i]['nomtecnico'])?$_POST['nomtecnico']:"";
+					$reembolso[$i]['idautoriza'] = isset($rs[$i]['idautoriza'])?$_POST['idautoriza']:"";
+					$reembolso[$i]['idtipo_docaut'] = isset($rs[$i]['idtipo_docaut'])?$_POST['idtipo_docaut']:"";
+					$reembolso[$i]['tipo_docaut'] = isset($rs[$i]['tipo_docaut'])?$_POST['tipo_docaut']:"";
+					$reembolso[$i]['nro_documentoaut'] = isset($rs[$i]['nro_documentoaut'])?$_POST['nro_documentoaut']:"";
+					$reembolso[$i]['primer_apeaut'] = isset($rs[$i]['primer_apeaut'])?$_POST['primer_apeaut']:"";
+					$reembolso[$i]['segundo_apeaut'] = isset($rs[$i]['segundo_apeaut'])?$_POST['segundo_apeaut']:"";
+					$reembolso[$i]['nombre_rsaut'] = isset($rs[$i]['nombre_rsaut'])?$_POST['nombre_rsaut']:"";
+					$reembolso[$i]['nomautoriza'] = isset($rs[$i]['nomautoriza'])?$_POST['nomautoriza']:"";
+					$reembolso[$i]['idservicio'] = isset($rs[$i]['idservicio'])?$_POST['idservicio']:"";
+					$reembolso[$i]['nomservicio'] = isset($rs[$i]['nomservicio'])?$_POST['nomservicio']:"";
+					$reembolso[$i]['codupss'] = isset($rs[$i]['codupss'])?$_POST['codupss']:"";
+					$reembolso[$i]['idrecdiagnostico'] = isset($rs[$i]['idrecdiagnostico'])?$_POST['idrecdiagnostico']:"";
+					$reembolso[$i]['idrecetavale'] = isset($rs[$i]['idrecetavale'])?$_POST['idrecetavale']:"";
+					$reembolso[$i]['iddiagnostico'] = isset($rs[$i]['iddiagnostico'])?$_POST['iddiagnostico']:"";
+					$reembolso[$i]['coddiagnostico'] = isset($rs[$i]['coddiagnostico'])?$_POST['coddiagnostico']:"";
+					$reembolso[$i]['descripdiagnostico'] = isset($rs[$i]['descripdiagnostico'])?$_POST['descripdiagnostico']:"";
+					$reembolso[$i]['idrecproducto'] = isset($rs[$i]['idrecproducto'])?$_POST['idrecproducto']:"";
+					$reembolso[$i]['idrecetavale'] = isset($rs[$i]['idrecetavale'])?$_POST['idrecetavale']:"";
+					$reembolso[$i]['idproducto'] = isset($rs[$i]['idproducto'])?$_POST['idproducto']:"";
+					$reembolso[$i]['codproducto'] = isset($rs[$i]['codproducto'])?$_POST['codproducto']:"";
+					$reembolso[$i]['descripproducto'] = isset($rs[$i]['descripproducto'])?$_POST['descripproducto']:"";
+					$reembolso[$i]['descripum'] = isset($rs[$i]['descripum'])?$_POST['descripum']:"";
+					$reembolso[$i]['idpetitorio_ref'] = isset($rs[$i]['idpetitorio_ref'])?$_POST['idpetitorio_ref']:"";
+					$reembolso[$i]['idrubro'] = isset($rs[$i]['idrubro'])?$_POST['idrubro']:"";
+					$reembolso[$i]['cantprescrita'] = isset($rs[$i]['cantprescrita'])?$_POST['cantprescrita']:"";
+					$reembolso[$i]['cantdispensada'] = isset($rs[$i]['cantdispensada'])?$_POST['cantdispensada']:"";
+					$reembolso[$i]['descripobs'] = isset($rs[$i]['descripobs'])?$_POST['descripobs']:"";
+				}
+				
+				echo json_encode(array('afiliado'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten productos";
+			echo json_encode(array('reembolsos'=>$msg));
+		}
+	
+	}
 }
 
 ?>
