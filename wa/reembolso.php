@@ -152,7 +152,7 @@
 					
 					$api->registrar_solicitud_temporal($item);
 					
-				}elseif($_POST['op'] == 'listar_reembolsos_tmp'){
+				} elseif($_POST['op'] == 'listar_reembolsos_tmp'){
 					
 					$item = array(
 						'tipo_documento' 	=> $_POST['tipo_documento'],
@@ -162,9 +162,52 @@
 
 					$api->listar_reembolso_temporal($item);
 					
+				} elseif($_POST['op'] == 'registrar_recetavale_tmp'){
+					
+					$item = array(
+						'tipo' 				=> $_POST['tipo'],
+						'op' 				=> $_POST['opc'],
+						'idrecetavale' 	=> $_POST['idrecetavale'],
+						'idsolicitud' 	=> $_POST['idsolicitud'],
+						'nroreceta' 	=> $_POST['nroreceta'],
+						'idtipdocmed' 	=> $_POST['idtipdocmed'],
+						'nrodocmed' 	=> $_POST['nrodocmed'],
+						'nommed' 	=> $_POST['nommed'],
+						'primerapemed' 	=> $_POST['primerapemed'],
+						'segunapemed' 	=> $_POST['segunapemed'],
+						'idtipdoctec' 	=> $_POST['idtipdoctec'],
+						'nrodoctec' 	=> $_POST['nrodoctec'],
+						'nomtec' 	=> $_POST['nomtec'],
+						'primerapetec' 	=> $_POST['primerapetec'],
+						'segunapetec' 	=> $_POST['segunapetec'],
+						'iduseraccion' 	=> $_POST['iduseraccion'],
+						'idtipdocaut' 	=> $_POST['idtipdocaut'],
+						'nrodocaut' 	=> $_POST['nrodocaut'],
+						'nomaut' 	=> $_POST['nomaut'],
+						'primerapeaut' 	=> $_POST['primerapeaut'],
+						'segunapeaut' 	=> $_POST['segunapeaut'],
+						'fecatencion' 	=> $_POST['fecatencion'],
+						'fecexpiracion' 	=> $_POST['fecexpiracion'],
+						'idservicio' 	=> $_POST['idservicio'],
+						'codupss' 	=> $_POST['codupss'],
+						'idrecdiagnostico' 	=> $_POST['idrecdiagnostico'],
+						'coddiagnostico' 	=> $_POST['coddiagnostico'],
+						'descripdiagnostico' 	=> $_POST['descripdiagnostico'],
+						'idrecproducto' 	=> $_POST['idrecproducto'],
+						'codproducto' 	=> $_POST['codproducto'],
+						'descripproducto' 	=> $_POST['descripproducto'],
+						'descripum' 	=> $_POST['descripum'],
+						'idpetitorio' 	=> $_POST['idpetitorio'],
+						'idrubro' 	=> $_POST['idrubro'],
+						'cantprescrita' 	=> $_POST['cantprescrita'],
+						'cantdispensada' 	=> $_POST['cantdispensada'],
+						'descripobs' 	=> $_POST['descripobs']
+					);
+
+					$api->registrar_recetavale_temporal($item);
+
 				}
-				
-			
+
 			}else{
 				$api->error('Error al Autentificar');
 			}
