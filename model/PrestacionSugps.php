@@ -13,7 +13,8 @@ class PrestacionSugps {
     }
 
 	public function crudPrestacionSugps($p){
-		return $this->readFunctionPostgresTransaction('sp_crud_prestacion_ws',$p);
+		
+		return $this->readFunctionPostgresTransaction('sch_gestion_prestacional.sp_crud_prestacion_ws',$p);
     }
 	
 	public function readFunctionPostgres($function, $parameters = null){
@@ -57,7 +58,11 @@ class PrestacionSugps {
    }
    
    public function readFunctionPostgresTransaction($function, $parameters = null){
-
+   
+	  	ini_set('display_errors', '1'); 
+		ini_set('display_startup_errors', '1');
+		error_reporting(E_ALL);
+		
       $conet = $this->db->getConnection();
       $_parameters = '';
       if (count($parameters) > 0) {
@@ -76,6 +81,7 @@ class PrestacionSugps {
       $this->sql = "BEGIN; select " . $function . "(" . $_parameters . ");";
 	  //echo $this->sql;
       $result = $this->db->query($this->sql);
+	  //print_r($result);
       $data=array() ;
 
       try {

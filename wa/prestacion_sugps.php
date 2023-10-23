@@ -1,5 +1,4 @@
 <?php
-	
 	header('Content-type: application/json');
 	
     include_once 'api.php';
@@ -8,8 +7,6 @@
     $error = '';
 	
 	$data = json_decode(file_get_contents('php://input'), true);
-	
-	//print_r($data);exit();
 	
 	$acceso = $data['acceso'];
 	$prestacion = $data['prestacion'];
@@ -43,6 +40,7 @@
 					'i_id_hist_clinica' 							=> $prestacion['i_id_hist_clinica'],
 					'v_id_tipo_cobert' 								=> $prestacion['v_id_tipo_cobert'],
 					'v_id_upss_fups' 								=> $prestacion['v_id_upss_fups'],
+					//'t_fecha_atencion_fups' 						=> json_encode($prestacion['t_fecha_atencion_fups']),
 					't_fecha_atencion_fups' 						=> $prestacion['t_fecha_atencion_fups'],
 					't_fecha_ingreso_fups' 							=> $prestacion['t_fecha_ingreso_fups'],
 					't_fecha_inicio_adm' 							=> $prestacion['t_fecha_inicio_adm'],
