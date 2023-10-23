@@ -79,7 +79,7 @@ class PrestacionSugps {
       }
 
       $this->sql = "BEGIN; select " . $function . "(" . $_parameters . ");";
-	  //echo $this->sql;
+	  //echo $this->sql;exit();
       $result = $this->db->query($this->sql);
 	  //print_r($result);
       $data=array() ;
@@ -99,7 +99,11 @@ class PrestacionSugps {
 	
         }
        
-        $response = $result;
+	   	//$response = str_replace("sch_gestion_prestacional.","",$function);
+        $response = $result[0][str_replace("sch_gestion_prestacional.","",$function)];
+		//echo $response;
+		
+		//$response = array('sw' => TRUE, 'msg'=>"registro",'data'=>$data ); 
 		
       } catch (Exception $e) {
 
