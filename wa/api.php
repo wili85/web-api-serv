@@ -3176,10 +3176,11 @@ class Api{
 					$reembolso[$i]['descripobs'] = isset($rs[$i]['descripobs'])?$_POST['descripobs']:"";
 				}
 				
+				
 				echo json_encode(array('afiliado'=>$reembolso));
 			}
 		} else {
-			$msg[0]['msg'] = "No exiten productos";
+			$msg[0]['msg'] = "No se realizo registro";
 			echo json_encode(array('reembolsos'=>$msg));
 		}
 	
