@@ -89,7 +89,7 @@ class Reembolso {
 	  //BEGIN; 
       $this->sql = "BEGIN; select " . $function . "(" . $_parameters . "'ref_cursor'); FETCH ALL IN ref_cursor;";
 	  //exit("ok");
-	  //echo $this->sql;
+	  //echo $this->sql;exit();
       #echo $_query;exit();
       #$query = $this->db->query("BEGIN; select dra.buscar_consultora('1','ref_cursor'); FETCH ALL IN ref_cursor;");
       //$result = $this->db->query($_query);

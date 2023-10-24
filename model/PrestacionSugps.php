@@ -79,7 +79,7 @@ class PrestacionSugps {
       }
 
       $this->sql = "BEGIN; select " . $function . "(" . $_parameters . ");";
-	  //echo $this->sql;
+	  //echo $this->sql;exit();
       $result = $this->db->query($this->sql);
 	  //print_r($result);
       $data=array() ;
