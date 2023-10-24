@@ -77,6 +77,7 @@ class Api{
 					$afiliado[$i]['cci'] = $rs[$i]['cci'];
 					$afiliado[$i]['email'] = $rs[$i]['email'];
 					$afiliado[$i]['nro_telef'] = $rs[$i]['nro_telef'];
+					$afiliado[$i]['nombrebanco'] = $rs[$i]['nombrebanco'];
 					$afiliado[$i]['idparentesco'] = $rs[$i]['idparentesco'];
 				}
 				
@@ -2020,6 +2021,7 @@ class Api{
 					$afiliado[$i]['cci'] = $rs[$i]['cci'];
 					$afiliado[$i]['email'] = $rs[$i]['email'];
 					$afiliado[$i]['nro_telef'] = $rs[$i]['nro_telef'];
+					$afiliado[$i]['nombrebanco'] = $rs[$i]['nombrebanco'];
 					$afiliado[$i]['fecharepor'] = $rs[$i]['fecharepor'];
 				}
 				echo json_encode(array('asegurado'=>$afiliado));
@@ -2921,6 +2923,7 @@ class Api{
 					$afiliado[$i]['cci'] = $rs[$i]['cci'];
 					$afiliado[$i]['email'] = $rs[$i]['email'];
 					$afiliado[$i]['nro_telef'] = $rs[$i]['nro_telef'];
+					$afiliado[$i]['nombrebanco'] = $rs[$i]['nombrebanco'];
 				}
 				
 				echo json_encode(array('afiliado'=>$afiliado));
