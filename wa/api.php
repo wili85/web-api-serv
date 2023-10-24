@@ -70,6 +70,13 @@ class Api{
 					$afiliado[$i]['situacion'] = $rs[$i]['situacion'];
 					$afiliado[$i]['caducidad'] = $rs[$i]['caducidad'];
 					$afiliado[$i]['discapacidad'] = $rs[$i]['discapacidad'];
+					$afiliado[$i]['otroseguro'] = $rs[$i]['otroseguro'];
+					$afiliado[$i]['unidad_pnp'] = $rs[$i]['unidad_pnp'];
+					$afiliado[$i]['id_bank'] = $rs[$i]['id_bank'];
+					$afiliado[$i]['nro_cta'] = $rs[$i]['nro_cta'];
+					$afiliado[$i]['cci'] = $rs[$i]['cci'];
+					$afiliado[$i]['email'] = $rs[$i]['email'];
+					$afiliado[$i]['nro_telef'] = $rs[$i]['nro_telef'];
 					$afiliado[$i]['idparentesco'] = $rs[$i]['idparentesco'];
 				}
 				
@@ -2006,6 +2013,13 @@ class Api{
 					$afiliado[$i]['situacion'] = $rs[$i]['situacion'];
 					$afiliado[$i]['caducidad'] = $rs[$i]['caducidad'];
 					$afiliado[$i]['discapacidad'] = $rs[$i]['discapacidad'];
+					$afiliado[$i]['otroseguro'] = $rs[$i]['otroseguro'];
+					$afiliado[$i]['unidad_pnp'] = $rs[$i]['unidad_pnp'];
+					$afiliado[$i]['id_bank'] = $rs[$i]['id_bank'];
+					$afiliado[$i]['nro_cta'] = $rs[$i]['nro_cta'];
+					$afiliado[$i]['cci'] = $rs[$i]['cci'];
+					$afiliado[$i]['email'] = $rs[$i]['email'];
+					$afiliado[$i]['nro_telef'] = $rs[$i]['nro_telef'];
 					$afiliado[$i]['fecharepor'] = $rs[$i]['fecharepor'];
 				}
 				echo json_encode(array('asegurado'=>$afiliado));
@@ -2900,7 +2914,13 @@ class Api{
 					$afiliado[$i]['situacion'] = $rs[$i]['situacion'];
 					$afiliado[$i]['caducidad'] = $rs[$i]['caducidad'];
 					$afiliado[$i]['discapacidad'] = $rs[$i]['discapacidad'];
-					$afiliado[$i]['idparentesco'] = $rs[$i]['idparentesco'];
+					$afiliado[$i]['otroseguro'] = $rs[$i]['otroseguro'];
+					$afiliado[$i]['unidad_pnp'] = $rs[$i]['unidad_pnp'];
+					$afiliado[$i]['id_bank'] = $rs[$i]['id_bank'];
+					$afiliado[$i]['nro_cta'] = $rs[$i]['nro_cta'];
+					$afiliado[$i]['cci'] = $rs[$i]['cci'];
+					$afiliado[$i]['email'] = $rs[$i]['email'];
+					$afiliado[$i]['nro_telef'] = $rs[$i]['nro_telef'];
 				}
 				
 				echo json_encode(array('afiliado'=>$afiliado));
