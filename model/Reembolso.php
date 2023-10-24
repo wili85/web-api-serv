@@ -45,9 +45,9 @@ class Reembolso {
 		return $this->readFunctionPostgres('sp_consult_reembolso_xdni_xht',$p);
 		}
 	
-		public function registrarRecetaValeTemporal($p){
-			return $this->readFunctionPostgres('sp_crud_receta_vale_tmp',$p);
-			}
+	public function registrarRecetaValeTemporal($p){
+		return $this->readFunctionPostgres('sp_crud_receta_vale_tmp',$p);
+	}
 
 	public function crudComprobante($p) {
         return $this->readFunctionPostgres('sp_crud_comprobante_new',$p);
