@@ -402,15 +402,17 @@ class Api{
 							$afiliado[$i]['porcentajeigv'] = $rs[$i]['porcentajeigv'];
 							$afiliado[$i]['valorigv'] = $rs[$i]['valorigv'];
 							$afiliado[$i]['rutacomprobante'] = (isset($rs[$i]['rutacomprobante']))?$rs[$i]['rutacomprobante']:'';
+							$afiliado[$i]['codigoestablecimiento'] = (isset($rs[$i]['codigoestablecimiento']))?$rs[$i]['codigoestablecimiento']:'';
+							$afiliado[$i]['numdocpaciente'] = (isset($rs[$i]['numdocpaciente']))?$rs[$i]['numdocpaciente']:'';
 						}
-						
+
 						echo json_encode(array('comprobante'=>$afiliado));
 						
 					}
 				} else {
 					//$this->error('No hay elementos');
 				}
-				
+
 				/***************************************/
 				
 			}else{
