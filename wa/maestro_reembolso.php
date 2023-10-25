@@ -264,6 +264,38 @@
 				$p = array();
 				$p[] = $_POST['idsolicitud'];
 				$api->getDetalleSolicitud($p);
+			}elseif($_POST['op'] == 'comprobanteSolicitudTmp'){
+				$p = array();
+				$p[] = 'r';
+				$p[] = 0;
+				$p[] = $_POST['idsolicitud'];
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = "";
+				$p[] = ""; 
+				$api->getComprobanteTmpById($p); 
 			}
 			
 		

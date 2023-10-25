@@ -50,8 +50,12 @@ class Reembolso {
 	}
 
 	public function crudComprobante($p) {
-        return $this->readFunctionPostgres('sp_crud_comprobante_new',$p);
-    }
+		return $this->readFunctionPostgres('sp_crud_comprobante_new',$p);
+	}
+
+	public function crudComprobanteTmp($p) {
+		return $this->readFunctionPostgres('sp_crud_comprobante_tmp',$p);
+	}
 	
 	public function crudmastertable($p){
 		return $this->readFunctionPostgres('sp_crud_mastertable',$p);
