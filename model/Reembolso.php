@@ -35,15 +35,19 @@ class Reembolso {
 	
 	public function crudSolicitud($p){
 		return $this->readFunctionPostgres('sp_crud_solicitud_digital_movil',$p);
-    }
+  }
 	
 	public function crudSolicitudTemporal($p){
 		return $this->readFunctionPostgres('sp_crud_solicitud_tmp',$p);
-    }
+  }
+
+	public function crudTmpToSolicitud($p){
+		return $this->readFunctionPostgres('sp_crud_from_tmp_to_solicitud',$p);
+  }
 	
 	public function listarSolicitudTemporal($p){
 		return $this->readFunctionPostgres('sp_consult_reembolso_xdni_xht',$p);
-		}
+	}
 	
 	public function registrarRecetaValeTemporal($p){
 		return $this->readFunctionPostgres('sp_crud_receta_vale_tmp',$p);

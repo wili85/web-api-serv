@@ -46,7 +46,7 @@
 					
 					$api->getReembolsoByNroDocumento($item);	
 					
-				}elseif($_POST['op'] == 'registrar_reembolso'){
+				}elseif($_POST['op'] == 'registrar_reembolso_tmp'){
 					
 					$item = array(
 						'tipo' 				=> $_POST['tipo'],
@@ -206,6 +206,18 @@
 
 					$api->registrar_recetavale_temporal($item);
 
+				}elseif($_POST['op'] == 'registrar_tmp_to_reembolso'){
+					
+					$item = array(
+						'tipo' 				=> $_POST['tipo'],
+						'op' 					=> $_POST['opc'],
+						'idsolicitud' => $_POST['idsolicitud'],
+						'idcomprobante' => $_POST['idcomprobante'],
+						'iditem'			=> $_POST['iditem']
+					);
+					
+					$api->registrar_temporal_to_solicitud($item);
+					
 				}
 
 			}else{
