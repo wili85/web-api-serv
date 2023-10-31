@@ -46,10 +46,10 @@
 					
 					$api->getReembolsoByNroDocumento($item);	
 					
-				}elseif($_POST['op'] == 'registrar_reembolso_tmp'){
+				} elseif($_POST['op'] == 'registrar_reembolso_tmp'){
 					
 					$item = array(
-						'tipo' 				=> $_POST['tipo'],
+						//'tipo' 				=> $_POST['tipo'],
 						'op' 				=> $_POST['opc'],
 						'idsolicitud' 	=> $_POST['idsolicitud'],
 						'solicitudnumero' 	=> $_POST['solicitudnumero'],
@@ -115,41 +115,9 @@
 						'apellidopaterno' 	=> $_POST['apellidopaterno'],
 						'apellidomaterno' 	=> $_POST['apellidomaterno'],
 						'flagnotificacion' 	=> $_POST['flagnotificacion'],
-						'flagcovid' 	=> $_POST['flagcovid'],
-						'idcomprobante' 	=> $_POST['idcomprobante'],
-						'fecha' 	=> $_POST['fecha'],
-						'nroreceta' 	=> $_POST['nroreceta'],
-						'nroruc' 	=> $_POST['nroruc'],
-						'nrocomprobante' 	=> $_POST['nrocomprobante'],
-						'tipocomprobante' 	=> $_POST['tipocomprobante'],
-						'flagmedicina' 	=> $_POST['flagmedicina'],
-						'flagbiomedico' 	=> $_POST['flagbiomedico'],
-						'flagserviciomedico' 	=> $_POST['flagserviciomedico'],
-						'importetotal' 	=> $_POST['importetotal'],
-						'importeobs' 	=> $_POST['importeobs'],
-						'compimporteobs' 	=> $_POST['compimporteobs'],
-						'descuento' 	=> $_POST['descuento'],
-						'obs' 	=> $_POST['obs'],
-						'importemedicina' 	=> $_POST['importemedicina'],
-						'importebiomedico' 	=> $_POST['importebiomedico'],
-						'importeservicio' 	=> $_POST['importeservicio'],
-						'importemedicinaobs' 	=> $_POST['importemedicinaobs'],
-						'importebiomedicoobs' 	=> $_POST['importebiomedicoobs'],
-						'importeservicioobs' 	=> $_POST['importeservicioobs'],
-						'baseimponible' 	=> $_POST['baseimponible'],
-						'porcentajeigv' 	=> $_POST['porcentajeigv'],
-						'valorigv' 	=> $_POST['valorigv'],
-						'rutacomprobante' 	=> $_POST['rutacomprobante'],
-						'iditem' 	=> $_POST['iditem'],
-						'idconcepto' 	=> $_POST['idconcepto'],
-						'codigo' 	=> $_POST['codigo'],
-						'descripcion' 	=> $_POST['descripcion'],
-						'idobs' 	=> $_POST['idobs'],
-						'cantidad' 	=> $_POST['cantidad'],
-						'importe' 	=> $_POST['importe'],
-						'itemimporteobs' 	=> $_POST['itemimporteobs']
+						'flagcovid' 	=> $_POST['flagcovid']
 					);
-					
+
 					$api->registrar_solicitud_temporal($item);
 					
 				} elseif($_POST['op'] == 'listar_reembolsos_tmp'){
@@ -206,7 +174,7 @@
 
 					$api->registrar_recetavale_temporal($item);
 
-				}elseif($_POST['op'] == 'registrar_tmp_to_reembolso'){
+				} elseif($_POST['op'] == 'registrar_tmp_to_reembolso'){
 					
 					$item = array(
 						'tipo' 				=> $_POST['tipo'],
@@ -217,6 +185,41 @@
 					);
 					
 					$api->registrar_temporal_to_solicitud($item);
+					
+				} elseif($_POST['op'] == 'registrar_comprobante_tmp'){
+					
+					$item = array(
+						//'tipo' 				=> $_POST['tipo'],
+						'op' 				=> $_POST['opc'],
+						'idsolicitud' 	=> $_POST['idsolicitud'],
+						'idcomprobante' 	=> $_POST['idcomprobante'],
+						'fecha' 	=> $_POST['fecha'],
+						'nroreceta' 	=> $_POST['nroreceta'],
+						'nroruc' 	=> $_POST['nroruc'],
+						'nrocomprobante' 	=> $_POST['nrocomprobante'],
+						'tipocomprobante' 	=> $_POST['tipocomprobante'],
+						'flagmedicina' 	=> $_POST['flagmedicina'],
+						'flagbiomedico' 	=> $_POST['flagbiomedico'],
+						'flagserviciomedico' 	=> $_POST['flagserviciomedico'],
+						'importetotal' 	=> $_POST['importetotal'],
+						'importeobs' 	=> $_POST['importeobs'],
+						'compimporteobs' 	=> $_POST['compimporteobs'],
+						'descuento' 	=> $_POST['descuento'],
+						'obs' 	=> $_POST['obs'],
+						'importemedicina' 	=> $_POST['importemedicina'],
+						'importebiomedico' 	=> $_POST['importebiomedico'],
+						'importeservicio' 	=> $_POST['importeservicio'],
+						'importemedicinaobs' 	=> $_POST['importemedicinaobs'],
+						'importebiomedicoobs' 	=> $_POST['importebiomedicoobs'],
+						'importeservicioobs' 	=> $_POST['importeservicioobs'],
+						'baseimponible' 	=> $_POST['baseimponible'],
+						'porcentajeigv' 	=> $_POST['porcentajeigv'],
+						'valorigv' 	=> $_POST['valorigv'],
+						'rutacomprobante' 	=> $_POST['rutacomprobante']
+
+					);
+
+					$api->registrar_comprobante_temporal($item);
 					
 				}
 

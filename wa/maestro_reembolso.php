@@ -260,11 +260,13 @@
 				$p[] = strtoupper($numero);
 				$p[] = $_POST['nroruc'];
 				$api->validarNroComprobante($p);
-			}elseif($_POST['op'] == 'detalle_solicitud'){
+
+			} elseif($_POST['op'] == 'detalle_solicitud'){
 				$p = array();
 				$p[] = $_POST['idsolicitud'];
 				$api->getDetalleSolicitud($p);
-			}elseif($_POST['op'] == 'comprobanteSolicitudTmp'){
+
+			} elseif($_POST['op'] == 'comprobanteSolicitudTmp'){
 				$p = array();
 				$p[] = 'r';
 				$p[] = 0;
@@ -295,6 +297,7 @@
 				$p[] = "";
 				$p[] = "";
 				$p[] = ""; 
+
 				$api->getComprobanteTmpById($p); 
 			}
 			
