@@ -208,7 +208,7 @@
 						'obs' 	=> $_POST['obs'],
 						'importemedicina' 	=> $_POST['importemedicina'],
 						'importebiomedico' 	=> $_POST['importebiomedico'],
-						'importeservicio' 	=> $_POST['importeservicio'],
+						'importeservicio' 	=> $_POST['importlseservicio'],
 						'importemedicinaobs' 	=> $_POST['importemedicinaobs'],
 						'importebiomedicoobs' 	=> $_POST['importebiomedicoobs'],
 						'importeservicioobs' 	=> $_POST['importeservicioobs'],
@@ -221,24 +221,26 @@
 
 					$api->registrar_comprobante_temporal($item);
 					
-				} elseif($_POST['op'] == 'registrar_itemcomprobante_tmp'){
+				} elseif($_POST['op'] == 'registrar_item_tmp'){
 					
 					$item = array(
+						//'tipo' 				=> $_POST['tipo'],
 						'op' 				=> $_POST['opc'],
 						'idcomprobante' 	=> $_POST['idcomprobante'],
 						'iditem' 	=> $_POST['iditem'],
 						'idconcepto' 	=> $_POST['idconcepto'],
 						'codigo' 	=> $_POST['codigo'],
-						'descripcion'	=> $_POST['descripcion'],
+						'descripcion' 	=> $_POST['descripcion'],
 						'idobs' 	=> $_POST['idobs'],
 						'cantidad' 	=> $_POST['cantidad'],
 						'importe' 	=> $_POST['importe'],
 						'itemimporteobs' 	=> $_POST['itemimporteobs'],
 						'usuario' 	=> $_POST['usuario']
+
 					);
 
-					$api->registrar_itemcomprobante_temporal($item);
-
+					$api->registrar_item_temporal($item);
+					
 				}
 
 			}else{
