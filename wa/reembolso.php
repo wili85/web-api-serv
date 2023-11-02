@@ -186,6 +186,25 @@
 					
 					$api->registrar_temporal_to_solicitud($item);
 					
+				} elseif($_POST['op'] == 'registrar_item_tmp'){
+					
+					$item = array(
+						//'tipo' 				=> $_POST['tipo'],
+						'op' 				=> $_POST['opc'],
+						'idcomprobante' 	=> $_POST['idcomprobante'],
+						'iditem' 	=> $_POST['iditem'],
+						'idconcepto' 	=> $_POST['idconcepto'],
+						'codigo' 	=> $_POST['codigo'],
+						'descripcion' 	=> $_POST['descripcion'],
+						'idobs' 	=> $_POST['idobs'],
+						'cantidad' 	=> $_POST['cantidad'],
+						'importe' 	=> $_POST['importe'],
+						'itemimporteobs' 	=> $_POST['itemimporteobs'],
+						'user' 	=> $_POST['user']
+					);
+
+					$api->registrar_item_temporal($item);
+
 				} elseif($_POST['op'] == 'registrar_comprobante_tmp'){
 					
 					$item = array(
@@ -220,26 +239,6 @@
 					);
 
 					$api->registrar_comprobante_temporal($item);
-					
-				} elseif($_POST['op'] == 'registrar_item_tmp'){
-					
-					$item = array(
-						//'tipo' 				=> $_POST['tipo'],
-						'op' 				=> $_POST['opc'],
-						'idcomprobante' 	=> $_POST['idcomprobante'],
-						'iditem' 	=> $_POST['iditem'],
-						'idconcepto' 	=> $_POST['idconcepto'],
-						'codigo' 	=> $_POST['codigo'],
-						'descripcion' 	=> $_POST['descripcion'],
-						'idobs' 	=> $_POST['idobs'],
-						'cantidad' 	=> $_POST['cantidad'],
-						'importe' 	=> $_POST['importe'],
-						'itemimporteobs' 	=> $_POST['itemimporteobs'],
-						'usuario' 	=> $_POST['usuario']
-
-					);
-
-					$api->registrar_item_temporal($item);
 					
 				}
 

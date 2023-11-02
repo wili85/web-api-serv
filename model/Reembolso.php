@@ -48,6 +48,10 @@ class Reembolso {
 	public function listarSolicitudTemporal($p){
 		return $this->readFunctionPostgres('sp_consult_reembolso_xdni_xht',$p);
 	}
+
+	public function crudItemTmp($p) {
+		return $this->readFunctionPostgres('sp_crud_itemcomprobante_tmp',$p);
+	}
 	
 	public function registrarRecetaValeTemporal($p){
 		return $this->readFunctionPostgres('sp_crud_receta_vale_tmp',$p);
@@ -59,10 +63,6 @@ class Reembolso {
 
 	public function crudComprobanteTmp($p) {
 		return $this->readFunctionPostgres('sp_crud_comprobante_tmp',$p);
-	}
-
-	public function crudItemTmp($p) {
-		return $this->readFunctionPostgres('sp_crud_itemcomprobante_tmp',$p);
 	}
 	
 	public function crudmastertable($p){
