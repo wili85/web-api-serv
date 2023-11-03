@@ -3493,6 +3493,72 @@ class Api{
 		}
 	
 	}
+
+	function registrar_recetavale_diag_temp($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->crudRecetaVDiagnosticoTmp($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idrecdiagnostico'] = $rs[$i]['idrecdiagnostico'];
+					$reembolso[$i]['idrecetavale'] = $rs[$i]['idrecetavale'];
+					$reembolso[$i]['iddiagnostico'] = $rs[$i]['iddiagnostico'];
+					$reembolso[$i]['coddiagnostico'] = $rs[$i]['coddiagnostico'];
+					$reembolso[$i]['descripdiagnostico'] = $rs[$i]['descripdiagnostico'];
+				}
+
+				echo json_encode(array('recetaDiagnostico'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No se realizo registro";
+			echo json_encode(array('recetaDiagnostico'=>$msg));
+		}
+	
+	}
+
+	function registrar_recetavale_prod_temp($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->crudRecetaVProductoTmp($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idrecproducto'] = $rs[$i]['idrecproducto'];
+					$reembolso[$i]['idrecetavale'] = $rs[$i]['idrecetavale'];
+					$reembolso[$i]['idproducto'] = $rs[$i]['idproducto'];
+					$reembolso[$i]['codproducto'] = $rs[$i]['codproducto'];
+					$reembolso[$i]['descripproducto'] = $rs[$i]['descripproducto'];
+					$reembolso[$i]['descripum'] = $rs[$i]['descripum'];
+					$reembolso[$i]['idpetitorio_ref'] = $rs[$i]['idpetitorio_ref'];
+					$reembolso[$i]['idrubro'] = $rs[$i]['idrubro'];
+					$reembolso[$i]['cantprescrita'] = $rs[$i]['cantprescrita'];
+					$reembolso[$i]['cantdispensada'] = $rs[$i]['cantdispensada'];
+					$reembolso[$i]['descripobs'] = $rs[$i]['descripobs'];
+				}
+
+				echo json_encode(array('recetaProducto'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No se realizo registro";
+			echo json_encode(array('recetaProducto'=>$msg));
+		}
+	
+	}
 }
 
 ?>

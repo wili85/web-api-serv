@@ -57,6 +57,14 @@ class Reembolso {
 		return $this->readFunctionPostgres('sp_crud_recetavale_tmp',$p);
 	}
 
+	public function crudRecetaVDiagnosticoTmp($p) {
+		return $this->readFunctionPostgres('sp_crud_recetavale_diag_tmp',$p);
+	}
+
+	public function crudRecetaVProductoTmp($p) {
+		return $this->readFunctionPostgres('sp_crud_recetavale_prod_tmp',$p);
+	}
+
 	public function crudComprobante($p) {
 		return $this->readFunctionPostgres('sp_crud_comprobante_new',$p);
 	}

@@ -161,6 +161,39 @@
 
 					$api->registrar_recetavale_temp($item);
 
+				} elseif($_POST['op'] == 'registrar_recetadiagnostico_tmp'){
+					
+					$item = array(
+						'op'		=> $_POST['opc'],
+						'idrecetavale'	=> $_POST['idrecetavale'],
+						'idrecdiagnostico'	=> $_POST['idrecdiagnostico'],
+						'coddiagnostico'	=> $_POST['coddiagnostico'],
+						'descripdiagnostico'	=> $_POST['descripdiagnostico'],
+						'iduseraccion'	=> $_POST['iduseraccion']
+					);
+
+					$api->registrar_recetavale_diag_temp($item);
+
+				} elseif($_POST['op'] == 'registrar_recetaproducto_tmp'){
+					
+					$item = array(
+						
+						'op'		=> $_POST['opc'],
+						'idrecetavale'	=> $_POST['idrecetavale'],
+						'iduseraccion'	=> $_POST['iduseraccion'],
+						'idrecproducto'	=> $_POST['idrecproducto'],
+						'codproducto'	=> $_POST['codproducto'],
+						'descripproducto'	=> $_POST['descripproducto'],
+						'descripum'	=> $_POST['descripum'],
+						'idpetitorio_ref'	=> $_POST['idpetitorio_ref'],
+						'idrubro'	=> $_POST['idrubro'],
+						'cantprescrita'	=> $_POST['cantprescrita'],
+						'cantdispensada'	=> $_POST['cantdispensada'],
+						'descripobs'	=> $_POST['descripobs']
+					);
+
+					$api->registrar_recetavale_prod_temp($item);
+
 				} elseif($_POST['op'] == 'registrar_tmp_to_reembolso'){
 					
 					$item = array(
