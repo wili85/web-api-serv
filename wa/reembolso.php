@@ -133,7 +133,6 @@
 				} elseif($_POST['op'] == 'registrar_recetavale_tmp'){
 					
 					$item = array(
-						'tipo'	=> $_POST['tipo'],
 						'op'		=> $_POST['opc'],
 						'idrecetavale'	=> $_POST['idrecetavale'],
 						'idsolicitud'	=> $_POST['idsolicitud'],
@@ -160,7 +159,7 @@
 						'codupss' 	=> $_POST['codupss']
 					);
 
-					$api->registrar_recetavale_temporal($item);
+					$api->registrar_recetavale_temp($item);
 
 				} elseif($_POST['op'] == 'registrar_tmp_to_reembolso'){
 					

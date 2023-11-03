@@ -3449,8 +3449,8 @@ class Api{
 		}
 	
 	}
-	
-	function registrar_recetavale_temporal($p){
+
+	function registrar_recetavale_temp($p){
 
 		include '../model/Reembolso.php';
 		$a = new Reembolso();
@@ -3485,11 +3485,11 @@ class Api{
 					$reembolso[$i]['fecexpiracion'] = $rs[$i]['fecexpiracion'];
 				}
 
-				echo json_encode(array('recetaVale'=>$reembolso));
+				echo json_encode(array('afiliado'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No se realizo registro";
-			echo json_encode(array('reembolsos'=>$msg));
+			echo json_encode(array('recetavale'=>$msg));
 		}
 	
 	}
