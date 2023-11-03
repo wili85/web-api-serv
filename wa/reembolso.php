@@ -130,7 +130,7 @@
 
 					$api->listar_reembolso_all($item);
 					
-				} elseif($_POST['op'] == 'listar_reembolsos_temporal'){
+				} elseif($_POST['op'] == 'listar_reembolsos_tmp'){
 
 					$item = array(
 						'tipo_documento' 	=> $_POST['tipo_documento'],
@@ -139,6 +139,15 @@
 					);
 
 					$api->listar_reembolso_temporal($item);
+					
+				} elseif($_POST['op'] == 'listar_comprobante_tmp'){
+
+					$item = array(
+						'idsolicitud'		=> $_POST['idsolicitud'],
+						'idcomprobante'	=> $_POST['idcomprobante']
+					);
+
+					$api->listar_comprobante_temporal($item);
 					
 				} elseif($_POST['op'] == 'registrar_recetavale_tmp'){
 					

@@ -3495,6 +3495,61 @@ class Api{
 	
 	}
 
+	function listar_comprobante_temporal($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->listarComprobanteTemporal($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idcomprobante'] = $rs[$i]['idcomprobante'];
+					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
+					$reembolso[$i]['fecha'] = $rs[$i]['fecha'];
+					$reembolso[$i]['nroreceta'] = $rs[$i]['nroreceta'];
+					$reembolso[$i]['nroruc'] = $rs[$i]['nroruc'];
+					$reembolso[$i]['nrocomprobante'] = $rs[$i]['nrocomprobante'];
+					$reembolso[$i]['flagregistro'] = $rs[$i]['flagregistro'];
+					$reembolso[$i]['tipocomprobante'] = $rs[$i]['tipocomprobante'];
+					$reembolso[$i]['flagmedicina'] = $rs[$i]['flagmedicina'];
+					$reembolso[$i]['flagbiomedico'] = $rs[$i]['flagbiomedico'];
+					$reembolso[$i]['flagserviciomedico'] = $rs[$i]['flagserviciomedico'];
+					$reembolso[$i]['importetotal'] = $rs[$i]['importetotal'];
+					$reembolso[$i]['importeobs'] = $rs[$i]['importeobs'];
+					$reembolso[$i]['descuento'] = $rs[$i]['descuento'];
+					$reembolso[$i]['obs'] = $rs[$i]['obs'];
+					$reembolso[$i]['importe_reembolsable'] = $rs[$i]['importe_reembolsable'];
+					$reembolso[$i]['tipocomprobantedes'] = $rs[$i]['tipocomprobantedes'];
+					$reembolso[$i]['concepto'] = $rs[$i]['concepto'];
+					$reembolso[$i]['importemedicina'] = $rs[$i]['importemedicina'];
+					$reembolso[$i]['importebiomedico'] = $rs[$i]['importebiomedico'];
+					$reembolso[$i]['importeservicio'] = $rs[$i]['importeservicio'];
+					$reembolso[$i]['importemedicinaobs'] = $rs[$i]['importemedicinaobs'];
+					$reembolso[$i]['importebiomedicoobs'] = $rs[$i]['importebiomedicoobs'];
+					$reembolso[$i]['importeservicioobs'] = $rs[$i]['importeservicioobs'];
+					$reembolso[$i]['baseimponible'] = $rs[$i]['baseimponible'];
+					$reembolso[$i]['porcentajeigv'] = $rs[$i]['porcentajeigv'];
+					$reembolso[$i]['valorigv'] = $rs[$i]['valorigv'];
+					$reembolso[$i]['rutacomprobante'] = $rs[$i]['rutacomprobante'];
+					$reembolso[$i]['codigoestablecimiento'] = $rs[$i]['codigoestablecimiento'];
+					$reembolso[$i]['numdocpaciente'] = $rs[$i]['numdocpaciente'];
+				}
+
+				echo json_encode(array('afiliado'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten productos";
+			echo json_encode(array('reembolsos'=>$msg));
+		}
+	
+	}
+
 	function registrar_recetavale_temp($p){
 
 		include '../model/Reembolso.php';
