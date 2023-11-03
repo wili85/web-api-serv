@@ -133,17 +133,17 @@
 				} elseif($_POST['op'] == 'registrar_recetavale_tmp'){
 					
 					$item = array(
-						'tipo' 				=> $_POST['tipo'],
-						'op' 				=> $_POST['opc'],
-						'idrecetavale' 	=> $_POST['idrecetavale'],
-						'idsolicitud' 	=> $_POST['idsolicitud'],
-						'nroreceta' 	=> $_POST['nroreceta'],
-						'idtipdocmed' 	=> $_POST['idtipdocmed'],
-						'nrodocmed' 	=> $_POST['nrodocmed'],
-						'nommed' 	=> $_POST['nommed'],
-						'primerapemed' 	=> $_POST['primerapemed'],
-						'segunapemed' 	=> $_POST['segunapemed'],
-						'idtipdoctec' 	=> $_POST['idtipdoctec'],
+						'tipo'	=> $_POST['tipo'],
+						'op'		=> $_POST['opc'],
+						'idrecetavale'	=> $_POST['idrecetavale'],
+						'idsolicitud'	=> $_POST['idsolicitud'],
+						'nroreceta'		=> $_POST['nroreceta'],
+						'idtipdocmed'	=> $_POST['idtipdocmed'],
+						'nrodocmed'		=> $_POST['nrodocmed'],
+						'nommed'		=> $_POST['nommed'],
+						'primerapemed'	=> $_POST['primerapemed'],
+						'segunapemed'		=> $_POST['segunapemed'],
+						'idtipdoctec'		=> $_POST['idtipdoctec'],
 						'nrodoctec' 	=> $_POST['nrodoctec'],
 						'nomtec' 	=> $_POST['nomtec'],
 						'primerapetec' 	=> $_POST['primerapetec'],
@@ -157,19 +157,7 @@
 						'fecatencion' 	=> $_POST['fecatencion'],
 						'fecexpiracion' 	=> $_POST['fecexpiracion'],
 						'idservicio' 	=> $_POST['idservicio'],
-						'codupss' 	=> $_POST['codupss'],
-						'idrecdiagnostico' 	=> $_POST['idrecdiagnostico'],
-						'coddiagnostico' 	=> $_POST['coddiagnostico'],
-						'descripdiagnostico' 	=> $_POST['descripdiagnostico'],
-						'idrecproducto' 	=> $_POST['idrecproducto'],
-						'codproducto' 	=> $_POST['codproducto'],
-						'descripproducto' 	=> $_POST['descripproducto'],
-						'descripum' 	=> $_POST['descripum'],
-						'idpetitorio' 	=> $_POST['idpetitorio'],
-						'idrubro' 	=> $_POST['idrubro'],
-						'cantprescrita' 	=> $_POST['cantprescrita'],
-						'cantdispensada' 	=> $_POST['cantdispensada'],
-						'descripobs' 	=> $_POST['descripobs']
+						'codupss' 	=> $_POST['codupss']
 					);
 
 					$api->registrar_recetavale_temporal($item);
