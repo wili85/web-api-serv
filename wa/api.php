@@ -3404,12 +3404,12 @@ class Api{
 			echo json_encode(array('prestacion'=>$msg));
 		}
 	}
-	
-	function listar_reembolso_temporal($p){
+
+	function listar_reembolso_all($p){
 
 		include '../model/Reembolso.php';
 		$a = new Reembolso();
-		$rs = $a->listarSolicitudTemporal($p);
+		$rs = $a->listarSolicitudAll($p);
 
 		$ar = array();
 		$nr = count($rs);
@@ -3440,7 +3440,7 @@ class Api{
 					$reembolso[$i]['rutainformeliquidacion'] = $rs[$i]['rutainformeliquidacion'];
 					$reembolso[$i]['importe_reembolsable'] = $rs[$i]['importe_reembolsable'];
 				}
-				
+
 				echo json_encode(array('afiliado'=>$reembolso));
 			}
 		} else {

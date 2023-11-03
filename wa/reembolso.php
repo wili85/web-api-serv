@@ -120,15 +120,15 @@
 
 					$api->registrar_solicitud_temporal($item);
 					
-				} elseif($_POST['op'] == 'listar_reembolsos_tmp'){
-					
+				} elseif($_POST['op'] == 'listar_reembolsos_all'){
+
 					$item = array(
 						'tipo_documento' 	=> $_POST['tipo_documento'],
 						'numero_documento' 	=> $_POST['numero_documento'],
 						'htnumero' 	=> $_POST['htnumero']
 					);
 
-					$api->listar_reembolso_temporal($item);
+					$api->listar_reembolso_all($item);
 					
 				} elseif($_POST['op'] == 'registrar_recetavale_tmp'){
 					
