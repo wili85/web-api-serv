@@ -149,6 +149,15 @@
 
 					$api->listar_comprobante_temporal($item);
 					
+				} elseif($_POST['op'] == 'listar_item_tmp'){
+
+					$item = array(
+						'idcomprobante'	=> $_POST['idcomprobante'],
+						'iditem'	=> $_POST['iditem']
+					);
+
+					$api->listar_item_temporal($item);
+					
 				} elseif($_POST['op'] == 'registrar_recetavale_tmp'){
 					
 					$item = array(

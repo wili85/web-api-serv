@@ -3550,6 +3550,51 @@ class Api{
 	
 	}
 
+	function listar_item_temporal($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->listarItemTemporal($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['iditem'] = $rs[$i]['iditem'];
+					$reembolso[$i]['idcomprobante'] = $rs[$i]['idcomprobante'];
+					$reembolso[$i]['idconcepto'] = $rs[$i]['idconcepto'];
+					$reembolso[$i]['codigo'] = $rs[$i]['codigo'];
+					$reembolso[$i]['descripcion'] = $rs[$i]['descripcion'];
+					$reembolso[$i]['idobs'] = $rs[$i]['idobs'];
+					$reembolso[$i]['importe'] = $rs[$i]['importe'];
+					$reembolso[$i]['flagregistro'] = $rs[$i]['flagregistro'];
+					$reembolso[$i]['importeobs'] = $rs[$i]['importeobs'];
+					$reembolso[$i]['cantidad'] = $rs[$i]['cantidad'];
+					$reembolso[$i]['usuario'] = $rs[$i]['usuario'];
+					$reembolso[$i]['fecharegistro'] = $rs[$i]['fecharegistro'];
+					$reembolso[$i]['userupdate'] = $rs[$i]['userupdate'];
+					$reembolso[$i]['fechaupdate'] = $rs[$i]['fechaupdate'];
+					$reembolso[$i]['descripproducto'] = $rs[$i]['descripproducto'];
+					$reembolso[$i]['nombrecomercial'] = $rs[$i]['nombrecomercial'];
+					$reembolso[$i]['precio'] = $rs[$i]['precio'];
+					$reembolso[$i]['nroreceta'] = $rs[$i]['nroreceta'];
+					$reembolso[$i]['lugarorigen'] = $rs[$i]['lugarorigen'];
+					$reembolso[$i]['lugardestino'] = $rs[$i]['lugardestino'];
+				}
+
+				echo json_encode(array('afiliado'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten productos";
+			echo json_encode(array('reembolsos'=>$msg));
+		}
+	
+	}
+
 	function registrar_recetavale_temp($p){
 
 		include '../model/Reembolso.php';
