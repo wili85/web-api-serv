@@ -207,11 +207,7 @@
 				} elseif($_POST['op'] == 'registrar_tmp_to_reembolso'){
 					
 					$item = array(
-						'tipo' 				=> $_POST['tipo'],
-						'op' 					=> $_POST['opc'],
-						'idsolicitud' => $_POST['idsolicitud'],
-						'idcomprobante' => $_POST['idcomprobante'],
-						'iditem'			=> $_POST['iditem']
+						'idsolicitud' => $_POST['idsolicitud']
 					);
 					
 					$api->registrar_temporal_to_solicitud($item);
