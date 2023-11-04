@@ -3794,6 +3794,43 @@ class Api{
 		}
 	
 	}
+
+	function listar_recetavale_prod_temporal($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->listarRecetaValeProdTemporal($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idrecproducto'] = $rs[$i]['idrecproducto'];
+					$reembolso[$i]['idrecetavale'] = $rs[$i]['idrecetavale'];
+					$reembolso[$i]['idproducto'] = $rs[$i]['idproducto'];
+					$reembolso[$i]['codproducto'] = $rs[$i]['codproducto'];
+					$reembolso[$i]['descripproducto'] = $rs[$i]['descripproducto'];
+					$reembolso[$i]['descripum'] = $rs[$i]['descripum'];
+					$reembolso[$i]['idpetitorio_ref'] = $rs[$i]['idpetitorio_ref'];
+					$reembolso[$i]['idrubro'] = $rs[$i]['idrubro'];
+					$reembolso[$i]['cantprescrita'] = $rs[$i]['cantprescrita'];
+					$reembolso[$i]['cantdispensada'] = $rs[$i]['cantdispensada'];
+					$reembolso[$i]['descripobs'] = $rs[$i]['descripobs'];
+
+				}
+
+				echo json_encode(array('afiliado'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten productos";
+			echo json_encode(array('reembolsos'=>$msg));
+		}
+	
+	}
 }
 
 ?>

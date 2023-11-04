@@ -68,6 +68,10 @@ class Reembolso {
 	public function listarRecetaValeDiagTemporal($p){
 		return $this->readFunctionPostgres('sp_consult_recetavale_diag_tmp',$p);
 	}
+	
+	public function listarRecetaValeProdTemporal($p){
+		return $this->readFunctionPostgres('sp_consult_recetavale_prod_tmp',$p);
+	}
 
 	public function crudItemTmp($p) {
 		return $this->readFunctionPostgres('sp_crud_itemcomprobante_tmp',$p);
