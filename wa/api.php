@@ -3763,6 +3763,37 @@ class Api{
 		}
 	
 	}
+
+	function listar_recetavale_diag_temporal($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->listarRecetaValeDiagTemporal($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idrecdiagnostico'] = $rs[$i]['idrecdiagnostico'];
+					$reembolso[$i]['idrecetavale'] = $rs[$i]['idrecetavale'];
+					$reembolso[$i]['iddiagnostico'] = $rs[$i]['iddiagnostico'];
+					$reembolso[$i]['coddiagnostico'] = $rs[$i]['coddiagnostico'];
+					$reembolso[$i]['descripdiagnostico'] = $rs[$i]['descripdiagnostico'];
+
+				}
+
+				echo json_encode(array('afiliado'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten productos";
+			echo json_encode(array('reembolsos'=>$msg));
+		}
+	
+	}
 }
 
 ?>
