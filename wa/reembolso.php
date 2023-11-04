@@ -159,7 +159,7 @@
 					$api->listar_item_temporal($item);
 					
 				} elseif($_POST['op'] == 'registrar_recetavale_tmp'){
-					
+
 					$item = array(
 						'op'		=> $_POST['opc'],
 						'idrecetavale'	=> $_POST['idrecetavale'],
@@ -283,6 +283,15 @@
 					);
 
 					$api->registrar_comprobante_temporal($item);
+					
+				} elseif($_POST['op'] == 'listar_recetavale_tmp'){
+
+					$item = array(
+						'idsolicitud'	=> $_POST['idsolicitud'],
+						'idrecetavale'	=> $_POST['idrecetavale']
+					);
+
+					$api->listar_recetavale_temporal($item);
 					
 				}
 

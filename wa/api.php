@@ -3704,6 +3704,65 @@ class Api{
 		}
 	
 	}
+
+	function listar_recetavale_temporal($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->listarRecetaValeTemporal($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idrecetavale'] = $rs[$i]['idrecetavale'];
+					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
+					$reembolso[$i]['nroreceta'] = $rs[$i]['nroreceta'];
+					$reembolso[$i]['fecatencion'] = $rs[$i]['fecatencion'];
+					$reembolso[$i]['fecexpiracion'] = $rs[$i]['fecexpiracion'];
+					$reembolso[$i]['idipress'] = $rs[$i]['idipress'];
+					$reembolso[$i]['nomipress'] = $rs[$i]['nomipress'];
+					$reembolso[$i]['idmedico'] = $rs[$i]['idmedico'];
+					$reembolso[$i]['idtipo_docme'] = $rs[$i]['idtipo_docme'];
+					$reembolso[$i]['tipo_docme'] = $rs[$i]['tipo_docme'];
+					$reembolso[$i]['nro_documentome'] = $rs[$i]['nro_documentome'];
+					$reembolso[$i]['primer_apeme'] = $rs[$i]['primer_apeme'];
+					$reembolso[$i]['segundo_apeme'] = $rs[$i]['segundo_apeme'];
+					$reembolso[$i]['nombre_rsme'] = $rs[$i]['nombre_rsme'];
+					$reembolso[$i]['nommedico'] = $rs[$i]['nommedico'];
+					$reembolso[$i]['idtecnico'] = $rs[$i]['idtecnico'];
+					$reembolso[$i]['idtipo_docte'] = $rs[$i]['idtipo_docte'];
+					$reembolso[$i]['tipo_docte'] = $rs[$i]['tipo_docte'];
+					$reembolso[$i]['nro_documentote'] = $rs[$i]['nro_documentote'];
+					$reembolso[$i]['primer_apete'] = $rs[$i]['primer_apete'];
+					$reembolso[$i]['segundo_apete'] = $rs[$i]['segundo_apete'];
+					$reembolso[$i]['nombre_rste'] = $rs[$i]['nombre_rste'];
+					$reembolso[$i]['nomtecnico'] = $rs[$i]['nomtecnico'];
+					$reembolso[$i]['idautoriza'] = $rs[$i]['idautoriza'];
+					$reembolso[$i]['idtipo_docaut'] = $rs[$i]['idtipo_docaut'];
+					$reembolso[$i]['tipo_docaut'] = $rs[$i]['tipo_docaut'];
+					$reembolso[$i]['nro_documentoaut'] = $rs[$i]['nro_documentoaut'];
+					$reembolso[$i]['primer_apeaut'] = $rs[$i]['primer_apeaut'];
+					$reembolso[$i]['segundo_apeaut'] = $rs[$i]['segundo_apeaut'];
+					$reembolso[$i]['nombre_rsaut'] = $rs[$i]['nombre_rsaut'];
+					$reembolso[$i]['nomautoriza'] = $rs[$i]['nomautoriza'];
+					$reembolso[$i]['idservicio'] = $rs[$i]['idservicio'];
+					$reembolso[$i]['nomservicio'] = $rs[$i]['nomservicio'];
+					$reembolso[$i]['codupss'] = $rs[$i]['codupss'];
+				}
+
+				echo json_encode(array('afiliado'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten productos";
+			echo json_encode(array('reembolsos'=>$msg));
+		}
+	
+	}
 }
 
 ?>
