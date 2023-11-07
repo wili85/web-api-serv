@@ -3794,7 +3794,6 @@ class Api{
 			$msg[0]['msg'] = "No exiten productos";
 			echo json_encode(array('reembolsos'=>$msg));
 		}
-	
 	}
 
 	function listar_recetavale_prod_temporal($p){
