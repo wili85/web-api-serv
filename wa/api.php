@@ -3317,6 +3317,8 @@ class Api{
 					$reembolso[$i]['rutacomprobante'] = $rs[$i]['rutacomprobante'];
 					$reembolso[$i]['codigoestablecimiento'] = $rs[$i]['codigoestablecimiento'];
 					$reembolso[$i]['numdocpaciente'] = $rs[$i]['numdocpaciente'];
+					$reembolso[$i]['validasunat'] = $rs[$i]['validasunat'];
+					$reembolso[$i]['importesunat'] = $rs[$i]['importesunat'];
 				}
 				
 				echo json_encode(array('comprobante'=>$reembolso));
