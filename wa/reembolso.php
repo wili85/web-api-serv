@@ -278,7 +278,9 @@
 						'baseimponible' 	=> $_POST['baseimponible'],
 						'porcentajeigv' 	=> $_POST['porcentajeigv'],
 						'valorigv' 	=> $_POST['valorigv'],
-						'rutacomprobante' 	=> $_POST['rutacomprobante']
+						'rutacomprobante'	=> $_POST['rutacomprobante'],
+						'validasunat' 	=> $_POST['validasunat'],
+						'importesunat' 	=> $_POST['importesunat']
 
 					);
 
