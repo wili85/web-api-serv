@@ -3040,7 +3040,7 @@ class Api{
 				$this->error('No hay elementos');
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
-				
+
 					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
 					$reembolso[$i]['htnumero'] = $rs[$i]['htnumero'];
 					$reembolso[$i]['htfecha'] = $rs[$i]['htfecha'];
@@ -3139,12 +3139,13 @@ class Api{
 					$reembolso[$i]['numinformeauditoria'] = $rs[$i]['numinformeauditoria'];
 					$reembolso[$i]['fechainformeauditoria'] = $rs[$i]['fechainformeauditoria'];
 				}
-				
+
 				echo json_encode(array('solicitud'=>$reembolso));
-				
+
 			}
 		} else {
-			
+			$msg[0]['msg'] = "No se registro solicitud.";
+			echo json_encode(array('solicitud'=>$msg));
 		}
 	}
 	
@@ -3267,7 +3268,8 @@ class Api{
 
 			}
 		} else {
-			
+			$msg[0]['msg'] = "No se registro reembolso.";
+			echo json_encode(array('solicitud'=>$msg));
 		}
 	}
 	
@@ -3325,7 +3327,8 @@ class Api{
 				
 			}
 		} else {
-			
+			$msg[0]['msg'] = "No se registro comprobantes.";
+			echo json_encode(array('comprobante'=>$msg));
 		}
 	}
 	
@@ -3371,7 +3374,8 @@ class Api{
 
 			}
 		} else {
-			
+			$msg[0]['msg'] = "No se registro items.";
+			echo json_encode(array('item'=>$msg));
 		}
 	}
 	
@@ -3446,7 +3450,7 @@ class Api{
 				echo json_encode(array('afiliado'=>$reembolso));
 			}
 		} else {
-			$msg[0]['msg'] = "No exiten productos";
+			$msg[0]['msg'] = "No existen reembolsos";
 			echo json_encode(array('reembolsos'=>$msg));
 		}
 	
@@ -3491,7 +3495,7 @@ class Api{
 				echo json_encode(array('afiliado'=>$reembolso));
 			}
 		} else {
-			$msg[0]['msg'] = "No exiten productos";
+			$msg[0]['msg'] = "No existen reembolsos";
 			echo json_encode(array('reembolsos'=>$msg));
 		}
 	
@@ -3543,16 +3547,16 @@ class Api{
 					$reembolso[$i]['numdocpaciente'] = $rs[$i]['numdocpaciente'];
 					$reembolso[$i]['validasunat'] = $rs[$i]['validasunat'];
 					$reembolso[$i]['importesunat'] = $rs[$i]['importesunat'];
-					
+
 				}
 
 				echo json_encode(array('afiliado'=>$reembolso));
 			}
 		} else {
-			$msg[0]['msg'] = "No exiten productos";
-			echo json_encode(array('reembolsos'=>$msg));
+			$msg[0]['msg'] = "No existen comprobantes";
+			echo json_encode(array('comprobante'=>$msg));
 		}
-	
+
 	}
 
 	function listar_item_temporal($p){
@@ -3594,8 +3598,8 @@ class Api{
 				echo json_encode(array('afiliado'=>$reembolso));
 			}
 		} else {
-			$msg[0]['msg'] = "No exiten productos";
-			echo json_encode(array('reembolsos'=>$msg));
+			$msg[0]['msg'] = "No existen items.";
+			echo json_encode(array('item'=>$msg));
 		}
 	
 	}
@@ -3641,7 +3645,7 @@ class Api{
 			$msg[0]['msg'] = "No se realizo registro";
 			echo json_encode(array('recetavale'=>$msg));
 		}
-	
+
 	}
 
 	function registrar_recetavale_diag_temp($p){
@@ -3763,8 +3767,8 @@ class Api{
 				echo json_encode(array('afiliado'=>$reembolso));
 			}
 		} else {
-			$msg[0]['msg'] = "No exiten productos";
-			echo json_encode(array('reembolsos'=>$msg));
+			$msg[0]['msg'] = "No existen recetas vales";
+			echo json_encode(array('recetas'=>$msg));
 		}
 	
 	}
