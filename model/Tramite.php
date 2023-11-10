@@ -142,8 +142,6 @@ class Tramite {
 		$resStd = $this->db_b->query($query);
 		return $resStd;
 
-
-
-    }
+  }
 
 }

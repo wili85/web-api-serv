@@ -88,6 +88,29 @@ class Reembolso {
 	public function crudRecetaVProductoTmp($p) {
 		return $this->readFunctionPostgres('sp_crud_recetavale_prod_tmp',$p);
 	}
+	
+	public function consultarCantRecetaProd($nro, $codp) {
+
+		//$nro = '55';
+		//$codp = 'PF00410';
+
+		$conet = $this->db->getConnection();
+
+		$query = "select sum(rvp.cantdispensada) cantdispensada
+								from tbl_tmp_recetavale_producto rvp
+								left Join tbl_tmp_recetavale ttr
+								on rvp.idrecetavale = ttr.idrecetavale
+								and ttr.flagregistro = '1'
+								where ttr.nroreceta = '".$nro."'
+								and rvp.codigo = '".$codp."'
+								and rvp.flagregistro = '1'
+								";
+
+		//echo $query;
+	  $result = $this->db->query($query);
+		return $result;
+
+  }
 
 	public function crudComprobante($p) {
 		return $this->readFunctionPostgres('sp_crud_comprobante_new',$p);
@@ -99,27 +122,27 @@ class Reembolso {
 	
 	public function crudmastertable($p){
 		return $this->readFunctionPostgres('sp_crud_mastertable',$p);
-    }
+  }
 	
 	public function crudItemComprobante($p){
 		return $this->readFunctionPostgres('sp_crud_item_comprobante',$p);
-    }
+  }
 	
 	public function validaComprobanteReceta($p){
 		return $this->readFunctionPostgres('sp_valida_comprobante_receta',$p);
-    }
+  }
 	
 	public function validarNroComprobante($p){
 		return $this->readFunctionPostgres('sp_valida_nrocomprobante',$p);
-    }
+  }
 	
 	public function consultaDetalleSolicitud($p){
 		return $this->readFunctionPostgres('sp_consult_reembolso_by_id',$p);
-    }
+  }
 	
 	public function indicador_cantidad_reembolsos_pagados($p){
 		return $this->readFunctionPostgres('indicador_cantidad_reembolsos_pagados',$p);
-    }
+  }
 	
 	public function readFunctionPostgres($function, $parameters = null){
 

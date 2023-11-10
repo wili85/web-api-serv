@@ -1119,14 +1119,22 @@ class Api{
 			$r = 0;
 			foreach($productoreceta as $rowProducto) {
 
+				$cant = "0";
+
 				$receta = array();
 				$receta[] = (isset($rowProducto->nro_receta) && $rowProducto->nro_receta!="")?$rowProducto->nro_receta:0;
 				$receta[] = $rowProducto->codigo;
 				$reembolso = new Reembolso();
 				$rsReembolso = $reembolso->validaComprobanteReceta($receta);
 
+				$cantData = $reembolso->consultarCantRecetaProd($rowProducto->nro_receta, $rowProducto->codigo);
+				if(isset($cantData[0]["cantdispensada"]))$cant = $cantData[0]["cantdispensada"];
+
 				if (count($rsReembolso)==0){
+					$rowProducto->cantidad_dispensada=$cant;
+					$rowProducto->cantidad_reembolsable=(String)($rowProducto->cantidad_reembolsable-$cant);
 					$afiliado[$r] = $rowProducto;
+					//$afiliado[$r]['cant'] = $cant;
 					$r++;
 				}
 			}
