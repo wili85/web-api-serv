@@ -29,8 +29,8 @@
 				);
 				
 				$api->getRecetaValeByNroDoc($item);	
-			
-			}elseif($_POST['op'] == 'listar_all'){
+
+			} elseif($_POST['op'] == 'listar_all'){
 			
 				$tipDoc = "";
 				if($_POST['tipDoc'] == "1")$tipDoc="DNI";

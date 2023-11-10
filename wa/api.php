@@ -1083,21 +1083,20 @@ class Api{
 				$receta[] = $rowProducto->codigo;
 				$reembolso = new Reembolso();
 				$rsReembolso = $reembolso->validaComprobanteReceta($receta);
-				
+
 				if (count($rsReembolso)==0){
 					$afiliado[$r] = $rowProducto;
 					$r++;
 				}
 			}
-			
+
 			echo json_encode(array('productoreceta'=>$afiliado));
-		
+
 		} else {
 			$msg[0]['msg'] = "La receta no existe";
 			echo json_encode(array('productoreceta'=>$msg));
 		}
-	
-	
+
 	}
 	
 	function getLogueoMedico($p){
@@ -2779,32 +2778,32 @@ class Api{
 				$this->error('No hay elementos');
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
-				
+
 					$ultimo_estado = "";
 					$resultado = $t->consultarEstadoByID($rs[$i]['htnumero']);
-					
+
 					//$data = $s->consultaDetalleSolicitudSigef($rs[$i]['idsolicitud']);
 					$data = $s->consultaDetalleSolicitudSigefByHt($rs[$i]['htnumero']);
 					$file_resolucion = $data[0]["UBIC_ARCH_FIRM"];
-					
+
 					foreach($resultado as $row){
 						$ultimo_estado = $row["ESTADO"];
 					}
-					
+
 					$importe_reembolsable = 0;
+
 					if($ultimo_estado!=14)$importe_reembolsable = $rs[$i]['importe_reembolsable'];
-			
+
 					$rutainformeliquidacion = "";
 					if($rs[$i]['rutainformeliquidacion']!=""){
 						$rutainformeliquidacion .='https://sgr-liq.saludpol.gob.pe:10445/'.$rs[$i]['rutainformeliquidacion'];
 					}
-					
+
 					$resolucion = "";
 					if($file_resolucion!=""){
 						$resolucion .='https://sigef-res.saludpol.gob.pe:10446'.$file_resolucion;
 					}
-					
-					
+
 					$pasaje[$i]['htnumero'] = $rs[$i]['htnumero'];
 					$pasaje[$i]['htfecha'] = $rs[$i]['htfecha'];
 					$pasaje[$i]['tiporeembolso'] = $rs[$i]['tiporeembolso'];
@@ -3414,7 +3413,26 @@ class Api{
 	function listar_reembolso_all($p){
 
 		include '../model/Reembolso.php';
+		include '../model/Tramite.php';
+
 		$a = new Reembolso();
+		$t = new Tramite();
+		
+		$estado_publico["01"]="Iniciado";
+		$estado_publico["02"]="Iniciado";
+		$estado_publico["03"]="En auditoria m&eacute;dica";
+		$estado_publico["04"]="En auditoria m&eacute;dica";
+		$estado_publico["05"]="En auditoria m&eacute;dica";
+		$estado_publico["06"]="En auditoria m&eacute;dica";
+		$estado_publico["07"]="En auditoria m&eacute;dica";
+		$estado_publico["08"]="En evaluaci&oacute;n administrativa";
+		$estado_publico["09"]="En evaluaci&oacute;n administrativa";
+		$estado_publico["10"]="En evaluaci&oacute;n administrativa";
+		$estado_publico["11"]="En evaluaci&oacute;n administrativa";
+		$estado_publico["12"]="En proceso de pago";
+		$estado_publico["13"]="Pagado";
+		$estado_publico["14"]="Improcedente";
+
 		$rs = $a->listarSolicitudAll($p);
 
 		$ar = array();
@@ -3425,9 +3443,22 @@ class Api{
 				$this->error('No hay elementos');
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
+
+					$ultimo_estado = "";
+					$resultado = $t->consultarEstadoByID($rs[$i]['htnumero']);
+
+					foreach($resultado as $row){
+						$ultimo_estado = $row["ESTADO"];
+					}
+
+					$importe_reembolsable = 0;
+
+					if($ultimo_estado!=14)$importe_reembolsable = $rs[$i]['importe_reembolsable'];
+
 					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
 					$reembolso[$i]['htnumero'] = $rs[$i]['htnumero'];
 					$reembolso[$i]['htfecha'] = $rs[$i]['htfecha'];
+					$reembolso[$i]['estado_publico'] = html_entity_decode($estado_publico[$ultimo_estado]);
 					$reembolso[$i]['nombrepaciente'] = $rs[$i]['nombrepaciente'];
 					$reembolso[$i]['nombresolicitante'] = $rs[$i]['nombresolicitante'];
 					$reembolso[$i]['ipressnombre'] = $rs[$i]['ipressnombre'];
@@ -3447,7 +3478,7 @@ class Api{
 					$reembolso[$i]['importe_reembolsable'] = $rs[$i]['importe_reembolsable'];
 				}
 
-				echo json_encode(array('afiliado'=>$reembolso));
+				echo json_encode(array('reembolso'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No existen reembolsos";
@@ -3492,7 +3523,7 @@ class Api{
 					$reembolso[$i]['importe_reembolsable'] = $rs[$i]['importe_reembolsable'];
 				}
 
-				echo json_encode(array('afiliado'=>$reembolso));
+				echo json_encode(array('reembolso'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No existen reembolsos";
@@ -3550,7 +3581,7 @@ class Api{
 
 				}
 
-				echo json_encode(array('afiliado'=>$reembolso));
+				echo json_encode(array('comprobante'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No existen comprobantes";
@@ -3595,7 +3626,7 @@ class Api{
 					$reembolso[$i]['lugardestino'] = $rs[$i]['lugardestino'];
 				}
 
-				echo json_encode(array('afiliado'=>$reembolso));
+				echo json_encode(array('item'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No existen items.";
@@ -3639,7 +3670,7 @@ class Api{
 					$reembolso[$i]['fecexpiracion'] = $rs[$i]['fecexpiracion'];
 				}
 
-				echo json_encode(array('afiliado'=>$reembolso));
+				echo json_encode(array('recetavale'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No se realizo registro";
@@ -3711,7 +3742,6 @@ class Api{
 			$msg[0]['msg'] = "No se realizo registro";
 			echo json_encode(array('recetaProducto'=>$msg));
 		}
-	
 	}
 
 	function listar_recetavale_temporal($p){
@@ -3764,13 +3794,12 @@ class Api{
 					$reembolso[$i]['codupss'] = $rs[$i]['codupss'];
 				}
 
-				echo json_encode(array('afiliado'=>$reembolso));
+				echo json_encode(array('recetavale'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No existen recetas vales";
-			echo json_encode(array('recetas'=>$msg));
+			echo json_encode(array('recetavale'=>$msg));
 		}
-	
 	}
 
 	function listar_recetavale_diag_temporal($p){
@@ -3792,14 +3821,13 @@ class Api{
 					$reembolso[$i]['iddiagnostico'] = $rs[$i]['iddiagnostico'];
 					$reembolso[$i]['coddiagnostico'] = $rs[$i]['coddiagnostico'];
 					$reembolso[$i]['descripdiagnostico'] = $rs[$i]['descripdiagnostico'];
-
 				}
 
-				echo json_encode(array('afiliado'=>$reembolso));
+				echo json_encode(array('recetavale'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No exiten productos";
-			echo json_encode(array('reembolsos'=>$msg));
+			echo json_encode(array('recetavale'=>$msg));
 		}
 	}
 
@@ -3828,16 +3856,14 @@ class Api{
 					$reembolso[$i]['cantprescrita'] = $rs[$i]['cantprescrita'];
 					$reembolso[$i]['cantdispensada'] = $rs[$i]['cantdispensada'];
 					$reembolso[$i]['descripobs'] = $rs[$i]['descripobs'];
-
 				}
 
-				echo json_encode(array('afiliado'=>$reembolso));
+				echo json_encode(array('recetavale'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No exiten productos";
-			echo json_encode(array('reembolsos'=>$msg));
+			echo json_encode(array('recetavale'=>$msg));
 		}
-	
 	}
 }
 
