@@ -2739,7 +2739,7 @@ class Api{
 		$porcentaje["12"]="92";
 		$porcentaje["13"]="100";
 		$porcentaje["14"]="100";
-		
+
 		$color["01"]="#ED5342";
 		$color["02"]="#ED5342";
 		$color["03"]="#FAD269";
@@ -2754,7 +2754,7 @@ class Api{
 		$color["12"]="#00936E";
 		$color["13"]="#216636";
 		$color["14"]="#818180";
-		
+
 		$estado_publico["01"]="Iniciado";
 		$estado_publico["02"]="Iniciado";
 		$estado_publico["03"]="En auditoria m&eacute;dica";
@@ -2769,7 +2769,7 @@ class Api{
 		$estado_publico["12"]="En proceso de pago";
 		$estado_publico["13"]="Pagado";
 		$estado_publico["14"]="Improcedente";
-		
+
 		$rs = $a->QrysearchhtexternoDNI($p);
 		$ar = array();
 		$nr = count($rs);
@@ -3445,10 +3445,17 @@ class Api{
 				for ($i = 0; $i < $nr; $i++) {
 
 					$ultimo_estado = "";
-					$resultado = $t->consultarEstadoByID($rs[$i]['htnumero']);
 
-					foreach($resultado as $row){
-						$ultimo_estado = $row["ESTADO"];
+					//echo $rs[$i]['htnumero']; exit();
+
+					if(isset($rs[$i]['htnumero']) && $rs[$i]['htnumero']!= "" && $rs[$i]['htnumero']!= "AUTOMATICO"){
+						
+						$resultado = $t->consultarEstadoByIDNew($rs[$i]['htnumero']);
+
+						foreach($resultado as $row){
+							$ultimo_estado = $row["ESTADO"];
+						}	
+						
 					}
 
 					$importe_reembolsable = 0;
@@ -3458,7 +3465,6 @@ class Api{
 					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
 					$reembolso[$i]['htnumero'] = $rs[$i]['htnumero'];
 					$reembolso[$i]['htfecha'] = $rs[$i]['htfecha'];
-					$reembolso[$i]['estado_publico'] = html_entity_decode($estado_publico[$ultimo_estado]);
 					$reembolso[$i]['nombrepaciente'] = $rs[$i]['nombrepaciente'];
 					$reembolso[$i]['nombresolicitante'] = $rs[$i]['nombresolicitante'];
 					$reembolso[$i]['ipressnombre'] = $rs[$i]['ipressnombre'];
@@ -3476,6 +3482,7 @@ class Api{
 					$reembolso[$i]['nom_archivo_resolucion'] = $rs[$i]['nom_archivo_resolucion'];
 					$reembolso[$i]['rutainformeliquidacion'] = $rs[$i]['rutainformeliquidacion'];
 					$reembolso[$i]['importe_reembolsable'] = $rs[$i]['importe_reembolsable'];
+					$reembolso[$i]['estado_publico'] = html_entity_decode($estado_publico[$ultimo_estado]);
 				}
 
 				echo json_encode(array('reembolso'=>$reembolso));
