@@ -1098,6 +1098,47 @@ class Api{
 		}
 
 	}
+
+	function getProductoRecetaVale2($p){
+
+		include '../model/Reembolso.php';
+
+		$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=productoreceta&idReceta=".$p["idReceta"];
+		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
+		curl_setopt($ch, CURLOPT_POST, TRUE);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$resultWebApi = curl_exec($ch);
+
+		$dataWebApi = json_decode($resultWebApi);
+		$productoreceta = $dataWebApi->productoreceta;
+		$nr=count($productoreceta);
+
+		if ($nr > 0) {
+
+			$r = 0;
+			foreach($productoreceta as $rowProducto) {
+
+				$receta = array();
+				$receta[] = (isset($rowProducto->nro_receta) && $rowProducto->nro_receta!="")?$rowProducto->nro_receta:0;
+				$receta[] = $rowProducto->codigo;
+				$reembolso = new Reembolso();
+				$rsReembolso = $reembolso->validaComprobanteReceta($receta);
+
+				if (count($rsReembolso)==0){
+					$afiliado[$r] = $rowProducto;
+					$r++;
+				}
+			}
+
+			echo json_encode(array('productoreceta'=>$afiliado));
+
+		} else {
+			$msg[0]['msg'] = "La receta no existe";
+			echo json_encode(array('productoreceta'=>$msg));
+		}
+
+	}
 	
 	function getLogueoMedico($p){
 	
@@ -3521,7 +3562,7 @@ class Api{
 			}
 		} else {
 			$msg[0]['msg'] = "No existen reembolsos";
-			echo json_encode(array('reembolsos'=>$msg));
+			echo json_encode(array('reembolso'=>$msg));
 		}
 	
 	}
@@ -3566,7 +3607,7 @@ class Api{
 			}
 		} else {
 			$msg[0]['msg'] = "No existen reembolsos";
-			echo json_encode(array('reembolsos'=>$msg));
+			echo json_encode(array('reembolso'=>$msg));
 		}
 	
 	}

@@ -62,7 +62,7 @@
 				
 				$api->getRecetaByNroReceta($item);	
 				
-			}elseif($_POST['op'] == 'productoreceta'){
+			} elseif($_POST['op'] == 'productoreceta'){
 				
 				$item = array(
 					'idReceta' => $_POST['idReceta'],
@@ -71,7 +71,16 @@
 				
 				$api->getProductoRecetaVale($item);	
 				
-			}elseif($_POST['op'] == 'logueo'){
+			} elseif($_POST['op'] == 'productorecetavale2'){
+
+				$item = array(
+					'idReceta' => $_POST['idReceta'],
+					'nroreceta' => ''
+				);
+
+				$api->getProductoRecetaVale2($item);
+
+			} elseif($_POST['op'] == 'logueo'){
 				
 				$item = array(
 					'dni' => $_POST['usuario_medico'],
