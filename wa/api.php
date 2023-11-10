@@ -3450,7 +3450,7 @@ class Api{
 
 					if(isset($rs[$i]['htnumero']) && $rs[$i]['htnumero']!= "" && $rs[$i]['htnumero']!= "AUTOMATICO"){
 						
-						$resultado = $t->consultarEstadoByIDNew($rs[$i]['htnumero']);
+						$resultado = $t->consultarEstadoByID($rs[$i]['htnumero']);
 
 						foreach($resultado as $row){
 							$ultimo_estado = $row["ESTADO"];
