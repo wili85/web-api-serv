@@ -3417,6 +3417,36 @@ class Api{
 
 		$a = new Reembolso();
 		$t = new Tramite();
+	  
+		$porcentaje["01"]="8";
+		$porcentaje["02"]="15";
+		$porcentaje["03"]="23";
+		$porcentaje["04"]="31";
+		$porcentaje["05"]="38";
+		$porcentaje["06"]="46";
+		$porcentaje["07"]="54";
+		$porcentaje["08"]="62";
+		$porcentaje["09"]="69";
+		$porcentaje["10"]="77";
+		$porcentaje["11"]="85";
+		$porcentaje["12"]="92";
+		$porcentaje["13"]="100";
+		$porcentaje["14"]="100";
+
+		$color["01"]="#ED5342";
+		$color["02"]="#ED5342";
+		$color["03"]="#FAD269";
+		$color["04"]="#FAD269";
+		$color["05"]="#FAD269";
+		$color["06"]="#FAD269";
+		$color["07"]="#FAD269";
+		$color["08"]="#9FCA87";
+		$color["09"]="#9FCA87";
+		$color["10"]="#9FCA87";
+		$color["11"]="#9FCA87";
+		$color["12"]="#00936E";
+		$color["13"]="#216636";
+		$color["14"]="#818180";
 		
 		$estado_publico["01"]="Iniciado";
 		$estado_publico["02"]="Iniciado";
@@ -3483,6 +3513,8 @@ class Api{
 					$reembolso[$i]['rutainformeliquidacion'] = $rs[$i]['rutainformeliquidacion'];
 					$reembolso[$i]['importe_reembolsable'] = $rs[$i]['importe_reembolsable'];
 					$reembolso[$i]['estado_publico'] = html_entity_decode($estado_publico[$ultimo_estado]);
+					$reembolso[$i]['porcentaje'] = $porcentaje[$ultimo_estado];
+					$reembolso[$i]['color'] = $color[$ultimo_estado];
 				}
 
 				echo json_encode(array('reembolso'=>$reembolso));
