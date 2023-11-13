@@ -3482,6 +3482,7 @@ class Api{
 		$porcentaje["13"]="100";
 		$porcentaje["14"]="100";
 
+
 		$color["01"]="#ED5342";
 		$color["02"]="#ED5342";
 		$color["03"]="#FAD269";

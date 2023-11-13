@@ -157,7 +157,7 @@
 						'iditem'	=> $_POST['iditem']
 					);
 
-					$api->listar_item_temporal($item);
+					$api->listar_item_temporal($item); 
 					
 				} elseif($_POST['op'] == 'registrar_recetavale_tmp'){
 
