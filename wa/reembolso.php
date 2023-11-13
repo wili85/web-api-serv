@@ -125,11 +125,12 @@
 					$item = array(
 						'tipo_documento' 	=> $_POST['tipo_documento'],
 						'numero_documento' 	=> $_POST['numero_documento'],
-						'htnumero' 	=> $_POST['htnumero']
+						'htnumero' 	=> $_POST['htnumero'],
+						'idsolicitud' 	=> $_POST['idsolicitud']
 					);
 
 					$api->listar_reembolso_all($item);
-					
+
 				} elseif($_POST['op'] == 'listar_reembolsos_tmp'){
 
 					$item = array(
@@ -139,7 +140,7 @@
 					);
 
 					$api->listar_reembolso_temporal($item);
-					
+
 				} elseif($_POST['op'] == 'listar_comprobante_tmp'){
 
 					$item = array(
