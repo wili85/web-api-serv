@@ -305,7 +305,7 @@
 
 					$api->listar_recetavale_diag_temporal($item);
 					
-				} elseif($_POST['op'] == ''){
+				} elseif($_POST['op'] == 'listar_recetavale_prod_tmp'){
 
 					$item = array(
 						'idrecetavale'	=> $_POST['idrecetavale'],

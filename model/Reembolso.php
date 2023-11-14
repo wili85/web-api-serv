@@ -88,6 +88,10 @@ class Reembolso {
 	public function crudRecetaVProductoTmp($p) {
 		return $this->readFunctionPostgres('sp_crud_recetavale_prod_tmp',$p);
 	}
+
+	public function crudTmpToRecetaVale($p){
+		return $this->readFunctionPostgres('sp_crud_from_tmp_to_recetavale',$p);
+  }
 	
 	public function consultarCantRecetaProd($nro, $codp) {
 

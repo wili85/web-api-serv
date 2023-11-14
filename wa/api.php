@@ -3535,7 +3535,6 @@ class Api{
 						foreach($resultado as $row){
 							$ultimo_estado = $row["ESTADO"];
 						}	
-						
 					}
 
 					$importe_reembolsable = 0;
@@ -3954,6 +3953,130 @@ class Api{
 		} else {
 			$msg[0]['msg'] = "No exiten productos";
 			echo json_encode(array('recetavale'=>$msg));
+		}
+	}
+	
+	function registrar_temporal_to_receta($p){
+	
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->crudTmpToSolicitud($p);
+
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+				
+					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
+					$reembolso[$i]['htnumero'] = $rs[$i]['htnumero'];
+					$reembolso[$i]['htfecha'] = $rs[$i]['htfecha'];
+					$reembolso[$i]['solicitudfecha'] = $rs[$i]['solicitudfecha'];
+					$reembolso[$i]['solicitudnumero'] = $rs[$i]['solicitudnumero'];
+					$reembolso[$i]['idpaciente'] = $rs[$i]['idpaciente'];
+					$reembolso[$i]['tipdocpaciente'] = $rs[$i]['tipdocpaciente'];
+					$reembolso[$i]['numdocpaciente'] = $rs[$i]['numdocpaciente'];
+					$reembolso[$i]['nombrepaciente'] = $rs[$i]['nombrepaciente'];
+					$reembolso[$i]['sexopaciente'] = $rs[$i]['sexopaciente'];
+					$reembolso[$i]['parentesco'] = $rs[$i]['parentesco'];
+					$reembolso[$i]['tipdoctitular'] = $rs[$i]['tipdoctitular'];
+					$reembolso[$i]['numdoctitular'] = $rs[$i]['numdoctitular'];
+					$reembolso[$i]['nombretitular'] = $rs[$i]['nombretitular'];
+					$reembolso[$i]['sexotitular'] = $rs[$i]['sexotitular'];
+					$reembolso[$i]['gradotitular'] = $rs[$i]['gradotitular'];
+					$reembolso[$i]['direccion'] = $rs[$i]['direccion'];
+					$reembolso[$i]['telefono1'] = $rs[$i]['telefono1'];
+					$reembolso[$i]['telefono2'] = $rs[$i]['telefono2'];
+					$reembolso[$i]['telefono3'] = $rs[$i]['telefono3'];
+					$reembolso[$i]['telefono4'] = $rs[$i]['telefono4'];
+					$reembolso[$i]['banco'] = $rs[$i]['banco'];
+					$reembolso[$i]['numeroctabanco'] = $rs[$i]['numeroctabanco'];
+					$reembolso[$i]['numerocta'] = $rs[$i]['numerocta'];
+					$reembolso[$i]['tiporeembolso'] = $rs[$i]['tiporeembolso'];
+					$reembolso[$i]['ipressnumero'] = $rs[$i]['ipressnumero'];
+					$reembolso[$i]['ipressnombre'] = $rs[$i]['ipressnombre'];
+					$reembolso[$i]['servicionumero'] = $rs[$i]['servicionumero'];
+					$reembolso[$i]['servicionombre'] = $rs[$i]['servicionombre'];
+					$reembolso[$i]['fechaingreso'] = $rs[$i]['fechaingreso'];
+					$reembolso[$i]['fechaalta'] = $rs[$i]['fechaalta'];
+					$reembolso[$i]['flaginfmed'] = $rs[$i]['flaginfmed'];
+					$reembolso[$i]['flaghistcli'] = $rs[$i]['flaghistcli'];
+					$reembolso[$i]['flaghojapreliq'] = $rs[$i]['flaghojapreliq'];
+					$reembolso[$i]['flagcomsaludpol'] = $rs[$i]['flagcomsaludpol'];
+					$reembolso[$i]['flagregistro'] = $rs[$i]['flagregistro'];
+					$reembolso[$i]['idparentesco'] = $rs[$i]['idparentesco'];
+					$reembolso[$i]['idgrado'] = $rs[$i]['idgrado'];
+					$reembolso[$i]['idbanco'] = $rs[$i]['idbanco'];
+					$reembolso[$i]['idtiporeembolso'] = $rs[$i]['idtiporeembolso'];
+					$reembolso[$i]['edadpaciente'] = $rs[$i]['edadpaciente'];
+					$reembolso[$i]['edadtitular'] = $rs[$i]['edadtitular'];
+					$reembolso[$i]['tipdocsolicitante'] = $rs[$i]['tipdocsolicitante'];
+					$reembolso[$i]['numdocsolicitante'] = $rs[$i]['numdocsolicitante'];
+					$reembolso[$i]['nombresolicitante'] = $rs[$i]['nombresolicitante'];
+					$reembolso[$i]['tipocta'] = $rs[$i]['tipocta'];
+					$reembolso[$i]['idsede'] = $rs[$i]['idsede'];
+					$reembolso[$i]['sede'] = $rs[$i]['sede'];
+					$reembolso[$i]['usuario'] = $rs[$i]['usuario'];
+					$reembolso[$i]['userupdate'] = $rs[$i]['userupdate'];
+					$reembolso[$i]['fecha_resolucion'] = $rs[$i]['fecha_resolucion'];
+					$reembolso[$i]['user_resolucion'] = $rs[$i]['user_resolucion'];
+					$reembolso[$i]['obs_resolucion'] = $rs[$i]['obs_resolucion'];
+					$reembolso[$i]['userpago'] = $rs[$i]['userpago'];
+					$reembolso[$i]['fechapago'] = $rs[$i]['fechapago'];
+					$reembolso[$i]['fecharegistro'] = $rs[$i]['fecharegistro'];
+					$reembolso[$i]['numinforme'] = $rs[$i]['numinforme'];
+					$reembolso[$i]['fechainforme'] = $rs[$i]['fechainforme'];
+					$reembolso[$i]['folios'] = $rs[$i]['folios'];
+					$reembolso[$i]['sexosolicitante'] = $rs[$i]['sexosolicitante'];
+					$reembolso[$i]['lugar'] = $rs[$i]['lugar'];
+					$reembolso[$i]['periodo'] = $rs[$i]['periodo'];
+					$reembolso[$i]['flagobservado'] = $rs[$i]['flagobservado'];
+					$reembolso[$i]['fechafallecimiento'] = $rs[$i]['fechafallecimiento'];
+					$reembolso[$i]['fechaoperacion'] = $rs[$i]['fechaoperacion'];
+					$reembolso[$i]['numinformeauditoria'] = $rs[$i]['numinformeauditoria'];
+					$reembolso[$i]['fechainformeauditoria'] = $rs[$i]['fechainformeauditoria'];
+					$reembolso[$i]['nummemoauditoria'] = $rs[$i]['nummemoauditoria'];
+					$reembolso[$i]['fechamemoauditoria'] = $rs[$i]['fechamemoauditoria'];
+					$reembolso[$i]['respuestaresolucion'] = $rs[$i]['respuestaresolucion'];
+					$reembolso[$i]['defuncion'] = $rs[$i]['defuncion'];
+					$reembolso[$i]['operacion'] = $rs[$i]['operacion'];
+					$reembolso[$i]['comunicacion'] = $rs[$i]['comunicacion'];
+					$reembolso[$i]['prioridad1'] = $rs[$i]['prioridad1'];
+					$reembolso[$i]['pagotitular'] = $rs[$i]['pagotitular'];
+					$reembolso[$i]['importe_observado'] = $rs[$i]['importe_observado'];
+					$reembolso[$i]['siglas'] = $rs[$i]['siglas'];
+					$reembolso[$i]['responsable'] = $rs[$i]['responsable'];
+					$reembolso[$i]['cargo'] = $rs[$i]['cargo'];
+					$reembolso[$i]['tiporesolucion'] = $rs[$i]['tiporesolucion'];
+					$reembolso[$i]['nom_archivo_resolucion'] = $rs[$i]['nom_archivo_resolucion'];
+					$reembolso[$i]['correo_solicitante'] = $rs[$i]['correo_solicitante'];
+					$reembolso[$i]['fecha_envio_correo'] = $rs[$i]['fecha_envio_correo'];
+					$reembolso[$i]['httipo'] = $rs[$i]['httipo'];
+					$reembolso[$i]['flagenviopago'] = $rs[$i]['flagenviopago'];
+					$reembolso[$i]['origen'] = $rs[$i]['origen'];
+					$reembolso[$i]['flagnotificacion'] = $rs[$i]['flagnotificacion'];
+					$reembolso[$i]['flagcovid'] = $rs[$i]['flagcovid'];
+					$reembolso[$i]['codigocuentainterbancario'] = $rs[$i]['codigocuentainterbancario'];
+					$reembolso[$i]['nombre'] = $rs[$i]['nombre'];
+					$reembolso[$i]['apellidopaterno'] = $rs[$i]['apellidopaterno'];
+					$reembolso[$i]['apellidomaterno'] = $rs[$i]['apellidomaterno'];
+					$reembolso[$i]['numoficio'] = $rs[$i]['numoficio'];
+					$reembolso[$i]['numjuntamedica'] = $rs[$i]['numjuntamedica'];
+					$reembolso[$i]['fechahojareferencia'] = $rs[$i]['fechahojareferencia'];
+					$reembolso[$i]['numinformeauditoria'] = $rs[$i]['numinformeauditoria'];
+					$reembolso[$i]['fechainformeauditoria'] = $rs[$i]['fechainformeauditoria'];
+				}
+
+				echo json_encode(array('solicitud'=>$reembolso));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se registro reembolso.";
+			echo json_encode(array('solicitud'=>$msg));
 		}
 	}
 }
