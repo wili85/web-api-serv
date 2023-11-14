@@ -3913,11 +3913,11 @@ class Api{
 					$reembolso[$i]['descripdiagnostico'] = $rs[$i]['descripdiagnostico'];
 				}
 
-				echo json_encode(array('recetavale'=>$reembolso));
+				echo json_encode(array('diagnosticoreceta'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No exiten productos";
-			echo json_encode(array('recetavale'=>$msg));
+			echo json_encode(array('diagnosticoreceta'=>$msg));
 		}
 	}
 
@@ -3948,11 +3948,11 @@ class Api{
 					$reembolso[$i]['descripobs'] = $rs[$i]['descripobs'];
 				}
 
-				echo json_encode(array('recetavale'=>$reembolso));
+				echo json_encode(array('productoreceta'=>$reembolso));
 			}
 		} else {
 			$msg[0]['msg'] = "No exiten productos";
-			echo json_encode(array('recetavale'=>$msg));
+			echo json_encode(array('productoreceta'=>$msg));
 		}
 	}
 	
