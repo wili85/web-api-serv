@@ -3565,6 +3565,8 @@ class Api{
 					$reembolso[$i]['estado_publico'] = html_entity_decode($estado_publico[$ultimo_estado]);
 					$reembolso[$i]['porcentaje'] = $porcentaje[$ultimo_estado];
 					$reembolso[$i]['color'] = $color[$ultimo_estado];
+					$reembolso[$i]['servicionumero'] = $rs[$i]['servicionumero'];
+					$reembolso[$i]['servicionombre'] = $rs[$i]['servicionombre'];
 				}
 
 				echo json_encode(array('reembolso'=>$reembolso));
