@@ -315,6 +315,15 @@
 
 					$api->listar_recetavale_prod_temporal($item);
 					
+				} elseif($_POST['op'] == 'registrar_tmp_to_receta'){
+
+					$item = array(
+						'idrecetavale'	=> $_POST['idrecetavale'],
+						'idsolicitud' => $_POST['idsolicitud']
+					);
+
+					$api->registrar_temporal_to_receta($item);
+					
 				}
 
 			}else{
