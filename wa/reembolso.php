@@ -291,7 +291,8 @@
 
 					$item = array(
 						'idsolicitud'	=> $_POST['idsolicitud'],
-						'idrecetavale'	=> $_POST['idrecetavale']
+						'idrecetavale'	=> $_POST['idrecetavale'],
+						'nroreceta'	=> $_POST['nroreceta']
 					);
 
 					$api->listar_recetavale_temporal($item);
