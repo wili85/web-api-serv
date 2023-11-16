@@ -281,7 +281,8 @@
 						'valorigv' 	=> $_POST['valorigv'],
 						'rutacomprobante'	=> $_POST['rutacomprobante'],
 						'validasunat' 	=> $_POST['validasunat'],
-						'importesunat' 	=> $_POST['importesunat']
+						'importesunat' 	=> $_POST['importesunat'],
+						'nombreempresa' 	=> $_POST['nombreempresa']
 
 					);
 
