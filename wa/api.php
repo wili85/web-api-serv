@@ -3702,9 +3702,9 @@ class Api{
 					$reembolso[$i]['codigo'] = $rs[$i]['codigo'];
 					$reembolso[$i]['descripcion'] = $rs[$i]['descripcion'];
 					$reembolso[$i]['idobs'] = $rs[$i]['idobs'];
-					$reembolso[$i]['importe'] = $rs[$i]['importe'];
+					$reembolso[$i]['importe'] = number_format($rs[$i]['importe'], 2, '.', ' ');
 					$reembolso[$i]['flagregistro'] = $rs[$i]['flagregistro'];
-					$reembolso[$i]['importeobs'] = $rs[$i]['importeobs'];
+					$reembolso[$i]['importeobs'] = number_format($rs[$i]['importeobs'], 2, '.', ' ');
 					$reembolso[$i]['cantidad'] = $rs[$i]['cantidad'];
 					$reembolso[$i]['usuario'] = $rs[$i]['usuario'];
 					$reembolso[$i]['fecharegistro'] = $rs[$i]['fecharegistro'];
