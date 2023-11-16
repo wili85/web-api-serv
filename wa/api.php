@@ -895,7 +895,7 @@ class Api{
 				curl_setopt($ch_producto, CURLOPT_POSTFIELDS, $data_string_producto);
 				curl_setopt($ch_producto, CURLOPT_RETURNTRANSFER, true);
 				$resultWebApiProducto = curl_exec($ch_producto);
-				
+
 				$dataWebApiProducto = json_decode($resultWebApiProducto);
 				$rsProducto = $dataWebApiProducto->productoreceta;
 				$cantProductoReceta = count($rsProducto);
@@ -915,6 +915,74 @@ class Api{
 					$r++;
 				}
 				
+			}
+			
+			echo json_encode(array('recetavale'=>$afiliado));
+			
+		} else {
+			$msg[0]['msg'] = "El dni no tiene recetas";
+			echo json_encode(array('recetavale'=>$msg));
+		}
+	
+	
+	}
+
+	function getRecetaValeByNroDoc2($p){
+
+		include '../model/Reembolso.php';
+		
+		if(isset($p["nroDoc"]) && $p["nroDoc"]!="")$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=listar&tipDoc=1&nroDoc=".$p["nroDoc"];
+		if(isset($p["idReceta"]) && $p["idReceta"]!=0)$data_string = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=receta&idReceta=".$p["idReceta"];
+		
+		$ch = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
+		curl_setopt($ch, CURLOPT_POST, TRUE);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$resultWebApi = curl_exec($ch);
+		
+		$dataWebApi = json_decode($resultWebApi);
+		$recetavale = $dataWebApi->recetavale;
+		$nr=count($recetavale);
+		//$nr=0;
+		if ($nr > 0) {
+			
+			$r = 0;
+			foreach($recetavale as $rs){
+				
+				$reembolso = new Reembolso();
+				$rsRecetaUsada = $reembolso->consultarCantRecetaUsada($rs->nro_receta);
+				
+				if(count($rsRecetaUsada)==0){
+
+					$idReceta=$rs->id;
+					$data_string_producto = "usuario=".USUARIO_API_DIRSAPOL."&clave=".CLAVE_API_DIRSAPOL."&op=productoreceta&idReceta=".$idReceta;
+					$ch_producto = curl_init(RUTA_API_DIRSAPOL.'/wa/farmacia.php');
+					curl_setopt($ch_producto, CURLOPT_POST, TRUE);
+					curl_setopt($ch_producto, CURLOPT_POSTFIELDS, $data_string_producto);
+					curl_setopt($ch_producto, CURLOPT_RETURNTRANSFER, true);
+					$resultWebApiProducto = curl_exec($ch_producto);
+
+					$dataWebApiProducto = json_decode($resultWebApiProducto);
+					$rsProducto = $dataWebApiProducto->productoreceta;
+					$cantProductoReceta = count($rsProducto);
+					$cantProductoReembolso = 0;
+
+					foreach($rsProducto as $rowProducto):
+						$receta = array();
+						$receta[] = $rs->nro_receta;
+						$receta[] = $rowProducto->codigo;
+						$reembolso = new Reembolso();
+						$rsReembolso = $reembolso->validaComprobanteReceta($receta);
+						if (count($rsReembolso) > 0)$cantProductoReembolso++;
+					endforeach;
+					
+					if ($cantProductoReceta <> $cantProductoReembolso){
+						$afiliado[$r] = $rs;
+						$r++;
+					}
+
+				}
+
 			}
 			
 			echo json_encode(array('recetavale'=>$afiliado));

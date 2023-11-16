@@ -100,7 +100,7 @@ class Reembolso {
 
 		$conet = $this->db->getConnection();
 
-		$query = "select sum(rvp.cantdispensada) cantdispensada
+		$query = "select coalesce(sum(rvp.cantdispensada),0) cantdispensada
 								from tbl_tmp_recetavale_producto rvp
 								left Join tbl_tmp_recetavale ttr
 								on rvp.idrecetavale = ttr.idrecetavale
@@ -108,6 +108,30 @@ class Reembolso {
 								where ttr.nroreceta = '".$nro."'
 								and rvp.codigo = '".$codp."'
 								and rvp.flagregistro = '1'
+								";
+
+		//echo $query;
+	  $result = $this->db->query($query);
+		return $result;
+
+  }
+
+	public function consultarCantRecetaUsada($nro) {
+
+		//$nro = '55';
+		//$codp = 'PF00410';
+
+		$conet = $this->db->getConnection();
+
+		$query = "select ttr.nroreceta 
+								from tbl_tmp_recetavale_producto rvp
+								left Join tbl_tmp_recetavale ttr
+								on rvp.idrecetavale = ttr.idrecetavale
+								and ttr.flagregistro = '1'
+								where ttr.nroreceta = '".$nro."'
+								and rvp.flagregistro = '1'
+								group by ttr.nroreceta
+								having coalesce(sum(rvp.cantdispensada),0) >= coalesce(sum(rvp.cantprescrita),0)
 								";
 
 		//echo $query;
