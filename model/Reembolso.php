@@ -130,8 +130,8 @@ class Reembolso {
 								and ttr.flagregistro = '1'
 								where ttr.nroreceta = '".$nro."'
 								and rvp.flagregistro = '1'
-								group by ttr.nroreceta
-								having coalesce(sum(rvp.cantdispensada),0) >= coalesce(sum(rvp.cantprescrita),0)
+								group by ttr.nroreceta, rvp.cantprescrita
+								having coalesce(sum(rvp.cantdispensada),0) >= coalesce(rvp.cantprescrita,0)
 								";
 
 		//echo $query;
