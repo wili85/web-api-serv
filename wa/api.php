@@ -917,11 +917,11 @@ class Api{
 				
 			}
 			
-			echo json_encode(array('recetavale2'=>$afiliado));
+			echo json_encode(array('recetavale'=>$afiliado));
 			
 		} else {
 			$msg[0]['msg'] = "El dni no tiene recetas";
-			echo json_encode(array('recetavale2'=>$msg));
+			echo json_encode(array('recetavale'=>$msg));
 		}
 	
 	
