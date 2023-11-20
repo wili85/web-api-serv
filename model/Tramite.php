@@ -81,6 +81,7 @@ class Tramite {
 		oci_bind_by_name($rs, ":cadena1", $data["cadena1"],250);
 		oci_bind_by_name($rs, ":cadena2", $data["cadena2"],250);
 		oci_bind_by_name($rs, ":idesqobs", $data["idesqobs"],250);
+		oci_bind_by_name($rs, ":icodtramiteref1", $data["icodtramiteref1"],10);
 		oci_execute($rs);
 		$e = oci_error($rs);
 		print_r($e);
