@@ -3334,10 +3334,13 @@ class Api{
 					$icodtramite = $t->registrarHt($dataSolicitud);
 					//print_r($icodtramite);
 					$tramite = $t->consultarHT($icodtramite);
-					$p[0] = 'u';
-					$p[2] = $rs[$i]['idsolicitud'];
-					$p[3] = $tramite[0]["CCODIFICACIONHT"];
-					$rsa = $a->crudTmpToSolicitud($p);
+					
+					$a1 = new Reembolso();
+					$p1['op'] = 'u';
+					$p1['idsolicitud'] = '';
+					$p1['idsolf'] = $rs[$i]['idsolicitud'];
+					$p1['htnumero'] = $tramite[0]["CCODIFICACIONHT"];
+					$rsa = $a1->crudTmpToSolicitud($p1);
 					
 					$nra = count($rsa);
 					if ($nra > 0) {
