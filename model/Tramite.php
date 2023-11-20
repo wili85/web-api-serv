@@ -27,7 +27,7 @@ class Tramite {
             $l[] = $obj;
         }
 		$icodremitente1 = (isset($l[0]["ICODREMITENTE"]))?$l[0]["ICODREMITENTE"]:0;
-		
+
 		if($icodremitente1 == 0){		
 			$sql = "begin pkg_movstd.remitente_update(:icodremitente1,:tipopersona,:nombre,:numdocumento,:direccion,:departamento,:provincia,:distrito,:apellidopaterno,:apellidomaterno); end;";
 			$rs = oci_parse($conn, $sql);
@@ -45,9 +45,9 @@ class Tramite {
 		}
 		$this->db_b->closeConnection();
 		return $icodremitente1;
-		
+
 	}
-	
+
 	function registrarHt($data){
 		//error_reporting(E_ALL);
 		//ini_set('display_errors', '1');
