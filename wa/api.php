@@ -1542,7 +1542,7 @@ class Api{
 					$detalle[$i]['fechapago'] = $fechapago;
 					$detalle[$i]['montopago'] = $montopago;
 				}else{
-					$detalle[0]['msg'] = utf8_encode("La solicitud aun no tiene informe de liquidaci�n firmado");
+					$detalle[0]['msg'] = utf8_encode("La solicitud aun no tiene informe de liquidaci?n firmado");
 				}
 				
 			}
@@ -2641,7 +2641,7 @@ class Api{
 					$url_boletopaciente_extra1 = "";//Boleto del Paciente Extra 1
 					$url_boletopaciente_extra2 = "";//Boleto del Paciente Extra 2
 					$url_boletopaciente_extra3 = "";//Boleto del Paciente Extra 3
-					$url_boletoacompanante = "";//Boleto del Acompa�ante
+					$url_boletoacompanante = "";//Boleto del Acompa?ante
 					$url_boletomedico = "";//Boleto del Profesional de Salud
 					
 					if($rs[$i]['estado'] == 1)$estado = "PENDIENTE";
@@ -3075,7 +3075,7 @@ class Api{
 				echo json_encode(array('solicitud_prestacion'=>$pasaje));
 			}
 		} else {
-			$msg[0]['msg'] = utf8_encode("No exiten solicitud de prestaci�n de salud");
+			$msg[0]['msg'] = utf8_encode("No exiten solicitud de prestaci?n de salud");
 			echo json_encode(array('solicitud_prestacion'=>$msg));
 		}
 	
