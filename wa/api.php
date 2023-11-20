@@ -4151,7 +4151,7 @@ class Api{
 
 			}
 		} else {
-			$msg[0]['msg'] = "No se registro reembolso.";
+			$msg[0]['msg'] = "No se registro Receta.";
 			echo json_encode(array('recetavale'=>$msg));
 		}
 	}
