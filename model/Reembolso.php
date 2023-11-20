@@ -123,15 +123,20 @@ class Reembolso {
 
 		$conet = $this->db->getConnection();
 
-		$query = "select ttr.nroreceta 
-								from tbl_tmp_recetavale_producto rvp
-								left Join tbl_tmp_recetavale ttr
-								on rvp.idrecetavale = ttr.idrecetavale
-								and ttr.flagregistro = '1'
-								where ttr.nroreceta = '".$nro."'
-								and rvp.flagregistro = '1'
-								group by ttr.nroreceta, rvp.cantprescrita
-								having coalesce(sum(rvp.cantdispensada),0) >= coalesce(rvp.cantprescrita,0)
+		$query = "select nroreceta
+								from
+									(select ttr.nroreceta, coalesce(rvp.cantprescrita,0) cantprescrita,
+													coalesce(sum(rvp.cantdispensada),0) cantdispensada
+											from tbl_tmp_recetavale_producto rvp
+											left Join tbl_tmp_recetavale ttr
+											on rvp.idrecetavale = ttr.idrecetavale
+											and ttr.flagregistro = '1'
+											where ttr.nroreceta = '".$nro."'
+											and rvp.flagregistro = '1'
+											group by ttr.nroreceta, rvp.cantprescrita
+											having coalesce(sum(rvp.cantdispensada),0) >= coalesce(rvp.cantprescrita,0)) d
+											group by d.nroreceta
+											having coalesce(sum(d.cantdispensada),0) >= coalesce(sum(d.cantprescrita),0)
 								";
 
 		//echo $query;
