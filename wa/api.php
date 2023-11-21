@@ -3099,6 +3099,7 @@ class Api{
 					$afiliado[$i]['id'] = $rs[$i]['id_per'];
 					$afiliado[$i]['nompaisdelafiliado'] = $rs[$i]['nompaisdelafiliado'];
 					$afiliado[$i]['nomtipdocafiliado'] = $rs[$i]['nomtipdocafiliado'];
+					$afiliado[$i]['idtipdocafiliado'] = $rs[$i]['idtipdocafiliado'];
 					$afiliado[$i]['nrodocafiliado'] = $rs[$i]['nrodocafiliado'];
 					$afiliado[$i]['apepatafiliado'] = $rs[$i]['apellidopaterno'];
 					$afiliado[$i]['apematafiliado'] = $rs[$i]['apellidomaterno'];
