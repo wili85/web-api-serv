@@ -85,7 +85,7 @@ class Tramite {
 		oci_execute($rs);
 		$e = oci_error($rs);
 		print_r($e);
-		$this->db_b->closeConnection();
+		$this->db_b->closeConnection(); 
 		//exit($icodtramite1);
 		return $icodtramite1;
 		
