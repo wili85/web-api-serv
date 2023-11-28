@@ -185,7 +185,8 @@
 						'fecatencion' 	=> $_POST['fecatencion'],
 						'fecexpiracion' 	=> $_POST['fecexpiracion'],
 						'idservicio' 	=> $_POST['idservicio'],
-						'codupss' 	=> $_POST['codupss']
+						'codupss' 	=> $_POST['codupss'],
+						'rutarecetavale' 	=> $_POST['rutarecetavale']
 					);
 
 					$api->registrar_recetavale_temp($item);
