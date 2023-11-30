@@ -286,7 +286,9 @@
 						'rutacomprobante'	=> $_POST['rutacomprobante'],
 						'validasunat' 	=> $_POST['validasunat'],
 						'importesunat' 	=> $_POST['importesunat'],
-						'nombreempresa' 	=> $_POST['nombreempresa']
+						'nombreempresa' 	=> $_POST['nombreempresa'],
+						'serie' 	=> $_POST['serie'],
+						'numero' 	=> $_POST['numero']
 
 					);
 
