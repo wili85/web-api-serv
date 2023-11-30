@@ -3512,6 +3512,8 @@ class Api{
 					$reembolso[$i]['validasunat'] = $rs[$i]['validasunat'];
 					$reembolso[$i]['importesunat'] = $rs[$i]['importesunat'];
 					$reembolso[$i]['nombreempresa'] = $rs[$i]['nombreempresa'];
+					$reembolso[$i]['serie'] = $rs[$i]['serie'];
+					$reembolso[$i]['numero'] = $rs[$i]['numero'];
 				}
 				
 				echo json_encode(array('comprobante'=>$reembolso));
@@ -3812,6 +3814,8 @@ class Api{
 					$reembolso[$i]['validasunat'] = $rs[$i]['validasunat'];
 					$reembolso[$i]['importesunat'] = $rs[$i]['importesunat'];
 					$reembolso[$i]['nombreempresa'] = $rs[$i]['nombreempresa'];
+					$reembolso[$i]['serie'] = $rs[$i]['serie'];
+					$reembolso[$i]['numero'] = $rs[$i]['numero'];
 
 				}
 
