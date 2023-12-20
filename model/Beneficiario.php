@@ -35,6 +35,7 @@ class Afiliado {
             $this->sql = "Select * From sp_lista_asegurados_afines('" . $tipDoc . "','" . $nroDoc . "','ref_cursor'); Fetch All In ref_cursor;";
             $this->rs = $this->db->query($this->sql);
         }
+
         $this->db->closeConnection();
         return $this->rs;
     }
@@ -694,7 +695,7 @@ Where t1.descripcion_token='".$par[0]."'";
         } else {
             $this->db->query("COMMIT");
             $sw=TRUE;
-            $msg='La operación  realizado correctamente.';
+            $msg='La operaciï¿½n  realizado correctamente.';
 	
         }
         $response = $result;
@@ -733,7 +734,7 @@ Where t1.descripcion_token='".$par[0]."'";
         } else {
             $this->db->query("COMMIT");
             $sw=TRUE;
-            $msg='La operación  realizado correctamente.';
+            $msg='La operaciï¿½n  realizado correctamente.';
 	
         }
         $response = $result;
@@ -772,7 +773,7 @@ Where t1.descripcion_token='".$par[0]."'";
         } else {
             $this->db->query("COMMIT");
             $sw=TRUE;
-            $msg='La operación  realizado correctamente.';
+            $msg='La operaciï¿½n  realizado correctamente.';
 	
         }
         $response = $result;

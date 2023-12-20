@@ -3447,6 +3447,8 @@ class Api{
 								$reembolso[$i]['fechahojareferencia'] = $rs[$i]['fechahojareferencia'];
 								$reembolso[$i]['numinformeauditoria'] = $rs[$i]['numinformeauditoria'];
 								$reembolso[$i]['fechainformeauditoria'] = $rs[$i]['fechainformeauditoria'];
+								$reembolso[$i]['flaglineamiento'] = $rs[$i]['flaglineamiento'];
+								$reembolso[$i]['flagnotificacion'] = $rs[$i]['flagnotificacion'];
 							}
 
 							echo json_encode(array('solicitud'=>$reembolso));
