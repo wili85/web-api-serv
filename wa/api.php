@@ -4183,6 +4183,38 @@ class Api{
 			echo json_encode(array('recetavale'=>$msg));
 		}
 	}
+	
+	function listar_observaciones_xht($p){
+	
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->listarObservaciones($p);
+
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {				
+					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
+					$reembolso[$i]['htnumero'] = $rs[$i]['htnumero'];
+					$reembolso[$i]['obs_requisito'] = $rs[$i]['obs_requisito'];
+					$reembolso[$i]['obs_comprobante'] = $rs[$i]['obs_comprobante'];
+					$reembolso[$i]['obs_item_comprobante'] = $rs[$i]['obs_item_comprobante'];
+					$reembolso[$i]['obs_receta'] = $rs[$i]['obs_receta'];
+				}
+
+				echo json_encode(array('observacion'=>$reembolso));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se registro de Observaciones.";
+			echo json_encode(array('observacion'=>$msg));
+		}
+	}
 }
 
 ?>

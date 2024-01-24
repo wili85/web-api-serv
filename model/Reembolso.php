@@ -93,6 +93,10 @@ class Reembolso {
 		return $this->readFunctionPostgres('sp_crud_from_tmp_to_recetavale',$p);
   }
 
+	public function listarObservaciones($p){
+		return $this->readFunctionPostgres('sp_consult_observaciones_xht_xidsol',$p);
+  }
+
 	public function consultarCantRecetaProd($nro, $codp) {
 
 		//$nro = '55';
