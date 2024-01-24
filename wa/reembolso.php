@@ -331,6 +331,15 @@
 
 					$api->registrar_temporal_to_receta($item);
 					
+				} elseif($_POST['op'] == 'listar_obs_xht'){
+
+					$item = array(
+						'htnumero'	=> $_POST['htnumero'],
+						'idsolicitud' => $_POST['idsolicitud']
+					);
+
+					$api->listar_observaciones_xht($item);
+					
 				}
 
 			}else{
