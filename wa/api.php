@@ -3713,6 +3713,11 @@ class Api{
 					$reembolso[$i]['color'] = $color[$ultimo_estado];
 					$reembolso[$i]['servicionumero'] = $rs[$i]['servicionumero'];
 					$reembolso[$i]['servicionombre'] = $rs[$i]['servicionombre'];
+					$reembolso[$i]['obs_requisito'] = $rs[$i]['obs_requisito'];
+					$reembolso[$i]['obs_comprobante'] = $rs[$i]['obs_comprobante'];
+					$reembolso[$i]['obs_item_comprobante'] = $rs[$i]['obs_item_comprobante'];
+					$reembolso[$i]['obs_receta'] = $rs[$i]['obs_receta'];
+					$reembolso[$i]['obs_total'] = $rs[$i]['obs_total'];
 				}
 
 				echo json_encode(array('reembolso'=>$reembolso));
@@ -4213,6 +4218,41 @@ class Api{
 		} else {
 			$msg[0]['msg'] = "No se registro de Observaciones.";
 			echo json_encode(array('observacion'=>$msg));
+		}
+	}
+	
+	function registrar_asegurado_new($p){
+	
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->crudAseguradoNew($p);
+		
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+
+					$afiliado[$i]['tipodocumento'] = $rs[$i]['tipodocumento'];
+					$afiliado[$i]['numerodocumento'] = $rs[$i]['numerodocumento'];
+					$afiliado[$i]['apellidopaterno'] = $rs[$i]['apellidopaterno'];
+					$afiliado[$i]['apellidomaterno'] = $rs[$i]['apellidomaterno'];
+					$afiliado[$i]['apellidocasada'] = $rs[$i]['apellidocasada'];
+					$afiliado[$i]['nombres'] = $rs[$i]['nombres'];
+					$afiliado[$i]['sexo'] = $rs[$i]['sexo'];
+					$afiliado[$i]['ubigeonacimiento'] = $rs[$i]['ubigeonacimiento'];
+				}
+
+				echo json_encode(array('asegurado'=>$afiliado));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se registro Asegurado.";
+			echo json_encode(array('solicitud'=>$msg));
 		}
 	}
 }

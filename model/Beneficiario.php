@@ -785,6 +785,10 @@ Where t1.descripcion_token='".$par[0]."'";
 	  
       return $response;
    }
+
+    public function crudAseguradoNew($p){
+        return $this->readFunctionPostgres('sp_crud_asegurado',$p);
+    }
    
    
 }

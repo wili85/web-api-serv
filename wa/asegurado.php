@@ -85,6 +85,44 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 				'nroDoc' => $_POST['nroDoc']
 			);
 			$api->getAseguradosByTipDocNroDoc($item);
+
+		} elseif($_POST['op'] == 'reg_asegurado'){
+			$item = array(
+				'paisnacimiento' 	=> $_POST['paisnacimiento'],
+				'tipodocumento' 	=> $_POST['tipodocumento'],
+				'numerodocumento' 	=> $_POST['numerodocumento'],
+				'apellidopaterno' 	=> $_POST['apellidopaterno'],
+				'apellidomaterno' 	=> $_POST['apellidomaterno'],
+				'apellidocasada' 	=> $_POST['apellidocasada'],
+				'nombres' 	=> $_POST['nombres'],
+				'sexo' 	=> $_POST['sexo'],
+				'ubigeonacimiento' 	=> $_POST['ubigeonacimiento'],
+				'fechanacimiento' 	=> $_POST['fechanacimiento'],
+				'fechafallecimiento' 	=> $_POST['fechafallecimiento'],
+				'ubigeodireccion' 	=> $_POST['ubigeodireccion'],
+				'direccion' 	=> $_POST['direccion'],
+				'referenciadireccion' 	=> $_POST['referenciadireccion'],
+				'user' 	=> $_POST['user'],
+				'incapacitado' 	=> $_POST['incapacitado'],
+				'motivosol' 	=> $_POST['motivosol'],
+				'fechainicoafiliacion' 	=> $_POST['fechainicoafiliacion'],
+				'fechafinafiliacion' 	=> $_POST['fechafinafiliacion'],
+				'estadoafiliado' 	=> $_POST['estadoafiliado'],
+				'numerode_cip' 	=> $_POST['numerode_cip'],
+				'parentesco' 	=> $_POST['parentesco'],
+				'rec_pension' 	=> $_POST['rec_pension'],
+				'id_titular' 	=> $_POST['id_titular'],
+				'id_situacion' 	=> $_POST['id_situacion'],
+				'idparen_sobrev' 	=> $_POST['idparen_sobrev'],
+				'idtitu_sobrev' 	=> $_POST['idtitu_sobrev'],
+				'id_estcivil' 	=> $_POST['id_estcivil'],
+				'id_tipotelef' 	=> $_POST['id_tipotelef'],
+				'nro_telef' 	=> $_POST['nro_telef'],
+				'email' 	=> $_POST['email']
+			);
+
+			$api->registrar_asegurado_new($item);
+			
 		}
 	
 	}else{
