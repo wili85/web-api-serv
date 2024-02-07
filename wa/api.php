@@ -4205,11 +4205,10 @@ class Api{
 			} else {
 				for ($i = 0; $i < $nr; $i++) {				
 					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
-					$reembolso[$i]['htnumero'] = $rs[$i]['htnumero'];
-					$reembolso[$i]['obs_requisito'] = $rs[$i]['obs_requisito'];
-					$reembolso[$i]['obs_comprobante'] = $rs[$i]['obs_comprobante'];
-					$reembolso[$i]['obs_item_comprobante'] = $rs[$i]['obs_item_comprobante'];
-					$reembolso[$i]['obs_receta'] = $rs[$i]['obs_receta'];
+					$reembolso[$i]['tipo'] = $rs[$i]['tipo'];
+					$reembolso[$i]['nombre'] = $rs[$i]['nombre'];
+					$reembolso[$i]['id_cod'] = $rs[$i]['id_cod'];
+					$reembolso[$i]['obs'] = $rs[$i]['obs'];
 				}
 
 				echo json_encode(array('observacion'=>$reembolso));
@@ -4219,6 +4218,35 @@ class Api{
 			$msg[0]['msg'] = "No se registro de Observaciones.";
 			echo json_encode(array('observacion'=>$msg));
 		}
+	}
+
+	function registrar_observaciones($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->crudObservaciones($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
+					$reembolso[$i]['idcodigo'] = $rs[$i]['idcodigo'];
+					$reembolso[$i]['rutaarchivo'] = $rs[$i]['rutaarchivo'];
+					$reembolso[$i]['flagregistro'] = $rs[$i]['flagregistro'];
+				}
+
+				echo json_encode(array('observacion'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No se realizo registro";
+			echo json_encode(array('observacion'=>$msg));
+		}
+
 	}
 	
 	function registrar_asegurado_new($p){
