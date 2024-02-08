@@ -4198,7 +4198,7 @@ class Api{
 		//exit();
 		$ar = array();
 		$nr = count($rs);
-		
+
 		if ($nr > 0) {
 			if (isset($rs['Error'])) {
 				$this->error('No hay elementos');
@@ -4209,6 +4209,7 @@ class Api{
 					$reembolso[$i]['nombre'] = $rs[$i]['nombre'];
 					$reembolso[$i]['id_cod'] = $rs[$i]['id_cod'];
 					$reembolso[$i]['rutaexiste'] = $rs[$i]['rutaexiste'];
+					$reembolso[$i]['tit'] = $rs[$i]['tit'];
 					$reembolso[$i]['obs'] = $rs[$i]['obs'];
 				}
 
