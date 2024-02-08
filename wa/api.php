@@ -4208,6 +4208,7 @@ class Api{
 					$reembolso[$i]['tipo'] = $rs[$i]['tipo'];
 					$reembolso[$i]['nombre'] = $rs[$i]['nombre'];
 					$reembolso[$i]['id_cod'] = $rs[$i]['id_cod'];
+					$reembolso[$i]['rutaexiste'] = $rs[$i]['rutaexiste'];
 					$reembolso[$i]['obs'] = $rs[$i]['obs'];
 				}
 
