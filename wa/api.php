@@ -4252,7 +4252,7 @@ class Api{
 
 	}
 
-	function registrar_subsana_obs($p){
+	function registrar_subsanaciones($p){
 
 		include '../model/Reembolso.php';
 		$a = new Reembolso();
