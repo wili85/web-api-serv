@@ -4211,6 +4211,7 @@ class Api{
 					$reembolso[$i]['rutaexiste'] = $rs[$i]['rutaexiste'];
 					$reembolso[$i]['tit'] = $rs[$i]['tit'];
 					$reembolso[$i]['obs'] = $rs[$i]['obs'];
+					$reembolso[$i]['maxd'] = $rs[$i]['maxd'];
 				}
 
 				echo json_encode(array('observacion'=>$reembolso));
