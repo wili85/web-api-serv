@@ -4251,6 +4251,35 @@ class Api{
 		}
 
 	}
+
+	function registrar_subsana_obs($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->crudSubsanaObservacion($p);
+
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
+					$reembolso[$i]['idcodigo'] = $rs[$i]['idcodigo'];
+					$reembolso[$i]['rutaarchivo'] = $rs[$i]['rutaarchivo'];
+					$reembolso[$i]['flagregistro'] = $rs[$i]['flagregistro'];
+				}
+
+				echo json_encode(array('observacion'=>$reembolso));
+			}
+		} else {
+			$msg[0]['msg'] = "No se realizo registro";
+			echo json_encode(array('observacion'=>$msg));
+		}
+
+	}
 	
 	function registrar_asegurado_new($p){
 	

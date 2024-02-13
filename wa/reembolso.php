@@ -171,6 +171,19 @@
 
 					$api->registrar_observaciones($item);
 
+				} elseif($_POST['op'] == 'registrar_subsana_obs'){
+
+					$item = array(
+						'modo'		=> $_POST['modo'],
+						'tipo'		=> $_POST['tipo'],
+						'idarchivo'	=> $_POST['idarchivo'],
+						'nom_archivo'	=> $_POST['nom_archivo'],
+						'codigo'	=> $_POST['codigo'],
+						'idsolicitud'	=> $_POST['idsolicitud']
+					);
+
+					$api->registrar_subsanaciones($item);
+
 				} elseif($_POST['op'] == 'registrar_recetadiagnostico_tmp'){
 					
 					$item = array(

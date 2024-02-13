@@ -94,11 +94,15 @@ class Reembolso {
   }
 
 	public function listarObservaciones($p){
-		return $this->readFunctionPostgres('sp_consult_observaciones_xht_xidsol',$p);
+		return $this->readFunctionPostgres('sp_consult_observaciones_xht_xidsol', $p);
   }
 
 	public function crudObservaciones($p){
-		return $this->readFunctionPostgres('sp_crud_subsanaciones',$p);
+		return $this->readFunctionPostgres('sp_crud_subsanaciones', $p);
+  }
+
+	public function crudSubsanaObservacion($p){
+		return $this->readFunctionPostgres('sp_crud_subsana_obs', $p);
   }
 
 	public function consultarCantRecetaProd($nro, $codp) {
