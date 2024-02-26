@@ -4252,11 +4252,11 @@ class Api{
 
 	}
 
-	function registrar_subsanaciones($p){
+	function consulta_fechamax($p){
 
 		include '../model/Reembolso.php';
 		$a = new Reembolso();
-		$rs = $a->crudSubsanaObservacion($p);
+		$rs = $a->consultahtyfechamax($p);
 
 		$ar = array();
 		$nr = count($rs);
@@ -4267,9 +4267,9 @@ class Api{
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
 					$reembolso[$i]['idsolicitud'] = $rs[$i]['idsolicitud'];
-					$reembolso[$i]['idcodigo'] = $rs[$i]['idcodigo'];
-					$reembolso[$i]['rutaarchivo'] = $rs[$i]['rutaarchivo'];
-					$reembolso[$i]['flagregistro'] = $rs[$i]['flagregistro'];
+					$reembolso[$i]['htnumero'] = $rs[$i]['htnumero'];
+					$reembolso[$i]['fechaobs'] = $rs[$i]['fechaobs'];
+					$reembolso[$i]['maxdias'] = $rs[$i]['maxdias'];
 				}
 
 				echo json_encode(array('observacion'=>$reembolso));

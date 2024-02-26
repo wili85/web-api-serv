@@ -171,19 +171,6 @@
 
 					$api->registrar_observaciones($item);
 
-				} elseif($_POST['op'] == 'registrar_subsana_obs'){
-
-					$item = array(
-						'modo'		=> $_POST['modo'],
-						'tipo'		=> $_POST['tipo'],
-						'idarchivo'	=> $_POST['idarchivo'],
-						'nom_archivo'	=> $_POST['nom_archivo'],
-						'codigo'	=> $_POST['codigo'],
-						'idsolicitud'	=> $_POST['idsolicitud']
-					);
-
-					$api->registrar_subsanaciones($item);
-
 				} elseif($_POST['op'] == 'registrar_recetadiagnostico_tmp'){
 					
 					$item = array(
@@ -318,7 +305,7 @@
 				} elseif($_POST['op'] == 'registrar_tmp_to_receta'){
 
 					$item = array(
-						'idrecetavale'	=> $_POST['idrecetavale'],
+						'idrecetavale' => $_POST['idrecetavale'],
 						'idsolicitud' => $_POST['idsolicitud']
 					);
 
@@ -327,12 +314,21 @@
 				} elseif($_POST['op'] == 'listar_obs_xht'){
 
 					$item = array(
-						'htnumero'	=> $_POST['htnumero'],
+						'htnumero' => $_POST['htnumero'],
 						'idsolicitud' => $_POST['idsolicitud']
 					);
 
 					$api->listar_observaciones_xht($item);
 					
+				} elseif($_POST['op'] == 'consulta_fecha_max'){
+
+					$item = array(
+						'htnumero' => $_POST['htnumero'],
+						'idsolicitud' => $_POST['idsolicitud']
+					);
+
+					$api->consulta_fechamax($item);
+
 				}
 
 			}else{
@@ -343,7 +339,7 @@
 			$api->error('Error al llamar a la API');
 		}
 	
-    }
+  }
 	
 	/*
 	if(isset($_POST['tipDoc']) && isset($_POST['nroDoc'])){
