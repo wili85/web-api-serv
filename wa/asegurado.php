@@ -79,7 +79,7 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 			);
 			$api->getSolicitudProcedimientos($item);
 
-		}elseif($_POST['op'] == 'asegurados'){
+		}elseif($_POST['op'] == 'asegurados_all'){
 			$item = array(
 				'tipDoc' => $_POST['tipDoc'],
 				'nroDoc' => $_POST['nroDoc']
