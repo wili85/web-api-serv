@@ -4313,7 +4313,7 @@ class Api{
 			}
 		} else {
 			$msg[0]['msg'] = "No se registro Asegurado.";
-			echo json_encode(array('solicitud'=>$msg));
+			echo json_encode(array('asegurado'=>$msg));
 		}
 	}
 }
