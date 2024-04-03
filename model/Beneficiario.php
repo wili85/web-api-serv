@@ -789,6 +789,21 @@ Where t1.descripcion_token='".$par[0]."'";
     public function crudAseguradoNew($p){
         return $this->readFunctionPostgres('sp_crud_asegurado',$p);
     }
-   
+
+	public function listarPais($p){
+		return $this->readFunctionPostgres('sp_get_adscripcion_paises',$p);
+	}
+
+	public function listarDepartamento($p){
+		return $this->readFunctionPostgres('sp_get_adscripcion_departamentos',$p);
+	}
+
+	public function listarProvincia($p){
+		return $this->readFunctionPostgres('sp_get_adscripcion_provinciabydep',$p);
+	}
+
+	public function listarDistrito($p){
+		return $this->readFunctionPostgres('sp_get_adscripcion_distrito',$p);
+	}
    
 }

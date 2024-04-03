@@ -4316,6 +4316,122 @@ class Api{
 			echo json_encode(array('asegurado'=>$msg));
 		}
 	}
+
+	function listar_paises($p){
+	
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->listarPais($p);
+		
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+
+					$afiliado[$i]['id_pais'] = $rs[$i]['id_pais'];
+					$afiliado[$i]['pais'] = $rs[$i]['pais'];
+				}
+
+				echo json_encode(array('pais'=>$afiliado));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se registro Asegurado.";
+			echo json_encode(array('pais'=>$msg));
+		}
+	}
+
+	function listar_departamentos($p){
+	
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->listarDepartamento($p);
+		
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+
+					$afiliado[$i]['id_dep'] = $rs[$i]['id_dep'];
+					$afiliado[$i]['departamento'] = $rs[$i]['departamento'];
+				}
+
+				echo json_encode(array('departamento'=>$afiliado));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se registro Asegurado.";
+			echo json_encode(array('departamento'=>$msg));
+		}
+	}
+
+	function listar_provincias($p){
+	
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->listarProvincia($p);
+		
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+
+					$afiliado[$i]['id_prov'] = $rs[$i]['id_prov'];
+					$afiliado[$i]['provincia'] = $rs[$i]['provincia'];
+				}
+
+				echo json_encode(array('provincia'=>$afiliado));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se registro Asegurado.";
+			echo json_encode(array('provincia'=>$msg));
+		}
+	}
+
+	function listar_distritos($p){
+	
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->listarDistrito($p);
+		
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+
+					$afiliado[$i]['id_dist'] = $rs[$i]['id_dist'];
+					$afiliado[$i]['distrito'] = $rs[$i]['distrito'];
+				}
+
+				echo json_encode(array('distrito'=>$afiliado));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se registro Asegurado.";
+			echo json_encode(array('distrito'=>$msg));
+		}
+	}
 }
 
 ?>

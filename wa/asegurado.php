@@ -123,6 +123,33 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 
 			$api->registrar_asegurado_new($item);
 			
+		} elseif($_POST['op'] == 'listar_paises'){
+			$item = array(
+			);
+
+			$api->listar_paises($item);
+			
+		} elseif($_POST['op'] == 'listar_departamentos'){
+			$item = array(
+			);
+
+			$api->listar_departamentos($item);
+			
+		} elseif($_POST['op'] == 'listar_provincias'){
+			$item = array(
+				'id_dep' 	=> $_POST['id_dep']
+			);
+
+			$api->listar_provincias($item);
+			
+		} elseif($_POST['op'] == 'listar_distritos'){
+			$item = array(
+				'id_dep' 	=> $_POST['id_dep'],
+				'id_prov' 	=> $_POST['id_prov']
+			);
+
+			$api->listar_distritos($item);
+			
 		}
 	
 	}else{
