@@ -3132,6 +3132,7 @@ class Api{
 					$afiliado[$i]['nro_telef'] = $rs[$i]['nro_telef'];
 					$afiliado[$i]['nombrebanco'] = $rs[$i]['nombrebanco'];
 					$afiliado[$i]['tipoa'] = $rs[$i]['tipoa'];
+					$afiliado[$i]['ttmp'] = $rs[$i]['ttmp'];
 				}
 				
 				echo json_encode(array('afiliado'=>$afiliado));
