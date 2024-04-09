@@ -150,6 +150,13 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 
 			$api->listar_distritos($item);
 			
+		} elseif($_POST['op'] == 'listar_motivos'){
+			$item = array(
+				'idvinc' 	=> $_POST['idvinc']
+			);
+
+			$api->listar_motivo_activacion($item);
+			
 		}
 	
 	}else{

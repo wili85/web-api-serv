@@ -805,5 +805,9 @@ Where t1.descripcion_token='".$par[0]."'";
 	public function listarDistrito($p){
 		return $this->readFunctionPostgres('sp_get_adscripcion_distrito',$p);
 	}
+
+	public function listarMotivoActivacion($p){
+		return $this->readFunctionPostgres('sp_get_motivo_activacion',$p);
+	}
    
 }

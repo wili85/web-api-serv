@@ -4370,7 +4370,7 @@ class Api{
 
 			}
 		} else {
-			$msg[0]['msg'] = "No se registro Asegurado.";
+			$msg[0]['msg'] = "No se lista Departamentos.";
 			echo json_encode(array('departamento'=>$msg));
 		}
 	}
@@ -4399,7 +4399,7 @@ class Api{
 
 			}
 		} else {
-			$msg[0]['msg'] = "No se registro Asegurado.";
+			$msg[0]['msg'] = "No se lista Provincias.";
 			echo json_encode(array('provincia'=>$msg));
 		}
 	}
@@ -4428,8 +4428,40 @@ class Api{
 
 			}
 		} else {
-			$msg[0]['msg'] = "No se registro Asegurado.";
+			$msg[0]['msg'] = "No se lista distritos.";
 			echo json_encode(array('distrito'=>$msg));
+		}
+	}
+
+	function listar_motivo_activacion($p){
+	
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->listarMotivoActivacion($p);
+		
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+
+					$afiliado[$i]['id_tabla'] = $rs[$i]['id_tabla'];
+					$afiliado[$i]['id_tipo'] = $rs[$i]['id_tipo'];
+					$afiliado[$i]['descripcion'] = $rs[$i]['descripcion'];
+					$afiliado[$i]['val_abr'] = $rs[$i]['val_abr'];
+					$afiliado[$i]['id_categoria'] = $rs[$i]['id_categoria'];
+				}
+
+				echo json_encode(array('motivoact'=>$afiliado));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se lista motivos.";
+			echo json_encode(array('motivoact'=>$msg));
 		}
 	}
 }
