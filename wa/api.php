@@ -3133,8 +3133,8 @@ class Api{
 					$afiliado[$i]['nombrebanco'] = $rs[$i]['nombrebanco'];
 					$afiliado[$i]['tipoa'] = $rs[$i]['tipoa'];
 					$afiliado[$i]['ttmp'] = $rs[$i]['ttmp'];
+					$afiliado[$i]['fechainicioafil'] = $rs[$i]['fechadeinicodeafiliacion'];
 				}
-				
 				echo json_encode(array('afiliado'=>$afiliado));
 			}
 		} else {
