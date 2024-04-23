@@ -88,11 +88,12 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 
 		} elseif($_POST['op'] == 'reg_asegurado'){
 			$item = array(
-				'paisnacimiento' 	=> $_POST['paisnacimiento'],
-				'tipodocumento' 	=> $_POST['tipodocumento'],
-				'numerodocumento' 	=> $_POST['numerodocumento'],
-				'apellidopaterno' 	=> $_POST['apellidopaterno'],
-				'apellidomaterno' 	=> $_POST['apellidomaterno'],
+				'opc' => $_POST['opc'],
+				'paisnacimiento' => $_POST['paisnacimiento'],
+				'tipodocumento' => $_POST['tipodocumento'],
+				'numerodocumento' => $_POST['numerodocumento'],
+				'apellidopaterno' => $_POST['apellidopaterno'],
+				'apellidomaterno' => $_POST['apellidomaterno'],
 				'apellidocasada' 	=> $_POST['apellidocasada'],
 				'nombres' 	=> $_POST['nombres'],
 				'sexo' 	=> $_POST['sexo'],
@@ -118,7 +119,8 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 				'id_estcivil' 	=> $_POST['id_estcivil'],
 				'id_tipotelef' 	=> $_POST['id_tipotelef'],
 				'nro_telef' 	=> $_POST['nro_telef'],
-				'email' 	=> $_POST['email']
+				'email' 	=> $_POST['email'],
+				'rutaadjuntos' 	=> $_POST['rutaadjuntos']
 			);
 
 			$api->registrar_asegurado_new($item);
