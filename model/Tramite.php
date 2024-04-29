@@ -90,7 +90,28 @@ class Tramite {
 		return $icodtramite1;
 		
 	}
-
+	
+	function registrarEstadoHt($data){
+		//error_reporting(E_ALL);
+		//ini_set('display_errors', '1');
+		$conn = $this->db_b->getConnection();
+		$sql = "begin pkg_reembolso.estado_update(:icodtramite1,:ccodificacionht1,:cusuario1,:flagestaht,:rolusuario); end;";
+		$rs = oci_parse($conn, $sql);
+		$icodtramite1=0;
+		oci_bind_by_name($rs, ":icodtramite1", $icodtramite1,10);
+		oci_bind_by_name($rs, ":ccodificacionht1", $data["ccodificacionht1"]);
+		oci_bind_by_name($rs, ":cusuario1", $data["cusuario1"]);
+		oci_bind_by_name($rs, ":flagestaht", $data["flagestaht"],10);
+		oci_bind_by_name($rs, ":rolusuario", $data["rolusuario"]);
+		oci_execute($rs);
+		$e = oci_error($rs);
+		print_r($e);
+		$this->db_b->closeConnection(); 
+		//exit($icodtramite1);
+		return $icodtramite1;
+		
+	}
+	
 	public function consultarHT($id) {
         $l = array();
 		$conn = $this->db_b->getConnection();
