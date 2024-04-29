@@ -34,7 +34,7 @@
 				}else{
 				
 					$item = array(
-						'v_renipress' 									=> $prestacion['v_renipress'],
+						'v_renipress' 									=> $prestacion['v_renipress'], 
 						'v_numero_lote_fups' 							=> $prestacion['v_numero_lote_fups'],
 						'v_numero_fups' 								=> $prestacion['v_numero_fups'],
 						'i_id_proc_lugar_ate_fups' 						=> $prestacion['i_id_proc_lugar_ate_fups'],
