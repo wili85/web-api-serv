@@ -18,7 +18,7 @@ class PrestacionSugps {
 from sch_gestion_prestacional.tbl_prestacion tp
 inner join sch_gestion_prestacional.tbl_m_estado_prestacion tmp on tp.c_estado_prestacion::int=i_estado_prestacion
 where i_id_prestacion=".$p['idprestacion'];
- 		//echo $this->sql;
+ 		echo $this->sql;
         $this->rs = $this->db->query($this->sql);
         return $this->rs;
 	}
