@@ -30,6 +30,7 @@
 						'idprestacion' 									=> $prestacion['idprestacion']
 					);
 					
+					$api->obtener_prestacion_sugps($item);
 						
 				}else{
 				

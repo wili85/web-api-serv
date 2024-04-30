@@ -12,6 +12,17 @@ class PrestacionSugps {
         $this->rs = array();
     }
 
+	public function getPrestacionsugpsById($p){
+		$conet = $this->db->getConnection();
+		$this->sql = "select tp.c_estado_prestacion,tmp.v_descripcion 
+from sch_gestion_prestacional.tbl_prestacion tp
+inner join sch_gestion_prestacional.tbl_m_estado_prestacion tmp on tp.c_estado_prestacion::int=i_estado_prestacion
+where i_id_prestacion=".$p['idprestacion'];
+ 		//echo $this->sql;
+        $this->rs = $this->db->query($this->sql);
+        return $this->rs;
+	}
+	
 	public function crudPrestacionSugps($p){
 		
 		return $this->readFunctionPostgresTransaction('sch_gestion_prestacional.sp_crud_prestacion_ws',$p);

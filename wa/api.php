@@ -3607,6 +3607,33 @@ class Api{
 			echo json_encode(array('prestacion'=>$msg));
 		}
 	}
+	
+	function obtener_prestacion_sugps($p){
+		
+		include '../model/PrestacionSugps.php';
+		$a = new PrestacionSugps();
+		$rs = $a->getPrestacionsugpsById($p);
+		
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$prestacion[$i]['codigo'] = $rs[$i]['c_estado_prestacion'];
+					$prestacion[$i]['estado'] = $rs[$i]['v_descripcion'];
+					$prestacion[$i]['observacion'] = NULL;
+				}
+				
+				echo json_encode(array('prestacion'=>$prestacion));
+			}
+		} else {
+			$msg[0]['msg'] = "No exiten prestaciones";
+			echo json_encode(array('prestacion'=>$msg));
+		}
+	}
 
 	function listar_reembolso_all($p){
 
