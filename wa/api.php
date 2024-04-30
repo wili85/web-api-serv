@@ -3624,7 +3624,7 @@ class Api{
 				for ($i = 0; $i < $nr; $i++) {
 					$prestacion[$i]['codigo'] = $rs[$i]['c_estado_prestacion'];
 					$prestacion[$i]['estado'] = $rs[$i]['v_descripcion'];
-					$prestacion[$i]['observacion'] = NULL;
+					$prestacion[$i]['observacion'] = "[]";
 				}
 				
 				echo json_encode(array('prestacion'=>$prestacion));
