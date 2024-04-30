@@ -24,9 +24,8 @@
 		if ($api->doAuthenticate($datos)) {
 					
 			//if($data['op'] == 'registrar_prestacion'){
-				echo $prestacion;
 				if(count($prestacion)==1){
-					echo "ok";
+				
 					$item = array(
 						'idprestacion' 									=> $prestacion['idprestacion']
 					);
