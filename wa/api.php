@@ -3597,8 +3597,9 @@ class Api{
 				//}
 				
 				//echo json_encode(array('afiliado'=>$reembolso));
-				
-				$msg[0]['msg'] = "Datos recibidos correctamente (idprestacion:".$rs.")";
+				//$msg[0]['msg'] = "Datos recibidos correctamente (idprestacion:".$rs.")";
+				$msg[0]['msg'] = "Datos recibidos correctamente";
+				$msg[0]['idprestacion'] = $rs;
 				echo json_encode(array('prestacion'=>$msg));
 			
 			}
@@ -3624,7 +3625,7 @@ class Api{
 				for ($i = 0; $i < $nr; $i++) {
 					$prestacion[$i]['codigo'] = $rs[$i]['c_estado_prestacion'];
 					$prestacion[$i]['estado'] = $rs[$i]['v_descripcion'];
-					$prestacion[$i]['observacion'] = "[]";
+					$prestacion[$i]['observacion'] = [];
 				}
 				
 				echo json_encode(array('prestacion'=>$prestacion));
