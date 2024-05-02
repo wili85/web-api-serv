@@ -4461,6 +4461,41 @@ class Api{
 			echo json_encode(array('distrito'=>$msg));
 		}
 	}
+	
+	function ws_asegurado($p){
+	
+		include '../model/Beneficiario.php';
+		$a = new Afiliado();
+		$rs = $a->wsAsegurado($p);
+		
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+		
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+
+					$afiliado[$i]['tipodocumento'] = $rs[$i]['tipodocumento'];
+					$afiliado[$i]['numerodocumento'] = $rs[$i]['numerodocumento'];
+					$afiliado[$i]['apellidopaterno'] = $rs[$i]['apellidopaterno'];
+					$afiliado[$i]['apellidomaterno'] = $rs[$i]['apellidomaterno'];
+					$afiliado[$i]['apellidocasada'] = $rs[$i]['apellidocasada'];
+					$afiliado[$i]['nombres'] = $rs[$i]['nombres'];
+					$afiliado[$i]['sexo'] = $rs[$i]['sexo'];
+					$afiliado[$i]['ubigeonacimiento'] = $rs[$i]['ubigeonacimiento'];
+				}
+
+				echo json_encode(array('asegurado'=>$afiliado));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se registro Asegurado.";
+			echo json_encode(array('asegurado'=>$msg));
+		}
+	}
 
 	function listar_motivo_activacion($p){
 	

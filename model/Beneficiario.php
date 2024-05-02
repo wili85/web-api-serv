@@ -706,7 +706,7 @@ Where t1.descripcion_token='".$par[0]."'";
       }
 	  
       return $response;
-   }
+    }
 	
 	public function readFunctionPostgresTransaction($function, $parameters = null){
 	
@@ -745,9 +745,9 @@ Where t1.descripcion_token='".$par[0]."'";
       }
 	  
       return $response;
-   }
-   
-   public function readFunctionPostgresTransaction2($function, $parameters = null){
+    }
+
+    public function readFunctionPostgresTransaction2($function, $parameters = null){
 	
 	  $conet = $this->db->getConnection2();
       $_parameters = '';
@@ -784,7 +784,7 @@ Where t1.descripcion_token='".$par[0]."'";
       }
 	  
       return $response;
-   }
+    }
 
     public function crudAseguradoNew($p){
         return $this->readFunctionPostgres('sp_crud_asegurado',$p);
@@ -809,5 +809,9 @@ Where t1.descripcion_token='".$par[0]."'";
 	public function listarMotivoActivacion($p){
 		return $this->readFunctionPostgres('sp_get_motivo_activacion',$p);
 	}
+
+    public function wsAsegurado($p){
+        return $this->readFunctionPostgres('sp_ws_asegurado',$p);
+    }
    
 }
