@@ -3623,9 +3623,26 @@ class Api{
 				$this->error('No hay elementos');
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
+					
+					$rs2 = $a->getPrestacionReglasugpsById($p);
+					$ar2 = array();
+					$nr2 = count($rs2);
+					$prestacion_regla = [];
+					
 					$prestacion[$i]['codigo'] = $rs[$i]['c_estado_prestacion'];
 					$prestacion[$i]['estado'] = $rs[$i]['v_descripcion'];
-					$prestacion[$i]['observacion'] = [];
+					
+					if ($nr2 > 0) {
+						for ($i2 = 0; $i2 < $nr2; $i2++) {
+							//$prestacion_regla[$i2]['tabla'] = $rs2[$i2]['v_nom_tabla_bd'];
+							//$prestacion_regla[$i2]['campo'] = $rs2[$i2]['v_nom_campo_bd'];
+							$prestacion_regla[$i2]['valor_observado'] = $rs2[$i2]['v_id_cie10'];
+							$prestacion_regla[$i2]['codigo_regla'] = $rs2[$i2]['v_cod_regla'];
+							$prestacion_regla[$i2]['definicion'] = $rs2[$i2]['v_definicion'];
+							$prestacion_regla[$i2]['mensaje_validacion'] = $rs2[$i2]['v_mensaje_validacion'];
+						}
+					}
+					$prestacion[$i]['observacion'] = $prestacion_regla;
 				}
 				
 				echo json_encode(array('prestacion'=>$prestacion));
