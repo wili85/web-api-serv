@@ -3632,7 +3632,7 @@ class Api{
 					$prestacion[$i]['codigo'] = $rs[$i]['c_estado_prestacion'];
 					$prestacion[$i]['estado'] = $rs[$i]['v_descripcion'];
 					//$prestacion[$i]['fecha_estado'] = ($rs[$i]['t_fecha_estado_prestacion']!=null)?$rs[$i]['t_fecha_estado_prestacion']:"";
-					$fecha_estado = ($rs[$i]['t_fecha_estado_prestacion']!=null)?$rs[$i]['t_fecha_estado_prestacion']:"";
+					$fecha_estado = ($rs[$i]['t_fecha_estado_prestacion']!=null)?date("d-m-Y h:i:s", strtotime($rs[$i]['t_fecha_estado_prestacion'])):"";
 					$prestacion[$i]['fecha_estado'] = $fecha_estado;
 					
 					if ($nr2 > 0) {
