@@ -3631,6 +3631,8 @@ class Api{
 					
 					$prestacion[$i]['codigo'] = $rs[$i]['c_estado_prestacion'];
 					$prestacion[$i]['estado'] = $rs[$i]['v_descripcion'];
+					//$prestacion[$i]['fecha_estado'] = ($rs[$i]['t_fecha_estado_prestacion']!=null)?$rs[$i]['t_fecha_estado_prestacion']:"";
+					$fecha_estado= ($rs[$i]['t_fecha_estado_prestacion']!=null)?$rs[$i]['t_fecha_estado_prestacion']:"";
 					
 					if ($nr2 > 0) {
 						for ($i2 = 0; $i2 < $nr2; $i2++) {
@@ -3640,6 +3642,7 @@ class Api{
 							$prestacion_regla[$i2]['codigo_regla'] = $rs2[$i2]['v_cod_regla'];
 							$prestacion_regla[$i2]['definicion'] = $rs2[$i2]['v_definicion'];
 							$prestacion_regla[$i2]['mensaje_validacion'] = $rs2[$i2]['v_mensaje_validacion'];
+							$prestacion_regla[$i2]['fecha_estado'] = $fecha_estado;
 						}
 					}
 					$prestacion[$i]['observacion'] = $prestacion_regla;

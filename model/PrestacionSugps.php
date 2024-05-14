@@ -14,7 +14,7 @@ class PrestacionSugps {
 
 	public function getPrestacionsugpsById($p){
 		$conet = $this->db->getConnection();
-		$this->sql = "select tp.c_estado_prestacion,tmp.v_descripcion 
+		$this->sql = "select tp.c_estado_prestacion,tmp.v_descripcion,tp.t_fecha_estado_prestacion  
 from sch_gestion_prestacional.tbl_prestacion tp
 inner join sch_gestion_prestacional.tbl_m_estado_prestacion tmp on tp.c_estado_prestacion::int=i_estado_prestacion
 where i_id_prestacion=".$p['idprestacion'];
