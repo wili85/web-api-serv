@@ -3642,7 +3642,7 @@ class Api{
 							$prestacion_regla[$i2]['codigo_regla'] = $rs2[$i2]['v_cod_regla'];
 							$prestacion_regla[$i2]['definicion'] = $rs2[$i2]['v_definicion'];
 							$prestacion_regla[$i2]['mensaje_validacion'] = $rs2[$i2]['v_mensaje_validacion'];
-							$prestacion_regla[$i2]['fecha_estado'] = $fecha_estado;
+							$prestacion_regla[$i2]['fecha_observado'] = $fecha_estado;
 						}
 					}
 					$prestacion[$i]['observacion'] = $prestacion_regla;
