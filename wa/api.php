@@ -3638,7 +3638,11 @@ class Api{
 					if ($nr2 > 0) {
 						for ($i2 = 0; $i2 < $nr2; $i2++) {
 							//$prestacion_regla[$i2]['tabla'] = $rs2[$i2]['v_nom_tabla_bd'];
-							//$prestacion_regla[$i2]['campo'] = $rs2[$i2]['v_nom_campo_bd'];
+							$campo = $rs2[$i2]['v_nom_campo_bd'];
+							if($campo=="i_id_prestacion_diag")$campo = "diagnostico";
+							if($campo=="i_id_prestacion_proc")$campo = "procedimientos";
+							if($campo=="i_id_prestacion_prodmed")$campo = "producto medico";
+							$prestacion_regla[$i2]['campo_observado'] = $campo;
 							$prestacion_regla[$i2]['valor_observado'] = $rs2[$i2]['v_id_cie10'];
 							$prestacion_regla[$i2]['codigo_regla'] = $rs2[$i2]['v_cod_regla'];
 							$prestacion_regla[$i2]['definicion'] = $rs2[$i2]['v_definicion'];
