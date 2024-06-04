@@ -57,6 +57,11 @@ and trp.c_estado='1'";
 		return $this->readFunctionPostgresTransaction('sch_gestion_prestacional.sp_crud_prestacion_ws',$p);
     }
 	
+	public function crudPrestacionConsistenciaSugps($p){
+		
+		return $this->readFunctionPostgresTransaction('sch_gestion_prestacional.sp_crud_prestacion_consistencia',$p);
+    }
+	
 	public function readFunctionPostgres($function, $parameters = null){
 
       $conet = $this->db->getConnection();

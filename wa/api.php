@@ -3580,33 +3580,47 @@ class Api{
 		
 		include '../model/PrestacionSugps.php';
 		$a = new PrestacionSugps();
-		$rs = $a->crudPrestacionSugps($p);
 		
+		$rsc = $a->crudPrestacionConsistenciaSugps($p);
+		$arc = array();
+		
+		//$nrc = count($rsc);
+		//print_r($rsc);
+		//echo count($rsc);
 		//exit();
-		$ar = array();
-		$nr = count($rs);
+		if ($rsc != "") {
+			$rsc = substr($rsc,0,strlen($rsc)-1);
+			$datos = explode("|",$rsc);			
 		
-		if ($nr > 0) {
-			if (isset($rs['Error'])) {
-				$this->error('No hay elementos');
-			} else {
-				//for ($i = 0; $i < $nr; $i++) {
-					//$reembolso[$i]['fechahojareferencia'] = $rs[$i]['fechahojareferencia'];
-					//$reembolso[$i]['numinformeauditoria'] = $rs[$i]['numinformeauditoria'];
-					//$reembolso[$i]['fechainformeauditoria'] = $rs[$i]['fechainformeauditoria'];
-				//}
-				
-				//echo json_encode(array('afiliado'=>$reembolso));
-				//$msg[0]['msg'] = "Datos recibidos correctamente (idprestacion:".$rs.")";
-				$msg[0]['msg'] = "Datos recibidos correctamente";
-				$msg[0]['idprestacion'] = $rs;
-				echo json_encode(array('prestacion'=>$msg));
-			
+			$prestacion_regla = [];
+			for ($i = 0; $i < count($datos); $i++) {
+				$prestacion_regla[$i] = $datos[$i];
 			}
-		} else {
-			$msg[0]['msg'] = "No exiten prestaciones";
-			echo json_encode(array('prestacion'=>$msg));
+			
+			echo json_encode(array('observaciones_consistencia'=>$prestacion_regla));
+			//print_r($datos);
+		}else{
+				
+			$rs = $a->crudPrestacionSugps($p);
+			
+			$ar = array();
+			$nr = count($rs);
+			
+			if ($nr > 0) {
+				if (isset($rs['Error'])) {
+					$this->error('No hay elementos');
+				} else {
+					$msg[0]['msg'] = "Datos recibidos correctamente";
+					$msg[0]['idprestacion'] = $rs;
+					echo json_encode(array('prestacion'=>$msg));
+				
+				}
+			} else {
+				$msg[0]['msg'] = "No exiten prestaciones";
+				echo json_encode(array('prestacion'=>$msg));
+			}
 		}
+		
 	}
 	
 	function obtener_prestacion_sugps($p){
