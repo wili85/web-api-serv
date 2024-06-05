@@ -3580,33 +3580,47 @@ class Api{
 		
 		include '../model/PrestacionSugps.php';
 		$a = new PrestacionSugps();
-		$rs = $a->crudPrestacionSugps($p);
 		
+		$rsc = $a->crudPrestacionConsistenciaSugps($p);
+		$arc = array();
+		
+		//$nrc = count($rsc);
+		//print_r($rsc);
+		//echo count($rsc);
 		//exit();
-		$ar = array();
-		$nr = count($rs);
+		if ($rsc != "") {
+			$rsc = substr($rsc,0,strlen($rsc)-1);
+			$datos = explode("|",$rsc);			
 		
-		if ($nr > 0) {
-			if (isset($rs['Error'])) {
-				$this->error('No hay elementos');
-			} else {
-				//for ($i = 0; $i < $nr; $i++) {
-					//$reembolso[$i]['fechahojareferencia'] = $rs[$i]['fechahojareferencia'];
-					//$reembolso[$i]['numinformeauditoria'] = $rs[$i]['numinformeauditoria'];
-					//$reembolso[$i]['fechainformeauditoria'] = $rs[$i]['fechainformeauditoria'];
-				//}
-				
-				//echo json_encode(array('afiliado'=>$reembolso));
-				//$msg[0]['msg'] = "Datos recibidos correctamente (idprestacion:".$rs.")";
-				$msg[0]['msg'] = "Datos recibidos correctamente";
-				$msg[0]['idprestacion'] = $rs;
-				echo json_encode(array('prestacion'=>$msg));
-			
+			$prestacion_regla = [];
+			for ($i = 0; $i < count($datos); $i++) {
+				$prestacion_regla[$i] = $datos[$i];
 			}
-		} else {
-			$msg[0]['msg'] = "No exiten prestaciones";
-			echo json_encode(array('prestacion'=>$msg));
+			
+			echo json_encode(array('observaciones_consistencia'=>$prestacion_regla));
+			//print_r($datos);
+		}else{
+				
+			$rs = $a->crudPrestacionSugps($p);
+			
+			$ar = array();
+			$nr = count($rs);
+			
+			if ($nr > 0) {
+				if (isset($rs['Error'])) {
+					$this->error('No hay elementos');
+				} else {
+					$msg[0]['msg'] = "Datos recibidos correctamente";
+					$msg[0]['idprestacion'] = $rs;
+					echo json_encode(array('prestacion'=>$msg));
+				
+				}
+			} else {
+				$msg[0]['msg'] = "No exiten prestaciones";
+				echo json_encode(array('prestacion'=>$msg));
+			}
 		}
+		
 	}
 	
 	function obtener_prestacion_sugps($p){
@@ -3623,9 +3637,34 @@ class Api{
 				$this->error('No hay elementos');
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
+					
+					$rs2 = $a->getPrestacionReglasugpsById($p);
+					$ar2 = array();
+					$nr2 = count($rs2);
+					$prestacion_regla = [];
+					
 					$prestacion[$i]['codigo'] = $rs[$i]['c_estado_prestacion'];
 					$prestacion[$i]['estado'] = $rs[$i]['v_descripcion'];
-					$prestacion[$i]['observacion'] = [];
+					//$prestacion[$i]['fecha_estado'] = ($rs[$i]['t_fecha_estado_prestacion']!=null)?$rs[$i]['t_fecha_estado_prestacion']:"";
+					$fecha_estado = ($rs[$i]['t_fecha_estado_prestacion']!=null)?date("d-m-Y h:i:s", strtotime($rs[$i]['t_fecha_estado_prestacion'])):"";
+					$prestacion[$i]['fecha_estado'] = $fecha_estado;
+					
+					if ($nr2 > 0) {
+						for ($i2 = 0; $i2 < $nr2; $i2++) {
+							//$prestacion_regla[$i2]['tabla'] = $rs2[$i2]['v_nom_tabla_bd'];
+							$campo = $rs2[$i2]['v_nom_campo_bd'];
+							if($campo=="i_id_prestacion_diag")$campo = "diagnostico";
+							if($campo=="i_id_prestacion_proc")$campo = "procedimientos";
+							if($campo=="i_id_prestacion_prodmed")$campo = "producto medico";
+							$prestacion_regla[$i2]['campo_observado'] = $campo;
+							$prestacion_regla[$i2]['valor_observado'] = $rs2[$i2]['v_id_cie10'];
+							$prestacion_regla[$i2]['codigo_regla'] = $rs2[$i2]['v_cod_regla'];
+							$prestacion_regla[$i2]['definicion'] = $rs2[$i2]['v_definicion'];
+							$prestacion_regla[$i2]['mensaje_validacion'] = $rs2[$i2]['v_mensaje_validacion'];
+							$prestacion_regla[$i2]['fecha_observado'] = $fecha_estado;
+						}
+					}
+					$prestacion[$i]['observacion'] = $prestacion_regla;
 				}
 				
 				echo json_encode(array('prestacion'=>$prestacion));

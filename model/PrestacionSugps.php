@@ -14,7 +14,7 @@ class PrestacionSugps {
 
 	public function getPrestacionsugpsById($p){
 		$conet = $this->db->getConnection();
-		$this->sql = "select tp.c_estado_prestacion,tmp.v_descripcion 
+		$this->sql = "select tp.c_estado_prestacion,tmp.v_descripcion,tp.t_fecha_estado_prestacion  
 from sch_gestion_prestacional.tbl_prestacion tp
 inner join sch_gestion_prestacional.tbl_m_estado_prestacion tmp on tp.c_estado_prestacion::int=i_estado_prestacion
 where i_id_prestacion=".$p['idprestacion'];
@@ -23,9 +23,43 @@ where i_id_prestacion=".$p['idprestacion'];
         return $this->rs;
 	}
 	
+	public function getPrestacionReglasugpsById($p){
+		$conet = $this->db->getConnection();
+		$this->sql = "select v_nom_tabla_bd,v_nom_campo_bd,tpd.v_id_cie10,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
+from sch_gestion_prestacional.tbl_regla_prestacion trp 
+inner join sch_gestion_prestacional.tbl_m_regla_validacion tmrv on trp.i_id_regla=tmrv.i_id_regla 
+inner join sch_gestion_prestacional.tbl_prestacion_diagnostico tpd on tpd.i_id_prestacion_diag=trp.id_tabla and trp.v_nom_tabla_bd='tbl_prestacion_diagnostico'
+where tpd.i_id_prestacion=".$p['idprestacion']."
+and trp.c_estado='1'
+union all 
+select v_nom_tabla_bd,v_nom_campo_bd,tpp.v_id_proced,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
+from sch_gestion_prestacional.tbl_regla_prestacion trp 
+inner join sch_gestion_prestacional.tbl_m_regla_validacion tmrv on trp.i_id_regla=tmrv.i_id_regla 
+inner join sch_gestion_prestacional.tbl_prestacion_procedimiento tpp on tpp.i_id_prestacion_proc=trp.id_tabla and trp.v_nom_tabla_bd='tbl_prestacion_procedimiento'
+inner join sch_gestion_prestacional.tbl_prestacion_diagnostico tpd on tpd.i_id_prestacion_diag=tpp.i_id_prestacion_diag 
+where tpd.i_id_prestacion=".$p['idprestacion']."
+and trp.c_estado='1'
+union all 
+select v_nom_tabla_bd,v_nom_campo_bd,tppm.i_id_prod_med,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
+from sch_gestion_prestacional.tbl_regla_prestacion trp 
+inner join sch_gestion_prestacional.tbl_m_regla_validacion tmrv on trp.i_id_regla=tmrv.i_id_regla 
+inner join sch_gestion_prestacional.tbl_prestacion_producto_medico tppm on tppm.i_id_prestacion_prodmed=trp.id_tabla and trp.v_nom_tabla_bd='tbl_prestacion_producto_medico'
+inner join sch_gestion_prestacional.tbl_prestacion_diagnostico tpd on tpd.i_id_prestacion_diag=tppm.i_id_prestacion_diag 
+where tpd.i_id_prestacion=".$p['idprestacion']."
+and trp.c_estado='1'";
+ 		//echo $this->sql;
+        $this->rs = $this->db->query($this->sql);
+        return $this->rs;
+	}
+	
 	public function crudPrestacionSugps($p){
 		
 		return $this->readFunctionPostgresTransaction('sch_gestion_prestacional.sp_crud_prestacion_ws',$p);
+    }
+	
+	public function crudPrestacionConsistenciaSugps($p){
+		
+		return $this->readFunctionPostgresTransaction('sch_gestion_prestacional.sp_crud_prestacion_consistencia',$p);
     }
 	
 	public function readFunctionPostgres($function, $parameters = null){
