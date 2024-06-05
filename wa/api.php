@@ -4478,6 +4478,8 @@ class Api{
 			} else {
 				for ($i = 0; $i < $nr; $i++) {
 
+					$afiliado[$i]['idpersona'] = $rs[$i]['idpersona'];
+					$afiliado[$i]['paisdocumento'] = $rs[$i]['paisdocumento'];
 					$afiliado[$i]['tipodocumento'] = $rs[$i]['tipodocumento'];
 					$afiliado[$i]['numerodocumento'] = $rs[$i]['numerodocumento'];
 					$afiliado[$i]['apellidopaterno'] = $rs[$i]['apellidopaterno'];
@@ -4486,6 +4488,8 @@ class Api{
 					$afiliado[$i]['nombres'] = $rs[$i]['nombres'];
 					$afiliado[$i]['sexo'] = $rs[$i]['sexo'];
 					$afiliado[$i]['ubigeonacimiento'] = $rs[$i]['ubigeonacimiento'];
+					$afiliado[$i]['fechanacimiento'] = $rs[$i]['fechanacimiento'];
+					$afiliado[$i]['fechafallecimiento'] = $rs[$i]['fechafallecimiento'];
 				}
 
 				echo json_encode(array('asegurado'=>$afiliado));

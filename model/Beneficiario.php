@@ -811,7 +811,7 @@ Where t1.descripcion_token='".$par[0]."'";
 	}
 
     public function wsAsegurado($p){
-        return $this->readFunctionPostgres('sp_ws_asegurado',$p);
+        return $this->readFunctionPostgres('sch_gestion_beneficiarios.sp_ws_crud_asegurado',$p);
     }
    
 }
