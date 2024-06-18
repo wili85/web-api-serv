@@ -3651,13 +3651,16 @@ class Api{
 					
 					if ($nr2 > 0) {
 						for ($i2 = 0; $i2 < $nr2; $i2++) {
-							//$prestacion_regla[$i2]['tabla'] = $rs2[$i2]['v_nom_tabla_bd'];
-							$campo = $rs2[$i2]['v_nom_campo_bd'];
-							if($campo=="i_id_prestacion_diag")$campo = "diagnostico";
-							if($campo=="i_id_prestacion_proc")$campo = "procedimientos";
-							if($campo=="i_id_prestacion_prodmed")$campo = "producto medico";
-							$prestacion_regla[$i2]['campo_observado'] = $campo;
-							$prestacion_regla[$i2]['valor_observado'] = $rs2[$i2]['v_id_cie10'];
+							
+							$grupo = $rs2[$i2]['v_nom_tabla_bd'];
+							if($grupo=="tbl_prestacion")$grupo = "prestacion";
+							if($grupo=="tbl_prestacion_diagnostico")$grupo = "diagnosticos";
+							if($grupo=="tbl_prestacion_procedimiento")$grupo = "procedimientos";
+							if($grupo=="tbl_prestacion_producto_medico")$grupo = "productos";
+							
+							$prestacion_regla[$i2]['grupo_observado'] = $grupo;
+							$prestacion_regla[$i2]['campo_observado'] = $rs2[$i2]['v_nom_campo_bd'];
+							$prestacion_regla[$i2]['valor_observado'] = $rs2[$i2]['v_val_campo_bd'];
 							$prestacion_regla[$i2]['codigo_regla'] = $rs2[$i2]['v_cod_regla'];
 							$prestacion_regla[$i2]['definicion'] = $rs2[$i2]['v_definicion'];
 							$prestacion_regla[$i2]['mensaje_validacion'] = $rs2[$i2]['v_mensaje_validacion'];
