@@ -25,14 +25,27 @@ where i_id_prestacion=".$p['idprestacion'];
 	
 	public function getPrestacionReglasugpsById($p){
 		$conet = $this->db->getConnection();
-		$this->sql = "select v_nom_tabla_bd,v_nom_campo_bd,tpd.v_id_cie10,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
+		$this->sql = "select trp.id_tabla,v_nom_tabla_bd,v_nom_campo_bd,
+(select sch_gestion_prestacional.sp_crud_obtiene_tabla_valor('sch_gestion_prestacional.'||trp.v_nom_tabla_bd,'i_id_prestacion',trp.id_tabla,trp.v_nom_campo_bd))v_val_campo_bd,
+'' v_id_cie10,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
+from sch_gestion_prestacional.tbl_regla_prestacion trp 
+inner join sch_gestion_prestacional.tbl_m_regla_validacion tmrv on trp.i_id_regla=tmrv.i_id_regla 
+inner join sch_gestion_prestacional.tbl_prestacion tp  on tp.i_id_prestacion=trp.id_tabla and trp.v_nom_tabla_bd='tbl_prestacion'
+where tp.i_id_prestacion=".$p['idprestacion']."
+and trp.c_estado='1'
+union all 
+select trp.id_tabla,v_nom_tabla_bd,v_nom_campo_bd,
+(select sch_gestion_prestacional.sp_crud_obtiene_tabla_valor('sch_gestion_prestacional.'||trp.v_nom_tabla_bd,'i_id_prestacion_diag',trp.id_tabla,trp.v_nom_campo_bd))v_val_campo_bd,
+tpd.v_id_cie10,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
 from sch_gestion_prestacional.tbl_regla_prestacion trp 
 inner join sch_gestion_prestacional.tbl_m_regla_validacion tmrv on trp.i_id_regla=tmrv.i_id_regla 
 inner join sch_gestion_prestacional.tbl_prestacion_diagnostico tpd on tpd.i_id_prestacion_diag=trp.id_tabla and trp.v_nom_tabla_bd='tbl_prestacion_diagnostico'
 where tpd.i_id_prestacion=".$p['idprestacion']."
 and trp.c_estado='1'
 union all 
-select v_nom_tabla_bd,v_nom_campo_bd,tpp.v_id_proced,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
+select trp.id_tabla,v_nom_tabla_bd,v_nom_campo_bd,
+(select sch_gestion_prestacional.sp_crud_obtiene_tabla_valor('sch_gestion_prestacional.'||trp.v_nom_tabla_bd,'i_id_prestacion_proc',trp.id_tabla,trp.v_nom_campo_bd))v_val_campo_bd,
+tpp.v_id_proced,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
 from sch_gestion_prestacional.tbl_regla_prestacion trp 
 inner join sch_gestion_prestacional.tbl_m_regla_validacion tmrv on trp.i_id_regla=tmrv.i_id_regla 
 inner join sch_gestion_prestacional.tbl_prestacion_procedimiento tpp on tpp.i_id_prestacion_proc=trp.id_tabla and trp.v_nom_tabla_bd='tbl_prestacion_procedimiento'
@@ -40,7 +53,9 @@ inner join sch_gestion_prestacional.tbl_prestacion_diagnostico tpd on tpd.i_id_p
 where tpd.i_id_prestacion=".$p['idprestacion']."
 and trp.c_estado='1'
 union all 
-select v_nom_tabla_bd,v_nom_campo_bd,tppm.i_id_prod_med,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
+select trp.id_tabla,v_nom_tabla_bd,v_nom_campo_bd,
+(select sch_gestion_prestacional.sp_crud_obtiene_tabla_valor('sch_gestion_prestacional.'||trp.v_nom_tabla_bd,'i_id_prestacion_prodmed',trp.id_tabla,trp.v_nom_campo_bd))v_val_campo_bd,
+tppm.i_id_prod_med,tmrv.v_cod_regla,tmrv.v_definicion,tmrv.v_mensaje_validacion
 from sch_gestion_prestacional.tbl_regla_prestacion trp 
 inner join sch_gestion_prestacional.tbl_m_regla_validacion tmrv on trp.i_id_regla=tmrv.i_id_regla 
 inner join sch_gestion_prestacional.tbl_prestacion_producto_medico tppm on tppm.i_id_prestacion_prodmed=trp.id_tabla and trp.v_nom_tabla_bd='tbl_prestacion_producto_medico'

@@ -46,7 +46,7 @@
 						'apellido_paterno' 								=> $prestacion['apellido_paterno'],
 						'apellido_materno' 								=> $prestacion['apellido_materno'],
 						'nombres' 										=> str_replace("'","''",$prestacion['nombres']),
-						'i_id_hist_clinica' 							=> $prestacion['i_id_hist_clinica'],
+						'i_id_hist_clinica' 							=> $prestacion['v_numero_historia'],
 						'v_id_tipo_cobert' 								=> $prestacion['v_id_tipo_cobert'],
 						'v_id_upss_fups' 								=> $prestacion['v_id_upss_fups'],
 						//'t_fecha_atencion_fups' 						=> json_encode($prestacion['t_fecha_atencion_fups']),
