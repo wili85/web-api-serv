@@ -184,7 +184,9 @@
 
 					$api->registrar_recetavale_diag_temp($item);
 
-				} elseif($_POST['op'] == 'registrar_recetaproducto_tmp'){
+				}
+				
+				elseif($_POST['op'] == 'registrar_recetaproducto_tmp'){
 					
 					$item = array(
 						
@@ -233,6 +235,38 @@
 					);
 
 					$api->registrar_item_temporal($item);
+
+				} elseif($_POST['op'] == 'registrar_recetavale_tmp'){
+					
+					$item = array(
+						'op'		=> $_POST['opc'],
+						'idrecetavale'	=> $_POST['idrecetavale'],
+						'idsolicitud' 	=> $_POST['idsolicitud'],
+						'nroreceta' 	=> $_POST['nroreceta'],
+						'idtipdocmed'	=> $_POST['idtipdocmed'],
+						'nrodocmed'	=> $_POST['nrodocmed'],
+						'nommed'	=> $_POST['nommed'],
+						'primerapemed'	=> $_POST['primerapemed'],
+						'segunapemed'	=> $_POST['segunapemed'],
+						'idtipdoctec'	=> $_POST['idtipdoctec'],
+						'nrodoctec'	=> $_POST['nrodoctec'],
+						'nomtec'	=> $_POST['nomtec'],
+						'primerapetec'	=> $_POST['primerapetec'],
+						'segunapetec'	=> $_POST['segunapetec'],
+						'iduseraccion'	=> $_POST['iduseraccion'],
+						'idtipdocaut'	=> $_POST['idtipdocaut'],
+						'nrodocaut'	=> $_POST['nrodocaut'],
+						'nomaut'	=> $_POST['nomaut'],
+						'primerapeaut'	=> $_POST['primerapeaut'],
+						'segunapeaut'	=> $_POST['segunapeaut'],
+						'fecatencion'	=> $_POST['fecatencion'],
+						'fecexpiracion'	=> $_POST['fecexpiracion'],
+						'idservicio'	=> $_POST['idservicio'],
+						'codupss'	=> $_POST['codupss'],
+						'rutarecetavale'	=> $_POST['rutarecetavale']
+					);
+
+					$api->registrar_recetavale_temp($item);
 
 				} elseif($_POST['op'] == 'registrar_comprobante_tmp'){
 					

@@ -193,7 +193,6 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])/* && isset($_POST['tipDoc'
 				'tiposustento' 	=> $_POST['tiposustento'],
 				'rutasustento' 	=> $_POST['rutasustento'],
 				'idplansalud' 	=> $_POST['idplansalud']
-				
 			);
 
 			$api->ws_asegurado($item);

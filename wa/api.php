@@ -3529,53 +3529,6 @@ class Api{
 		}
 	}
 	
-	function registrar_item_temporal($p){
-
-		include '../model/Reembolso.php';
-		$a = new Reembolso();
-		$rs = $a->crudItemTmp($p);
-
-		//exit();
-		$ar = array();
-		$nr = count($rs);
-
-		if ($nr > 0) {
-			if (isset($rs['Error'])) {
-				$this->error('No hay elementos');
-			} else {
-				for ($i = 0; $i < $nr; $i++) {
-					$reembolso[$i]['iditem'] = $rs[$i]['iditem'];
-					$reembolso[$i]['idcomprobante'] = $rs[$i]['idcomprobante'];
-					$reembolso[$i]['idconcepto'] = $rs[$i]['idconcepto'];
-					$reembolso[$i]['codigo'] = $rs[$i]['codigo'];
-					$reembolso[$i]['descripcion'] = $rs[$i]['descripcion'];
-					$reembolso[$i]['idobs'] = $rs[$i]['idobs'];
-					$reembolso[$i]['importe'] = $rs[$i]['importe'];
-					$reembolso[$i]['flagregistro'] = $rs[$i]['flagregistro'];
-					$reembolso[$i]['importeobs'] = $rs[$i]['importeobs'];
-					$reembolso[$i]['cantidad'] = $rs[$i]['cantidad'];
-					$reembolso[$i]['usuario'] = $rs[$i]['usuario'];
-					$reembolso[$i]['fecharegistro'] = $rs[$i]['fecharegistro'];
-					$reembolso[$i]['userupdate'] = $rs[$i]['userupdate'];
-					$reembolso[$i]['fechaupdate'] = $rs[$i]['fechaupdate'];
-					$reembolso[$i]['descripproducto'] = $rs[$i]['descripproducto'];
-					$reembolso[$i]['nombrecomercial'] = $rs[$i]['nombrecomercial'];
-					$reembolso[$i]['precio'] = $rs[$i]['precio'];
-					$reembolso[$i]['nroreceta'] = $rs[$i]['nroreceta'];
-					$reembolso[$i]['lugarorigen'] = $rs[$i]['lugarorigen'];
-					$reembolso[$i]['lugardestino'] = $rs[$i]['lugardestino'];
-
-				}
-
-				echo json_encode(array('item'=>$reembolso));
-
-			}
-		} else {
-			$msg[0]['msg'] = "No se registro items.";
-			echo json_encode(array('item'=>$msg));
-		}
-	}
-	
 	function registrar_prestacion_sugps($p){
 		
 		include '../model/PrestacionSugps.php';
@@ -3947,6 +3900,53 @@ class Api{
 			echo json_encode(array('item'=>$msg));
 		}
 	
+	}
+	
+	function registrar_item_temporal($p){
+
+		include '../model/Reembolso.php';
+		$a = new Reembolso();
+		$rs = $a->crudItemTmp($p);
+
+		//exit();
+		$ar = array();
+		$nr = count($rs);
+
+		if ($nr > 0) {
+			if (isset($rs['Error'])) {
+				$this->error('No hay elementos');
+			} else {
+				for ($i = 0; $i < $nr; $i++) {
+					$reembolso[$i]['iditem'] = $rs[$i]['iditem'];
+					$reembolso[$i]['idcomprobante'] = $rs[$i]['idcomprobante'];
+					$reembolso[$i]['idconcepto'] = $rs[$i]['idconcepto'];
+					$reembolso[$i]['codigo'] = $rs[$i]['codigo'];
+					$reembolso[$i]['descripcion'] = $rs[$i]['descripcion'];
+					$reembolso[$i]['idobs'] = $rs[$i]['idobs'];
+					$reembolso[$i]['importe'] = $rs[$i]['importe'];
+					$reembolso[$i]['flagregistro'] = $rs[$i]['flagregistro'];
+					$reembolso[$i]['importeobs'] = $rs[$i]['importeobs'];
+					$reembolso[$i]['cantidad'] = $rs[$i]['cantidad'];
+					$reembolso[$i]['usuario'] = $rs[$i]['usuario'];
+					$reembolso[$i]['fecharegistro'] = $rs[$i]['fecharegistro'];
+					$reembolso[$i]['userupdate'] = $rs[$i]['userupdate'];
+					$reembolso[$i]['fechaupdate'] = $rs[$i]['fechaupdate'];
+					$reembolso[$i]['descripproducto'] = $rs[$i]['descripproducto'];
+					$reembolso[$i]['nombrecomercial'] = $rs[$i]['nombrecomercial'];
+					$reembolso[$i]['precio'] = $rs[$i]['precio'];
+					$reembolso[$i]['nroreceta'] = $rs[$i]['nroreceta'];
+					$reembolso[$i]['lugarorigen'] = $rs[$i]['lugarorigen'];
+					$reembolso[$i]['lugardestino'] = $rs[$i]['lugardestino'];
+
+				}
+
+				echo json_encode(array('item'=>$reembolso));
+
+			}
+		} else {
+			$msg[0]['msg'] = "No se registro items.";
+			echo json_encode(array('item'=>$msg));
+		}
 	}
 
 	function registrar_recetavale_temp($p){
