@@ -156,7 +156,7 @@ class Tramite {
 						FROM std.tra_m_estados tme 
 						INNER JOIN std.tra_m_tramite tmt ON tmt.icodtramite = tme.icodtramite
 						WHERE tmt.ccodificacionht = '".$id."'
-						ORDER BY tme.fech_movi_est DESC
+						ORDER BY tme.flag_esta_ht DESC
 					) t
 					WHERE ROWNUM = 1";
 		 
