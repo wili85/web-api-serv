@@ -124,6 +124,9 @@ function getAseguradoValidate($tipDoc, $nroDoc, $otroParam) {
                 $ar[$i]['nomtitular'] = utf8_decode($rs[$i]['nomtitular']);
 				$ar[$i]['unidad_pnp'] = $rs[$i]['unidad_pnp'];
 				$ar[$i]['caducidad'] = utf8_decode($rs[$i]['caducidad']);
+				$ar[$i]['cip'] = $rs[$i]['cip'];
+				$ar[$i]['email'] = $rs[$i]['email'];
+				$ar[$i]['nro_telef'] = $rs[$i]['nro_telef'];
             }
         }
     }
