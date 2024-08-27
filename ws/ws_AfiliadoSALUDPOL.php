@@ -96,7 +96,7 @@ function getAseguradoValidate($tipDoc, $nroDoc, $otroParam) {
     $a = new Afiliado();
 
     $rs = $a->getValidateAseguradoSP($tipDoc, $nroDoc, $otroParam, 'WSNS');
-
+	
     $ar = array();
     $nr = count($rs);
     if ($nr > 0) {
@@ -122,7 +122,8 @@ function getAseguradoValidate($tipDoc, $nroDoc, $otroParam) {
                 $ar[$i]['apemattitular'] = utf8_decode($rs[$i]['apemattitular']);
                 $ar[$i]['apecastitular'] = utf8_decode($rs[$i]['apecastitular']);
                 $ar[$i]['nomtitular'] = utf8_decode($rs[$i]['nomtitular']);
-		$ar[$i]['unidad_pnp'] = $rs[$i]['unidad_pnp'];	
+				$ar[$i]['unidad_pnp'] = $rs[$i]['unidad_pnp'];
+				$ar[$i]['caducidad'] = utf8_decode($rs[$i]['caducidad']);
             }
         }
     }
