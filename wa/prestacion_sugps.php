@@ -81,6 +81,8 @@
 						'v_nro_docpago' 								=> $prestacion['v_nro_docpago'],
 						'v_correlativo' 								=> $prestacion['v_correlativo'],
 						'v_nro_lote' 									=> $prestacion['v_nro_lote'],
+						//'c_tipo_corte_adm' 								=> $prestacion['c_tipo_corte_adm'],
+						'c_tipo_corte_adm' 								=> isset($prestacion['c_tipo_corte_adm'])?$prestacion['c_tipo_corte_adm']:'1',
 						'diagnosticos' 									=> to_pg_array($diagnosticos),
 						'productos'										=> to_pg_array($productos),
 						'procedimientos'								=> to_pg_array($procedimientos)
